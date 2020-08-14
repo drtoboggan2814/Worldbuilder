@@ -1,0 +1,1 @@
+float surfaceGravityCalculator(float worldDensity, float worldDiameter);

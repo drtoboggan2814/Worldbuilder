@@ -1,0 +1,1 @@
+int affinityScoreCalculator(int resourceValueModifier, int habitabilityModifier);

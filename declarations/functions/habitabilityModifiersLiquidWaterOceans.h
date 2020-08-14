@@ -1,0 +1,1 @@
+int habitabilityModfiersLiquidWaterOceans(float hydrographicCoverage);

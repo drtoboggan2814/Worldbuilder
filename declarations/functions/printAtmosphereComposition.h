@@ -1,0 +1,1 @@
+void printAtmosphereComposition(atmosphericComposition_t atmosphereComposition);

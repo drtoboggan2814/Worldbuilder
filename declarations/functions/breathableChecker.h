@@ -1,0 +1,1 @@
+bool breathableChecker(atmosphericComposition_t atmosphereComposition);

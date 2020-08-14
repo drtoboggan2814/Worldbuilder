@@ -1,0 +1,1 @@
+marginalAtmosphere_t marginalAtmosphereTable(int marginalAtmosphereRNG);

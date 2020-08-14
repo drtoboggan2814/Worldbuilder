@@ -1,0 +1,1 @@
+float blackbodyTemperatureCalculator(float blackbodyCorrection, int surfaceTemperature);

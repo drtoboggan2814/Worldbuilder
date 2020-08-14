@@ -1,0 +1,24 @@
+//	This header file stores the constant char representations of the different world types
+const char ASTEROID_BELT = 0;
+const char TINY_ICE = 1;
+const char TINY_SULFUR = 2;
+const char TINY_ROCK = 3;
+const char SMALL_HADEAN = 4;
+const char SMALL_ICE = 5;
+const char SMALL_ROCK = 6;
+const char STANDARD_HADEAN = 7;
+const char STANDARD_AMMONIA = 8;
+const char STANDARD_ICE = 9;
+const char STANDARD_OCEAN = 10;
+const char STANDARD_GARDEN = 11;
+const char STANDARD_GREENHOUSE = 12;
+const char STANDARD_CHTHONIAN = 13;
+const char LARGE_AMMONIA = 14;
+const char LARGE_ICE = 15;
+const char LARGE_OCEAN = 16;
+const char LARGE_GARDEN = 17;
+const char LARGE_GREENHOUSE = 18;
+const char LARGE_CHTHONIAN = 19;
+const char SMALL_GAS_GIANT = 20;
+const char MEDIUM_GAS_GIANT = 21;
+const char LARGE_GAS_GIANT = 22;
