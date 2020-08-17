@@ -1,1 +1,1 @@
-float minimumMolecularWeightRetainedCalculator(float blackbodyTemperature, float worldDiameter, float worldDensity, string worldType);
+float minimumMolecularWeightRetainedCalculator(float blackbodyTemperature, float worldDiameter, float worldDensity, char worldType);

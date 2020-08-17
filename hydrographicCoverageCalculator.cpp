@@ -1,20 +1,26 @@
+//	C++ libraries
 #include <string>
+
+//	Constant declarations
+#include "declarations/constants/worldTypeConstants.h"
+
+//	Function declarations
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
 
 using namespace std;
 
-float hydrographicCoverageCalculator(string worldType)
+float hydrographicCoverageCalculator(char worldType)
 {
 	float hydrographicCoverage;
 	float big, small;
 
-	if (worldType == "Asteroid Belt" || worldType == "Tiny (Rock)" || worldType == "Small (Rock)" || worldType == "Tiny (Ice)" || worldType == "Small (Hadean)" || worldType == "Standard (Hadean)" || worldType == "Tiny (Sulfur)" || worldType == "Standard (Chthonian)" || worldType == "Large (Chthonian)")
+	if (worldType == WT_ASTEROID_BELT || worldType == WT_TINY_SULFUR || worldType == WT_SMALL_ROCK || worldType == WT_TINY_ICE || worldType == WT_SMALL_HADEAN || worldType == WT_STANDARD_HADEAN || worldType == WT_TINY_SULFUR || worldType == WT_STANDARD_CHTHONIAN || worldType == WT_LARGE_CHTHONIAN)
 	{
 		hydrographicCoverage = 0;
 	}
 
-	else if (worldType == "Small (Ice)") // Oceans are composed of liquid hydrocarbons rather than water.
+	else if (worldType == WT_SMALL_ICE) // Oceans are composed of liquid hydrocarbons rather than water.
 	{
 		big = (diceRoller(6, 1) + 2) * 0.1;
 		small = floatRNG(-0.05, 0.05);
@@ -23,7 +29,7 @@ float hydrographicCoverageCalculator(string worldType)
 		else if (big + small > 1) {hydrographicCoverage = 1;}
 	}
 
-	else if (worldType == "Standard (Ammonia)" || worldType == "Large (Ammonia)") // Oceans are composed of liquid ammonia mixed with water and other substances, mingled in a eutetic solution whose freezing point is much lower than that of pure ammonia or water.
+	else if (worldType == WT_STANDARD_AMMONIA || worldType == WT_LARGE_AMMONIA) // Oceans are composed of liquid ammonia mixed with water and other substances, mingled in a eutetic solution whose freezing point is much lower than that of pure ammonia or water.
 	{
 		big = diceRoller(6, 2) * 0.1;
 		small = floatRNG(-0.05, 0.05);
@@ -32,7 +38,7 @@ float hydrographicCoverageCalculator(string worldType)
 		else if (big + small > 1) {hydrographicCoverage = 1;}
 	}
 
-	else if (worldType == "Standard (Ice)" || worldType == "Large (Ice)") // Water
+	else if (worldType == WT_STANDARD_ICE || worldType == WT_LARGE_ICE) // Water
 	{
 		big = (diceRoller(6, 2) - 10) * 0.1;
 		small = floatRNG(-0.05, 0.05);
@@ -41,7 +47,7 @@ float hydrographicCoverageCalculator(string worldType)
 		else if (big + small > 1) {hydrographicCoverage = 1;}
 	}
 
-	else if (worldType == "Standard (Ocean)" || worldType == "Standard (Garden)") // Water
+	else if (worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_GARDEN) // Water
 	{
 		big = (diceRoller(6, 1) + 4) * 0.1;
 		small = floatRNG(-0.05, 0.05);
@@ -50,7 +56,7 @@ float hydrographicCoverageCalculator(string worldType)
 		else if (big + small > 1) {hydrographicCoverage = 1;}
 	}
 
-	else if (worldType == "Large (Ocean)" || worldType == "Large (Garden)") // Water
+	else if (worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_GARDEN) // Water
 	{
 		big = (diceRoller(6, 1) + 6) * 0.1;
 		small = floatRNG(-0.05, 0.05);
@@ -59,7 +65,7 @@ float hydrographicCoverageCalculator(string worldType)
 		else if (big + small > 1) {hydrographicCoverage = 1;}
 	}
 
-	else if (worldType == "Standard (Greenhouse)" || worldType == "Large (Greenhouse)") // Some extremely impure water, rich in dissolved carbon or sulfur compounds.
+	else if (worldType == WT_STANDARD_GREENHOUSE || worldType == WT_LARGE_GREENHOUSE) // Some extremely impure water, rich in dissolved carbon or sulfur compounds.
 	{
 		big = (diceRoller(6, 2) - 7) * 0.1;
 		small = floatRNG(-0.05, 0.05);

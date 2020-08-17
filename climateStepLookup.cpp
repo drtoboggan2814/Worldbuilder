@@ -1,27 +1,31 @@
-#include "declarations/constants/climateStepConstants.h"
+//	C++ libraries
 #include <string>
+
+//	Constant declarations
+#include "declarations/constants/climateStepConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
 
 using namespace std;
 
-int climateStepLookup(string worldType)
+int climateStepLookup(char worldType)
 {
 	int step;
 
-	if 		(worldType == "Asteroid Belt") 													{step = step_AsteroidBelt;}
-	else if (worldType == "Tiny (Ice)" || worldType == "Tiny (Sulfur)") 					{step = step_Tiny_IceorSulfur;}
-	else if (worldType == "Tiny (Rock)") 													{step = step_Tiny_Rock;}
-	else if (worldType == "Small (Hadean)") 												{step = step_Small_Hadean;}
-	else if (worldType == "Small (Ice)") 													{step = step_Small_Ice;}
-	else if (worldType == "Small (Rock)") 													{step = step_Small_Rock;}
-	else if (worldType == "Standard (Hadean)") 												{step = step_Standard_Hadean;}
-	else if (worldType == "Standard (Ammonia)") 											{step = step_Standard_Ammonia;}
-	else if (worldType == "Standard (Ice)") 												{step = step_Standard_Ice;}
-	else if (worldType == "Standard (Ocean)" || worldType == "Standard (Garden)") 			{step = step_Standard_OceanorGarden;}
-	else if (worldType == "Standard (Greenhouse)" || worldType == "Standard (Chthonian)")	{step = step_Standard_GreenhouseorChthonian;}
-	else if (worldType == "Large (Ammonia)") 												{step = step_Large_Ammonia;}
-	else if (worldType == "Large (Ice)") 													{step = step_Large_Ice;}
-	else if (worldType == "Large (Ocean)" || worldType == "Large (Garden)") 				{step = step_Large_OceanorGarden;}
-	else if (worldType == "Large (Greenhouse)" || worldType == "Large (Chthonian)") 		{step = step_Large_GreenhouseorChthonian;}
+	if 		(worldType == WT_ASTEROID_BELT) 													{step = step_AsteroidBelt;}
+	else if (worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR) 					{step = step_Tiny_IceorSulfur;}
+	else if (worldType == WT_TINY_SULFUR) 													{step = step_Tiny_Rock;}
+	else if (worldType == WT_SMALL_HADEAN) 												{step = step_Small_Hadean;}
+	else if (worldType == WT_SMALL_ICE) 													{step = step_Small_Ice;}
+	else if (worldType == WT_SMALL_ROCK) 													{step = step_Small_Rock;}
+	else if (worldType == WT_STANDARD_HADEAN) 												{step = step_Standard_Hadean;}
+	else if (worldType == WT_STANDARD_AMMONIA) 											{step = step_Standard_Ammonia;}
+	else if (worldType == WT_STANDARD_ICE) 												{step = step_Standard_Ice;}
+	else if (worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_GARDEN) 			{step = step_Standard_OceanorGarden;}
+	else if (worldType == WT_STANDARD_GREENHOUSE || worldType == WT_STANDARD_CHTHONIAN)	{step = step_Standard_GreenhouseorChthonian;}
+	else if (worldType == WT_LARGE_AMMONIA) 												{step = step_Large_Ammonia;}
+	else if (worldType == WT_LARGE_ICE) 													{step = step_Large_Ice;}
+	else if (worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_GARDEN) 				{step = step_Large_OceanorGarden;}
+	else if (worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_CHTHONIAN) 		{step = step_Large_GreenhouseorChthonian;}
 
 	return step;
 }

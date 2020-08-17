@@ -1,0 +1,36 @@
+#b worldBuilder.cpp:0
+#b worldBuilder.cpp:20
+#b worldBuilder.cpp:40
+#b worldBuilder.cpp:60
+#b worldBuilder.cpp:80
+#b worldBuilder.cpp:100
+#b worldBuilder.cpp:120
+#b worldBuilder.cpp:140
+#b worldBuilder.cpp:160
+#b worldBuilder.cpp:180
+#b worldBuilder.cpp:200
+#b worldBuilder.cpp:220
+#b worldBuilder.cpp:240
+#b worldBuilder.cpp:260
+#b worldBuilder.cpp:280
+#b worldBuilder.cpp:300
+#b worldBuilder.cpp:320
+#b worldBuilder.cpp:340
+#b worldBuilder.cpp:360
+#b worldBuilder.cpp:380
+#b worldBuilder.cpp:400
+#b worldBuilder.cpp:420
+#b worldBuilder.cpp:440
+#b worldBuilder.cpp:460
+#b worldBuilder.cpp:480
+#b worldBuilder.cpp:500
+#b worldBuilder.cpp:520
+#b worldBuilder.cpp:540
+#b worldBuilder.cpp:560
+#b worldBuilder.cpp:580
+#b worldBuilder.cpp:600
+#b worldBuilder.cpp:620
+#b worldBuilder.cpp:640
+#b worldBuilder.cpp:660
+
+set max-value-size unlimited

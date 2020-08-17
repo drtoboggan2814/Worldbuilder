@@ -1,3 +1,3 @@
 #include <string>
 using namespace std;
-int climateStepLookup(string worldType);
+int climateStepLookup(char worldType);

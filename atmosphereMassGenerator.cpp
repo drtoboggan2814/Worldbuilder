@@ -1,19 +1,19 @@
 //	This function returns the mass of the world's atmosphere in terms
 //	of the Earth's
 
-#include <string>
+//	Constant declarations
+#include "declarations/constants/worldTypeConstants.h"
 
+//	Function declarations
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
 
-using namespace std;
-
-float atmosphereMassGenerator(string worldType)
+float atmosphereMassGenerator(char worldType)
 {
 	float atmosphereMass;
 
 //	Worlds that have no significant atmosphere
-	if ((worldType == "Asteroid Belt") || (worldType == "Tiny (Ice)") || (worldType == "Tiny (Rock)") || (worldType == "Tiny (Sulfur)") || (worldType == "Small (Hadean)") || (worldType == "Small (Rock)") || (worldType == "Standard (Hadean)") || (worldType == "Standard (Chthonian)") || (worldType == "Large (Chthonian)"))
+	if ((worldType == WT_ASTEROID_BELT) || (worldType == WT_TINY_ICE) || (worldType == WT_TINY_SULFUR) || (worldType == WT_TINY_SULFUR) || (worldType == WT_SMALL_HADEAN) || (worldType == WT_SMALL_ROCK) || (worldType == WT_STANDARD_HADEAN) || (worldType == WT_STANDARD_CHTHONIAN) || (worldType == WT_LARGE_CHTHONIAN))
 	{
 		atmosphereMass = 0;
 	}

@@ -1,3 +1,3 @@
 #include <string>
 using namespace std;
-int surfaceTemperatureTable(string worldType);
+int surfaceTemperatureTable(char worldType);

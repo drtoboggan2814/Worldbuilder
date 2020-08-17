@@ -2,6 +2,10 @@
 #include <string>
 #include <iostream>
 
+//	Constant declarations
+#include "declarations/constants/gasGiantArrangementConstants.h"
+#include "declarations/constants/sizeClassConstants.h"
+
 //	Structure declarations
 #include "declarations/structures/world_t.h"
 #include "declarations/structures/star_t.h"
@@ -12,22 +16,22 @@
 using namespace std;
 
 //	This functions returns a string representing the size of the gas giant
-string getGasGiantSize(int diceRoll)
+char getGasGiantSize(int diceRoll)
 {
-	if 		(diceRoll >= 3  && diceRoll <= 10) 	{return "Small " ;}
-	else if (diceRoll >= 11 && diceRoll <= 16) 	{return "Medium ";}
-	else 										{return "Large " ;}
+	if 		(diceRoll >= 3  && diceRoll <= 10) 	{return SC_SMALL_GAS_GIANT;}
+	else if (diceRoll >= 11 && diceRoll <= 16) 	{return SC_MEDIUM_GAS_GIANT;}
+	else 										{return SC_LARGE_GAS_GIANT;}
 }
 
 //	This function returns a string representing the non-gas giant contents of the orbit
-string orbitContentsTable(int orbitContentsRoll)
+char orbitContentsTable(int orbitContentsRoll)
 {
-	if 		(orbitContentsRoll <= 3								) {return "Empty Orbit"					 ;}
-	else if (orbitContentsRoll >= 4  && orbitContentsRoll <= 6	) {return "Asteroid Belt"				 ;}
-	else if (orbitContentsRoll == 7  || orbitContentsRoll == 8	) {return "Terrestrial Planet (Tiny)"	 ;}
-	else if (orbitContentsRoll >= 9  && orbitContentsRoll <= 11	) {return "Terrestrial Planet (Small)"	 ;}
-	else if (orbitContentsRoll >= 12 && orbitContentsRoll <= 15	) {return "Terrestrial Planet (Standard)";}
-	else														  {return "Terrestrial Planet (Large)"	 ;}
+	if 		(orbitContentsRoll <= 3								) {return SC_EMPTY_ORBIT					 ;}
+	else if (orbitContentsRoll >= 4  && orbitContentsRoll <= 6	) {return SC_ASTEROID_BELT				 ;}
+	else if (orbitContentsRoll == 7  || orbitContentsRoll == 8	) {return SC_EMPTY_ORBIT	 ;}
+	else if (orbitContentsRoll >= 9  && orbitContentsRoll <= 11	) {return SC_TERRESTRIAL_PLANET_SMALL	 ;}
+	else if (orbitContentsRoll >= 12 && orbitContentsRoll <= 15	) {return SC_TERRESTRIAL_PLANET_STANDARD;}
+	else														  {return SC_TERRESTRIAL_PLANET_LARGE	 ;}
 }
 
 //	This function checks which modifiers should be applied to orbitContentsRoll
@@ -50,13 +54,13 @@ int getOrbitContentsRollModifier(star_t primary, int currentIndex)
 	if (primary.orbitalRadiusArray[currentIndex + 1] >= primary.outerForbiddenZone || primary.orbitalRadiusArray[currentIndex - 1] <= primary.innerForbiddenZone										) {finalModifier += ADJACENT_TO_FORBIDDEN_ZONE		;}
 //	cout << "First if succeeded" << endl;
 //	Check if the next orbit outward contains a gas giant
-	if (primary.sizeClassArray[currentIndex + 1] == "Small Gas Giant" || primary.sizeClassArray[currentIndex + 1] == "Medium Gas Giant" || primary.sizeClassArray[currentIndex + 1] == "Large Gas Giant") {finalModifier += NEXT_OUTWARD_ORBIT_IS_GAS_GIANT	;}
+	if (primary.sizeClassArray[currentIndex + 1] == SC_SMALL_GAS_GIANT || primary.sizeClassArray[currentIndex + 1] == SC_MEDIUM_GAS_GIANT || primary.sizeClassArray[currentIndex + 1] == SC_LARGE_GAS_GIANT) {finalModifier += NEXT_OUTWARD_ORBIT_IS_GAS_GIANT	;}
 //	cout << "Second if succeeded" << endl;
 //	Check if there is another orbit inward
 	if (currentIndex != 0)
 	{
 //		Check if the next orbit inward contains a gas giant
-		if (primary.sizeClassArray[currentIndex - 1] == "Small Gas Giant" || primary.sizeClassArray[currentIndex - 1] == "Medium Gas Giant" || primary.sizeClassArray[currentIndex - 1] == "Large Gas Giant") {finalModifier += NEXT_INWARD_ORBIT_IS_GAS_GIANT	;}
+		if (primary.sizeClassArray[currentIndex - 1] == SC_SMALL_GAS_GIANT || primary.sizeClassArray[currentIndex - 1] == SC_MEDIUM_GAS_GIANT || primary.sizeClassArray[currentIndex - 1] == SC_LARGE_GAS_GIANT) {finalModifier += NEXT_INWARD_ORBIT_IS_GAS_GIANT	;}
 //		cout << "Third if succeeded" << endl;
 //		Check if the orbit is adjacent to the inner or outer limit radii
 		if (primary.orbitalRadiusArray[currentIndex + 1] >= primary.outerLimitRadius || primary.orbitalRadiusArray[currentIndex - 1] <= primary.innerLimitRadius											) {finalModifier += ADJACENT_TO_INNER_OR_OUTER_LIMIT;}
@@ -78,13 +82,13 @@ star_t fillOrbits(star_t primary)
 //	Roll dice for gas giant size
 	int gasGiantSizeRoll;
 //	The size of the gas giant
-	string gasGiantSize;
+	char gasGiantSize;
 //	Roll dice for the contents of the orbit
 	int orbitContentsRoll;
 //	Modifier for orbitContentsRoll
 	int orbitContentsRollModifier;
 //	The contents of the orbit
-	string orbitalContents;
+	char orbitalContents;
 
 //	Find the first orbit past the snow line radius
 	for (int index = 0; index < primary.numberOfOrbits; index++)
@@ -100,7 +104,7 @@ star_t fillOrbits(star_t primary)
 
 //	Place gas giants
 //	If the system's gas giant arrangement is "Conventional Gas Giant"
-	if (primary.gasGiantArrangement == "Conventional Gas Giant")
+	if (primary.gasGiantArrangement == GGA_CONVENTIONAL_GAS_GIANT)
 	{
 //			Iterate through the orbits for the gas giants
 		for (int index = 0; index < primary.numberOfOrbits; index++)
@@ -120,7 +124,7 @@ star_t fillOrbits(star_t primary)
 					gasGiantSizeRoll = diceRoller(6, 3);
 //						Get the gas giant's size
 					gasGiantSize = getGasGiantSize(gasGiantSizeRoll);
-					primary.sizeClassArray[index] = gasGiantSize + "Gas Giant";
+					primary.sizeClassArray[index] = gasGiantSize;
 					primary.orbitalRadiusArray[index] = primary.orbitalRadiusArray[index];
 				}
 			}
@@ -130,7 +134,7 @@ star_t fillOrbits(star_t primary)
 		for (int index = 0; index < primary.numberOfOrbits; index++)
 		{
 //				If the current orbit is empty
-			if (primary.sizeClassArray[index].empty())
+			if (primary.sizeClassArray[index] == SC_EMPTY_ORBIT)
 			{
 //					Roll for orbital contents
 				orbitContentsRoll = diceRoller(6, 3);
@@ -149,7 +153,7 @@ star_t fillOrbits(star_t primary)
 	}
 
 //	If the system's gas giant arrangement is "Eccentric Gas Giant"
-	else if (primary.gasGiantArrangement == "Eccentric Gas Giant")
+	else if (primary.gasGiantArrangement == GGA_ECCENTRIC_GAS_GIANT)
 	{
 //			Iterate through the orbits for the gas giants
 			for (int index = 0; index < primary.numberOfOrbits; index++)
@@ -169,7 +173,7 @@ star_t fillOrbits(star_t primary)
 						gasGiantSizeRoll = diceRoller(6, 3);
 //						Get the gas giant's size
 						gasGiantSize = getGasGiantSize(gasGiantSizeRoll);
-						primary.sizeClassArray[index] = gasGiantSize + "Gas Giant";
+						primary.sizeClassArray[index] = gasGiantSize;
 						primary.orbitalRadiusArray[index] = primary.orbitalRadiusArray[index];
 					}
 				}
@@ -183,7 +187,7 @@ star_t fillOrbits(star_t primary)
 						gasGiantSizeRoll = diceRoller(6, 3);
 //						Get the gas giant's size
 						gasGiantSize = getGasGiantSize(gasGiantSizeRoll);
-						primary.sizeClassArray[index] = gasGiantSize + "Gas Giant";
+						primary.sizeClassArray[index] = gasGiantSize;
 						primary.orbitalRadiusArray[index] = primary.orbitalRadiusArray[index];
 					}
 				}
@@ -193,7 +197,7 @@ star_t fillOrbits(star_t primary)
 			for (int index = 0; index < primary.numberOfOrbits; index++)
 			{
 //				If the current orbit is empty
-				if (primary.sizeClassArray[index].empty())
+				if (primary.sizeClassArray[index] == SC_EMPTY_ORBIT)
 				{
 //					Roll for orbital contents
 					orbitContentsRoll = diceRoller(6, 3);
@@ -212,7 +216,7 @@ star_t fillOrbits(star_t primary)
 		}
 
 //	If the system's gas giant arrangement is "Epistellar Gas Giant"
-	else if (primary.gasGiantArrangement == "Epistellar Gas Giant")
+	else if (primary.gasGiantArrangement == GGA_EPISTELLAR_GAS_GIANT)
 	{
 //			Iterate through the orbits for the gas giants
 			for (int index = 0; index < primary.numberOfOrbits; index++)
@@ -232,7 +236,7 @@ star_t fillOrbits(star_t primary)
 						gasGiantSizeRoll = diceRoller(6, 3);
 //						Get the gas giant's size
 						gasGiantSize = getGasGiantSize(gasGiantSizeRoll);
-						primary.sizeClassArray[index] = gasGiantSize + "Gas Giant";
+						primary.sizeClassArray[index] = gasGiantSize;
 						primary.orbitalRadiusArray[index] = primary.orbitalRadiusArray[index];
 					}
 				}
@@ -246,7 +250,7 @@ star_t fillOrbits(star_t primary)
 						gasGiantSizeRoll = diceRoller(6, 3);
 //						Get the gas giant's size
 						gasGiantSize = getGasGiantSize(gasGiantSizeRoll);
-						primary.sizeClassArray[index] = gasGiantSize + "Gas Giant";
+						primary.sizeClassArray[index] = gasGiantSize;
 						primary.orbitalRadiusArray[index] = primary.orbitalRadiusArray[index];
 					}
 				}
@@ -256,7 +260,7 @@ star_t fillOrbits(star_t primary)
 			for (int index = 0; index < primary.numberOfOrbits; index++)
 			{
 //				If the current orbit is empty
-				if (primary.sizeClassArray[index].empty())
+				if (primary.sizeClassArray[index] == SC_EMPTY_ORBIT)
 				{
 //					Roll for orbital contents
 					orbitContentsRoll = diceRoller(6, 3);
@@ -275,13 +279,13 @@ star_t fillOrbits(star_t primary)
 		}
 
 //	If the system's gas giant arrangement is "No Gas Giant"
-	else if (primary.gasGiantArrangement == "No Gas Giant")
+	else if (primary.gasGiantArrangement == GGA_NO_GAS_GIANT)
 	{
 //		Iterate through the orbits for the rest of the worlds
 		for (int index = 0; index < primary.numberOfOrbits; index++)
 		{
 //			If the current orbit is empty
-			if (primary.sizeClassArray[index].empty())
+			if (primary.sizeClassArray[index] == SC_EMPTY_ORBIT)
 			{
 //				Roll for orbital contents
 				orbitContentsRoll = diceRoller(6, 3);

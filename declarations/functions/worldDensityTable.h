@@ -1,3 +1,3 @@
 #include <string>
 using namespace std;
-float worldDensityTable(string worldType);
+float worldDensityTable(char worldType);

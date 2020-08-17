@@ -1,6 +1,11 @@
 //	This function returns the star's current stellar luminosity
 
+
 //#include "stellarEvolutionTable.h"
+//	Constant declarations
+#include "declarations/constants/luminosityClassConstants.h"
+
+//	Function declarations
 #include "declarations/functions/floatRNG.h"
 #include "declarations/functions/diceRoller.h"
 
@@ -15,7 +20,7 @@ star_t calculateStellarTemperature(star_t primary)
 	float currentTemperature;
 
 //	If the star is a giant
-	if (primary.luminosityClass == "III")
+	if (primary.luminosityClass == LC_III)
 	{
 		firstRoll = diceRoller(6, 2);
 		currentTemperature = ( 2 * (firstRoll - 2)) + 3000;
@@ -23,7 +28,7 @@ star_t calculateStellarTemperature(star_t primary)
 	}
 
 //	If it is a subgiant
-	else if (primary.luminosityClass == "IV")
+	else if (primary.luminosityClass == LC_IV)
 	{
 		currentTemperature = primary.stellarMass - ((primary.stellarAge / primary.sSpan) * (primary.stellarMass - 4800));
 		primary.stellarTemperature = currentTemperature + variance;

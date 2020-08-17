@@ -1,3 +1,3 @@
 #include <string>
 using namespace std;
-float atmosphereMassGenerator(string worldType);
+float atmosphereMassGenerator(char worldType);

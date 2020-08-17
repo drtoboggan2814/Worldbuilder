@@ -1,3 +1,3 @@
-#include <string>
-using namespace std;
-string worldTypeTable(int result, string overallType);
+//	#include <string>
+//	using namespace std;
+char worldTypeTable(int result, char overallType);

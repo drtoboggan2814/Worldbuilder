@@ -1,3 +1,3 @@
 #include <string>
 using namespace std;
-int pressureFactorsLookup(string worldType);
+int pressureFactorsLookup(char worldType);

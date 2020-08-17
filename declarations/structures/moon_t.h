@@ -3,9 +3,6 @@
 
 #include "atmosphericComposition_t.h"
 
-#include <string>
-using namespace std;
-
 //	This structure describes a moon orbiting a larger world
 
 struct moon_t
@@ -15,8 +12,8 @@ struct moon_t
 //	-2 corresponds to "Two size classes smaller"
 //	-1 corresponds to "One size class smaller"
 	int moonSizeClass;
-	string sizeClass;
-	string worldType;
+	char sizeClass;
+	char worldType;
 	float orbitalRadius;
 	float orbitalPeriod;
 	float orbitalEccentricity;
@@ -41,8 +38,8 @@ struct moon_t
 	float worldDiameter;
 	float surfaceGravity;
 	float worldMass;
-	string volcanicActivityLevel;
-	string tectonicActivityLevel;
+	char volcanicActivityLevel;
+	char tectonicActivityLevel;
 	float atmosphericPressure;
 	atmosphericComposition_t worldAtmosphereComposition;
 	float minimumMolecularWeightRetained;
@@ -50,7 +47,7 @@ struct moon_t
 	int habitabilityModifier;
 	float tidalForceOnSatelliteByPlanet;
 	float totalTidalEffect;
-	string atmosphericPressureCategory;
+	char atmosphericPressureCategory;
 //	Moon's escape velocity
 	float escapeVelocity;
 };

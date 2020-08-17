@@ -5,22 +5,22 @@
 #include "moonlet_t.h"
 #include "moon_t.h"
 
-#include <string>
+//	#include <string>
 
-using namespace std;
+//	using namespace std;
 
 struct world_t
 {
 //	Is this a blank world (empty orbit)?
 //	True if empty, false otherwise
 	bool emptyOrNot;
-	string sizeClass;
+	char sizeClass;
 //	Overall attributes and GURPS scores
 
 //	Describes the overall type the world is
-	string overallType;
+	char overallType;
 //	Describes the specific type of world it is
-	string worldType;
+	char worldType;
 //	The world's resource value modifier
 	int resourceValueModifier;
 //	The world's habitability modifier
@@ -36,9 +36,9 @@ struct world_t
 //	The world's mass in terms of the Earth's
 	float worldMass;
 //	The world's volcanic activity level
-	string volcanicActivityLevel;
+	char volcanicActivityLevel;
 //	The world's tectonic activity level
-	string tectonicActivityLevel;
+	char tectonicActivityLevel;
 //	The percentage of the world covered by liquid oceans
 	float hydrographicCoverage;
 //	The world's surface temperature in K
@@ -60,7 +60,7 @@ struct world_t
 //	The world's atmospheric pressure in terms of the Earth's
 	float atmosphericPressure;
 //	The category the world's atmosphere falls into
-	string atmosphericPressureCategory;
+	char atmosphericPressureCategory;
 //	The minimum molecular weight retained by the world
 	float minimumMolecularWeightRetained;
 

@@ -5,6 +5,7 @@
 
 using namespace std;
 //	Constant declarations
+#include "declarations/constants/luminosityClassConstants.h"
 #include "declarations/constants/stellarEvolutionTableConstants.h"
 
 //	Structure declarations
@@ -76,10 +77,10 @@ star_t determineStellarCharacteristics(star_t star)
 //			cout << "star.gSpan = " << star.gSpan << endl;
 
 //				Determine luminosity class and make any necessary changes
-			if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = "V";}
-			else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = "IV";}
-			else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = "III";}
-			else																			 									{star.luminosityClass = "D";}
+			if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = LC_V;}
+			else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = LC_IV;}
+			else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = LC_III;}
+			else																			 									{star.luminosityClass = LC_D;}
 
 
 //			Break
@@ -112,10 +113,10 @@ star_t determineStellarCharacteristics(star_t star)
 //				cout << "star.gSpan = " << star.gSpan << endl;
 
 //				Determine luminosity class and make any necessary changes
-				if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = "V";}
-				else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = "IV";}
-				else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = "III";}
-				else																			 									{star.luminosityClass = "D";}
+				if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = LC_V;}
+				else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = LC_IV;}
+				else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = LC_III;}
+				else																			 									{star.luminosityClass = LC_D;}
 
 
 	//			Break
@@ -145,10 +146,10 @@ star_t determineStellarCharacteristics(star_t star)
 //			cout << "star.gSpan = " << star.gSpan << endl;
 
 //				Determine luminosity class
-			if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = "V";}
-			else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = "IV";}
-			else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = "III";}
-			else																			 									{star.luminosityClass = "D";}
+			if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = LC_V;}
+			else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = LC_IV;}
+			else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = LC_III;}
+			else																			 									{star.luminosityClass = LC_D;}
 
 //			Break
 			break;

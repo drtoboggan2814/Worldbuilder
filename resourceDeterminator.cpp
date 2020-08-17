@@ -3,17 +3,23 @@
 	It takes the world's type as a parameter.
 	It returns the world's resource value modifier.
 */
+//	C++ libraries
 #include <string>
+
+//	Constant declarations
+#include "declarations/constants/worldTypeConstants.h"
+
+//	Function declarations
 #include "declarations/functions/diceRoller.h"
 
 using namespace std;
 
-int resourceDeterminator(string worldType)
+int resourceDeterminator(char worldType)
 {
 	int resourceValueModifier;
 	int diceRoll = diceRoller(6, 3);
 
-	if (worldType == "Asteroid Belt")
+	if (worldType == WT_ASTEROID_BELT)
 	{
 		if 		(diceRoll == 3) 					{resourceValueModifier = -5	;}
 		else if (diceRoll == 4) 					{resourceValueModifier = -4	;}

@@ -2,7 +2,7 @@
 #define STAR_T
 
 //	C++ Libraries
-#include <string>
+//	#include <string>
 
 //	Structure declarations
 #include "world_t.h"
@@ -16,7 +16,7 @@ struct star_t
 //	IV = subgiant
 //	III = giant
 //	D = white dwarf
-	std::string luminosityClass;
+	char luminosityClass;
 
 //	Which star in the system is this?
 	int starNumber;
@@ -52,7 +52,7 @@ struct star_t
 //	The number of orbital slots around the star
 	int numberOfOrbits;
 //	Stores the size class of each world
-	std::string sizeClassArray[32];
+	char sizeClassArray[32];
 //	Stores the orbital radius around the primary of each world
 	float orbitalRadiusArray[32];
 //	The index value of the orbital slot closest to the primary
@@ -68,7 +68,7 @@ struct star_t
 //	Star's escape velocity
 	double escapeVelocity;
 
-	std::string gasGiantArrangement;
+	char gasGiantArrangement;
 	bool firstGasGiantPresent;
 	float firstGasGiantOrbitalRadius;
 

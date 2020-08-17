@@ -1,3 +1,1 @@
-#include <string>
-using namespace std;
-int habitabilityModifiersBreathable(string pressureCategory, bool breathable);
+int habitabilityModifiersBreathable(char pressureCategory, bool breathable);

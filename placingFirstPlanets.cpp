@@ -1,34 +1,34 @@
-#include <string>
+//	Constant declarations
+#include "declarations/constants/gasGiantArrangementConstants.h"
 
+//	Function declarations
 #include "declarations/functions/diceRoller.h"
-
-using namespace std;
 
 /*
 	These functions determine the characteristics of the gas giant closest to
 	the primary in this system.
 */
-string gasGiantArrangementTable()
+char gasGiantArrangementTable()
 {
 	int diceRoll = diceRoller(6, 3);
 
-	if (diceRoll <= 10) {return "No Gas Giant";}
-	else if (diceRoll == 11 || diceRoll == 12) {return "Conventional Gas Giant";}
-	else if (diceRoll == 13 || diceRoll == 14) {return "Eccentric Gas Giant";}
-	else {return "Epistellar Gas Giant";}
+	if (diceRoll <= 10) {return GGA_NO_GAS_GIANT;}
+	else if (diceRoll == 11 || diceRoll == 12) {return GGA_CONVENTIONAL_GAS_GIANT;}
+	else if (diceRoll == 13 || diceRoll == 14) {return GGA_ECCENTRIC_GAS_GIANT;}
+	else {return GGA_EPISTELLAR_GAS_GIANT;}
 }
 
 //	This function returns the orbital radius of the first gas giant in the system
-float placeFirstGasGiant(float snowLineRadius, string gasGiantType)
+float placeFirstGasGiant(float snowLineRadius, char gasGiantType)
 {
 	int diceRoll;
-	if (gasGiantType == "Conventional Gas Giant")
+	if (gasGiantType == GGA_CONVENTIONAL_GAS_GIANT)
 	{
 		diceRoll = diceRoller(6, 2) - 2;
 		return ((0.05 * diceRoll) + 1) * snowLineRadius;
 	}
 
-	else if (gasGiantType == "Eccentric Gas Giant")
+	else if (gasGiantType == GGA_ECCENTRIC_GAS_GIANT)
 	{
 		diceRoll = diceRoller(6, 1);
 		return (diceRoll * 0.125) * snowLineRadius;

@@ -1,3 +1,1 @@
-#include <string>
-using namespace std;
-int habitabilityModifiersNonBreathable(string pressureCategory, atmosphericComposition_t atmosphereComposition);
+int habitabilityModifiersNonBreathable(char pressureCategory, atmosphericComposition_t atmosphereComposition);

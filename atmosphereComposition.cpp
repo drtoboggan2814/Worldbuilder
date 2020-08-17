@@ -1,4 +1,8 @@
+//	C++ libraries
 #include <string>
+
+//	Constant declarations
+#include "declarations/constants/worldTypeConstants.h"
 
 //	Struct declarations
 #include "declarations/structures/marginalAtmosphere_t.h"
@@ -11,7 +15,7 @@
 
 using namespace std;
 
-atmosphericComposition_t atmosphereComposition(string worldType)
+atmosphericComposition_t atmosphereComposition(char worldType)
 {
 //	Initialize the atmospheric composition
 	atmosphericComposition_t atmosphereComposition;
@@ -25,7 +29,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 	int marginalAtmosphereArray[9];
 
 //	Assign values
-	if 		(worldType == "Small (Ice)")
+	if 		(worldType == WT_SMALL_ICE)
 	{
 		if (result <= 15)
 		{
@@ -60,7 +64,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		}
 	}
 
-	else if (worldType == "Standard (Ammonia)")
+	else if (worldType == WT_STANDARD_AMMONIA)
 	{
 		atmosphereComposition.toxicity				= 3;
 		atmosphereComposition.chlorineOrFluorine 	= 0;
@@ -76,7 +80,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		atmosphereComposition.corrosive 			= 1;
 	}
 
-	else if (worldType == "Standard (Ice)")
+	else if (worldType == WT_STANDARD_ICE)
 	{
 		if (result <= 12)
 		{
@@ -111,7 +115,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		}
 	}
 
-	else if (worldType == "Standard (Ocean)")
+	else if (worldType == WT_STANDARD_OCEAN)
 	{
 		if (result <= 12)
 		{
@@ -146,7 +150,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		}
 	}
 
-	else if (worldType == "Standard (Garden)")
+	else if (worldType == WT_STANDARD_GARDEN)
 	{
 		if (result <= 11)
 		{
@@ -182,7 +186,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		}
 	}
 
-	else if (worldType == "Standard (Greenhouse)")
+	else if (worldType == WT_STANDARD_GREENHOUSE)
 	{
 		atmosphereComposition.toxicity				= 3;
 		atmosphereComposition.chlorineOrFluorine 	= 0;
@@ -198,7 +202,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		atmosphereComposition.corrosive 			= 1;
 	}
 
-	else if (worldType == "Large (Ammonia)")
+	else if (worldType == WT_LARGE_AMMONIA)
 	{
 		atmosphereComposition.toxicity				= 3;
 		atmosphereComposition.chlorineOrFluorine 	= 0;
@@ -214,7 +218,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		atmosphereComposition.corrosive 			= 1;
 	}
 
-	else if (worldType == "Large (Ice)")
+	else if (worldType == WT_LARGE_ICE)
 	{
 		atmosphereComposition.toxicity				= 2;
 		atmosphereComposition.chlorineOrFluorine 	= 0;
@@ -230,7 +234,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		atmosphereComposition.corrosive 			= 0;
 	}
 
-	else if (worldType == "Large (Ocean)")
+	else if (worldType == WT_LARGE_OCEAN)
 	{
 		atmosphereComposition.toxicity				= 2;
 		atmosphereComposition.chlorineOrFluorine 	= 0;
@@ -246,7 +250,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		atmosphereComposition.corrosive 			= 0;
 	}
 
-	else if (worldType == "Large (Garden)")
+	else if (worldType == WT_LARGE_GARDEN)
 	{
 		if (result <= 12)
 		{
@@ -282,7 +286,7 @@ atmosphericComposition_t atmosphereComposition(string worldType)
 		}
 	}
 
-	else if (worldType == "Large (Greenhouse)")
+	else if (worldType == WT_LARGE_GREENHOUSE)
 	{
 		atmosphereComposition.toxicity				= 3;
 		atmosphereComposition.chlorineOrFluorine 	= 0;

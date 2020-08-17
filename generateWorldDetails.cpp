@@ -1,5 +1,6 @@
 //	These functions only apply to advanced worldbuilding
 //	Therefore, all functions in this file will end with _ADVANCED
+
 //	C++ libraries
 #include <cmath>
 #include <iostream>
@@ -7,9 +8,15 @@
 #include <tuple>
 
 //	Constant declarations
+#include "declarations/constants/gasGiantArrangementConstants.h"
 #include "declarations/constants/gasGiantSizeTableConstants.h"
 #include "declarations/constants/planetaryOrbitalEccentricityTableConstants.h"
+#include "declarations/constants/miscConstants.h"
+#include "declarations/constants/sizeClassConstants.h"
+#include "declarations/constants/tectonicActivityLevelConstants.h"
+#include "declarations/constants/volcanicActivityLevelConstants.h"
 #include "declarations/constants/universalConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
 
 //	Structure declarations
 #include "declarations/structures/world_t.h"
@@ -35,42 +42,42 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-string determineWorldType_ADVANCED(string sizeClass, float blackbodyTemperature, int moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
+char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, int moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
 {
-	string worldType;
+	char worldType;
 
-	if (sizeClass == "Terrestrial Planet (Tiny)")
+	if (sizeClass == SC_EMPTY_ORBIT)
 	{
 		if (blackbodyTemperature <= 140)
 		{
 			if (gasGiantTinySulfurPresent == false)
 				{
 					int diceRoll = diceRoller(6, 1);
-					worldType = (diceRoll > 3) ? "Tiny (Sulfur)" : "Tiny (Ice)";
+					worldType = (diceRoll > 3) ? WT_TINY_SULFUR : WT_TINY_ICE;
 				}
 
-			else {worldType = "Tiny (Ice)";}
+			else {worldType = WT_TINY_ICE;}
 		}
 
-		else 																{worldType = "Tiny (Rock)";}
+		else 																{worldType = WT_TINY_SULFUR;}
 	}
 
-	else if (sizeClass == "Terrestrial Planet (Small)")
+	else if (sizeClass == SC_TERRESTRIAL_PLANET_SMALL)
 	{
-		if 		(blackbodyTemperature <= 80) 								{worldType = "Small (Hadean)";}
-		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 140) {worldType = "Small (Ice)";}
-		else 																{worldType = "Small (Rock)";}
+		if 		(blackbodyTemperature <= 80) 								{worldType = WT_SMALL_HADEAN;}
+		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 140) {worldType = WT_SMALL_ICE;}
+		else 																{worldType = WT_SMALL_ROCK;}
 	}
 
-	else if (sizeClass == "Terrestrial Planet (Standard)")
+	else if (sizeClass == SC_TERRESTRIAL_PLANET_STANDARD)
 	{
-		if 		(blackbodyTemperature <= 80)								{worldType = "Standard (Hadean)";}
-		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 150) {worldType = "Standard (Ice)"	;}
+		if 		(blackbodyTemperature <= 80)								{worldType = WT_STANDARD_HADEAN;}
+		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 150) {worldType = WT_STANDARD_ICE	;}
 		else if (blackbodyTemperature >= 151 && blackbodyTemperature <= 230)
 		{
-			worldType = (stellarMass <= 0.65) ? "Standard (Ammonia)" : "Standard (Ice)";
+			worldType = (stellarMass <= 0.65) ? WT_STANDARD_AMMONIA : WT_STANDARD_ICE;
 		}
-		else if (blackbodyTemperature >= 231 && blackbodyTemperature <= 240) {worldType = "Standard (Ice)"	;}
+		else if (blackbodyTemperature >= 231 && blackbodyTemperature <= 240) {worldType = WT_STANDARD_ICE	;}
 		else if (blackbodyTemperature >= 241 && blackbodyTemperature <= 320)
 		{
 			int diceRoll = diceRoller(6, 3);
@@ -80,20 +87,20 @@ string determineWorldType_ADVANCED(string sizeClass, float blackbodyTemperature,
 			variance = (variance > 10) ? 10 : variance;
 			diceRoll += variance;
 //			Standard (Garden) on a roll of 18 or higher; Standard (Ocean) otherwise
-			worldType = (diceRoll >= 18) ? "Standard (Garden)" : "Standard (Ocean)";
+			worldType = (diceRoll >= 18) ? WT_STANDARD_GARDEN : WT_STANDARD_OCEAN;
 		}
-		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 150) {worldType = "Standard (Greenhouse)"	;}
-		else																{worldType = "Standard (Chthonian)";}
+		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 150) {worldType = WT_STANDARD_GREENHOUSE	;}
+		else																{worldType = WT_STANDARD_CHTHONIAN;}
 	}
 
-	else if (sizeClass == "Terrestrial Planet (Large)")
+	else if (sizeClass == SC_TERRESTRIAL_PLANET_LARGE)
 	{
-		if 		(blackbodyTemperature <= 150)								{worldType = "Large (Ice)";}
+		if 		(blackbodyTemperature <= 150)								{worldType = WT_LARGE_ICE;}
 		else if (blackbodyTemperature >= 151 && blackbodyTemperature <= 230)
 		{
-			worldType = (stellarMass <= 0.65) ? "Large (Ammonia)" : "Large (Ice)";
+			worldType = (stellarMass <= 0.65) ? WT_LARGE_AMMONIA : WT_LARGE_ICE;
 		}
-		else if (blackbodyTemperature >= 231 && blackbodyTemperature <= 240) {worldType = "Large (Ice)"	;}
+		else if (blackbodyTemperature >= 231 && blackbodyTemperature <= 240) {worldType = WT_LARGE_ICE	;}
 		else if (blackbodyTemperature >= 241 && blackbodyTemperature <= 320)
 		{
 			int diceRoll = diceRoller(6, 3);
@@ -103,10 +110,10 @@ string determineWorldType_ADVANCED(string sizeClass, float blackbodyTemperature,
 			variance = (variance > 5) ? 5 : variance;
 			diceRoll += variance;
 //			Standard (Garden) on a roll of 18 or higher; Standard (Ocean) otherwise
-			worldType = (diceRoll >= 18) ? "Large (Garden)" : "Large (Ocean)";
+			worldType = (diceRoll >= 18) ? WT_LARGE_GARDEN : WT_LARGE_OCEAN;
 		}
-		else if (blackbodyTemperature >= 321 && blackbodyTemperature <= 500) {worldType = "Large (Greenhouse)";}
-		else																 {worldType = "Large (Chthonian)";}
+		else if (blackbodyTemperature >= 321 && blackbodyTemperature <= 500) {worldType = WT_LARGE_GREENHOUSE;}
+		else																 {worldType = WT_LARGE_CHTHONIAN;}
 	}
 
 //	For asteroid belts and gas giants
@@ -131,7 +138,7 @@ float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float black
 	This function applies only to gas giants, as the original functions still apply
 	to terrestrial worlds
 */
-float getGasGiantMass(string gasGiantSize)
+float getGasGiantMass(char gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
 	float gasGiantMass;
@@ -140,8 +147,8 @@ float getGasGiantMass(string gasGiantSize)
 
 	float tableInUse[9];
 
-	if 		(gasGiantSize == "Small Gas Giant" ) {for (int i = 0; i < 9; i++) {tableInUse[i] = smallMassTable[i] ;}}
-	else if (gasGiantSize == "Medium Gas Giant") {for (int i = 0; i < 9; i++) {tableInUse[i] = mediumMassTable[i];}}
+	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = smallMassTable[i] ;}}
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = mediumMassTable[i];}}
 	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = largeMassTable[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantMass = tableInUse[0];}
@@ -160,7 +167,7 @@ float getGasGiantMass(string gasGiantSize)
 	return gasGiantMass;
 }
 
-float getGasGiantDensity(string gasGiantSize)
+float getGasGiantDensity(char gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
 	float gasGiantDensity;
@@ -168,8 +175,8 @@ float getGasGiantDensity(string gasGiantSize)
 
 	float tableInUse[9];
 
-	if 		(gasGiantSize == "Small Gas Giant" ) {for (int i = 0; i < 9; i++) {tableInUse[i] = smallDensityTable[i] ;}}
-	else if (gasGiantSize == "Medium Gas Giant") {for (int i = 0; i < 9; i++) {tableInUse[i] = mediumDensityTable[i];}}
+	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = smallDensityTable[i] ;}}
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = mediumDensityTable[i];}}
 	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = largeDensityTable[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantDensity = tableInUse[0];}
@@ -240,14 +247,14 @@ float planetaryOrbitalEccentricityTable(int diceRoll)
 	return planetaryOrbitalEccentricity;
 }
 
-float calculatePlanetaryOrbitalEccentricity(string worldType, string gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius)
+float calculatePlanetaryOrbitalEccentricity(char worldType, char gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius)
 {
 	int eccentricityRoll = diceRoller(6, 3);
-	if (worldType == "Small Gas Giant" || worldType == "Medium Gas Giant" || worldType == "Large Gas Giant")
+	if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT)
 	{
-		if 		(gasGiantArrangement == "Eccentric Gas Giant" 	&& planetOrbitalRadius <= snowLineRadius  ) {eccentricityRoll += 4 ;}
-		else if (gasGiantArrangement == "Epistellar Gas Giant" 	&& planetOrbitalRadius <= innerLimitRadius) {eccentricityRoll += -6;}
-		else if (gasGiantArrangement == "Conventional Gas Giant"										  ) {eccentricityRoll += -6;}
+		if 		(gasGiantArrangement == GGA_ECCENTRIC_GAS_GIANT 	&& planetOrbitalRadius <= snowLineRadius  ) {eccentricityRoll += 4 ;}
+		else if (gasGiantArrangement == GGA_EPISTELLAR_GAS_GIANT 	&& planetOrbitalRadius <= innerLimitRadius) {eccentricityRoll += -6;}
+		else if (gasGiantArrangement == GGA_CONVENTIONAL_GAS_GIANT										  ) {eccentricityRoll += -6;}
 		else																							 	{eccentricityRoll += 0 ;}
 	}
 
@@ -269,18 +276,18 @@ float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float p
 	return maximumSeparation;
 }
 
-float calculateSatelliteOrbitalRadius(float planetDiameter, string moonType, string gasGiantMoonType, float distanceToClosestMoon, int moonSize)
+float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, int moonSize)
 {
 	float satelliteOrbitalRadius;
 
 //	For the moonlets of a gas giant's first family
-	if (gasGiantMoonType == "First Family" && moonType == "Moonlet")
+	if (gasGiantMoonType == GGM_FIRST_FAMILY && moonType == MT_MOONLET)
 	{
 		satelliteOrbitalRadius = ((diceRoller(6, 1) + 4) / 4) * planetDiameter;
 	}
 
 //	For the major moons of a gas giant's second family
-	else if (gasGiantMoonType == "Second Family" && moonType == "Major moon")
+	else if (gasGiantMoonType == GGM_SECOND_FAMILY && moonType == MT_MOON)
 	{
 		do
 		{
@@ -291,13 +298,13 @@ float calculateSatelliteOrbitalRadius(float planetDiameter, string moonType, str
 	}
 
 //	For the moonlets of a gas giant's third family
-	else if (gasGiantMoonType == "Third Family" && moonType == "Moonlet")
+	else if (gasGiantMoonType == GGM_THIRD_FAMILY && moonType == MT_MOONLET)
 	{
 		satelliteOrbitalRadius = floatRNG(20, 400) * planetDiameter;
 	}
 
 //	For terrestrial major moons
-	else if (moonType == "Major moon")
+	else if (moonType == MT_MOON)
 	{
 		do
 		{
@@ -354,13 +361,13 @@ float calculateTotalTidalEffect(float satelliteTidalForce, float primaryTidalFor
 }
 
 //	Returns the modifier for the world's rotation period
-int rotationPeriodTable(string worldType)
+int rotationPeriodTable(char worldType)
 {
 	int modifier;
-	if 		(worldType == "Large Gas Giant" || worldType == "Medium Gas Giant") 																																										{modifier = 0;}
-	else if (worldType == "Small Gas Giant" || worldType == "Large (Garden)" || worldType == "Large (Ocean)" || worldType == "Large (Ammonia)" || worldType == "Large (Greenhouse)" || worldType == "Large (Ice)" || worldType == "Large (Chthonian)")  {modifier = 6;}
-	else if (worldType == "Standard (Ice)" || worldType == "Standard (Garden)" || worldType == "Standard (Ocean)" || worldType == "Standard (Ammonia)" || worldType == "Standard (Greenhouse)") 														{modifier = 10;}
-	else if (worldType == "Small (Ice)" || worldType == "Small (Hadean)" || worldType == "Small (Rock)") 																																				{modifier = 14;}
+	if 		(worldType == WT_LARGE_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT) 																																										{modifier = 0;}
+	else if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_LARGE_GARDEN || worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_AMMONIA || worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_ICE || worldType == WT_LARGE_CHTHONIAN)  {modifier = 6;}
+	else if (worldType == WT_STANDARD_ICE || worldType == WT_STANDARD_GARDEN || worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_AMMONIA || worldType == WT_STANDARD_GREENHOUSE) 														{modifier = 10;}
+	else if (worldType == WT_SMALL_ICE || worldType == WT_SMALL_HADEAN || worldType == WT_SMALL_ROCK) 																																				{modifier = 14;}
 	else 																																																												{modifier = 18;}
 	return modifier;
 }
@@ -380,7 +387,7 @@ int specialRotationTable(int specialRotationTableRoll)
 }
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, string worldType, bool tidalLockedOrNot)
+float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, char worldType, bool tidalLockedOrNot)
 {
 	float rotationPeriod;
 
@@ -419,12 +426,12 @@ float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, 
 }
 
 //	This function determines if a world's rotation is retrograde
-bool checkForRetrogradeRotation(string satelliteOrPlanet)
+bool checkForRetrogradeRotation(bool satelliteOrPlanet)
 {
 	bool retrogradeOrNot;
 	int diceRoll = diceRoller(6, 3);
 
-	if (satelliteOrPlanet == "Planet") {retrogradeOrNot = (diceRoll >= 13) ? true : false;}
+	if (satelliteOrPlanet == POM_PLANET) {retrogradeOrNot = (diceRoll >= 13) ? true : false;}
 	else							   {retrogradeOrNot = (diceRoll >= 17) ? true : false;}
 
 	return retrogradeOrNot;
@@ -432,13 +439,13 @@ bool checkForRetrogradeRotation(string satelliteOrPlanet)
 
 //	This function can return the length of a day on a planet or satellite or the
 //	satellite's apprent orbital cycle as seen from the planet it orbits
-float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, string satelliteOrPlanet, float worldOrbitalPeriod, string satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
+float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool satelliteOrPlanet, float worldOrbitalPeriod, bool satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
 {
 	float siderealPeriod, apparentLength;
 	const float YEARS_TO_DAYS = 365.26;
 	const float DAYS_TO_HOURS = 24;
 //	To calculate the length of a day on a planet in hours
-	if (satelliteOrPlanet == "Planet")
+	if (satelliteOrPlanet == POM_PLANET)
 	{
 		siderealPeriod = worldOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
 		rotationPeriod *= (retrogradeOrNot == true) ? -1 : 1;
@@ -446,7 +453,7 @@ float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, string 
 	}
 
 //	To calculate the length of a day on a satellite
-	else if (satelliteOrPlanet == "Moon" && satelliteDayLengthOrOrbitalCycle == "Day Length")
+	else if (satelliteOrPlanet == POM_MOON && satelliteDayLengthOrOrbitalCycle == CALO_DAY_LENGTH)
 	{
 		siderealPeriod = parentPlanetOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
 		rotationPeriod *= (retrogradeOrNot == true) ? -1 : 1;
@@ -455,7 +462,7 @@ float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, string 
 
 //	To calculate the apparent length of a moon's orbital cycle seen from the
 //	planet's surface
-	else if (satelliteDayLengthOrOrbitalCycle == "Orbital Cycle")
+	else if (satelliteDayLengthOrOrbitalCycle == CALO_ORBITAL_CYCLE)
 	{
 		siderealPeriod = worldOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
 		rotationPeriod = parentPlanetOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
@@ -500,17 +507,17 @@ int calculateAxialTilt()
 }
 
 //	GEOLOGIC ACTIVITY
-string volcanicActivityTable(string worldType, float surfaceGravity, float worldAge, string satelliteOrPlanet, int numberOfMajorMoons, string parentWorldType)
+char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int numberOfMajorMoons, char parentWorldType)
 {
-	string volcanicActivityLevel;
+	char volcanicActivityLevel;
 //	If the world is terrestrial
-	if (worldType != "Small Gas Giant" && worldType != "Medium Gas Giant" && worldType != "Large Gas Giant")
+	if (worldType != WT_SMALL_GAS_GIANT && worldType != WT_MEDIUM_GAS_GIANT && worldType != WT_LARGE_GAS_GIANT)
 	{
 		int volcanicActivityModifier = round((surfaceGravity / worldAge) * 40);
 		int volcanicActivityRoll = diceRoller(6, 3);
 
 //		For planets
-		if (satelliteOrPlanet == "Planet")
+		if (satelliteOrPlanet == POM_PLANET)
 		{
 //			With at least one major moon
 			if (numberOfMajorMoons >= 1)
@@ -522,37 +529,37 @@ string volcanicActivityTable(string worldType, float surfaceGravity, float world
 			}
 		}
 
-		if (worldType == "Tiny (Sulfur") {volcanicActivityModifier += 60;}
+		if (worldType == WT_TINY_SULFUR) {volcanicActivityModifier += 60;}
 
 //		If the world is a major moon of a gas giant
-		if (satelliteOrPlanet == "Satellite" && (parentWorldType == "Small Gas Giant" || parentWorldType == "Medium Gas Giant" && parentWorldType == "Large Gas Giant")) {volcanicActivityModifier += 5;}
+		if (satelliteOrPlanet == POM_MOON && (parentWorldType == WT_SMALL_GAS_GIANT || parentWorldType == WT_MEDIUM_GAS_GIANT && parentWorldType == WT_LARGE_GAS_GIANT)) {volcanicActivityModifier += 5;}
 
 		volcanicActivityRoll += volcanicActivityModifier;
 
-		if 		(volcanicActivityRoll <= 16) 							   {volcanicActivityLevel = "None"	  ;}
-		else if (volcanicActivityRoll >= 17 && volcanicActivityRoll <= 20) {volcanicActivityLevel = "Light"	  ;}
-		else if (volcanicActivityRoll >= 21 && volcanicActivityRoll <= 26) {volcanicActivityLevel = "Moderate";}
-		else if (volcanicActivityRoll >= 27 && volcanicActivityRoll <= 70) {volcanicActivityLevel = "Heavy"	  ;}
-		else															   {volcanicActivityLevel = "Extreme" ;}
+		if 		(volcanicActivityRoll <= 16) 							   {volcanicActivityLevel = VAL_NONE;}
+		else if (volcanicActivityRoll >= 17 && volcanicActivityRoll <= 20) {volcanicActivityLevel = VAL_LIGHT;}
+		else if (volcanicActivityRoll >= 21 && volcanicActivityRoll <= 26) {volcanicActivityLevel = VAL_MODERATE;}
+		else if (volcanicActivityRoll >= 27 && volcanicActivityRoll <= 70) {volcanicActivityLevel = VAL_HEAVY;}
+		else															   {volcanicActivityLevel = VAL_EXTREME;}
 	}
 
 
 //	For gas giants
 	else
 	{
-		volcanicActivityLevel = "None";
+		volcanicActivityLevel = VAL_NONE;
 	}
 	return volcanicActivityLevel;
 }
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
-atmosphericComposition_t volcanicActivityEffectOnGardenWorld(string volcanicActivityLevel, string worldType, atmosphericComposition_t worldAtmosphereComposition)
+atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, atmosphericComposition_t worldAtmosphereComposition)
 {
 	int checkForEffects = diceRoller(6, 3);
 	int sulfurOrPollutants = diceRoller(6, 1);
 
-	if (((checkForEffects <= 8 && volcanicActivityLevel == "Heavy") || (checkForEffects <= 14 && volcanicActivityLevel == "Extreme")) && (worldType == "Large (Garden)" || worldType == "Standard (Garden)"))
+	if (((checkForEffects <= 8 && volcanicActivityLevel == VAL_HEAVY) || (checkForEffects <= 14 && volcanicActivityLevel == VAL_EXTREME)) && (worldType == WT_LARGE_GARDEN || worldType == WT_STANDARD_GARDEN))
 	{
 		if 		(sulfurOrPollutants >= 1 && sulfurOrPollutants <= 2) {worldAtmosphereComposition.sulfurCompounds = 1;}
 		else if (sulfurOrPollutants >= 3 && sulfurOrPollutants <= 4) {worldAtmosphereComposition.pollutants = 1;}
@@ -567,28 +574,28 @@ atmosphericComposition_t volcanicActivityEffectOnGardenWorld(string volcanicActi
 }
 
 //	This function serves as a lookup table for the world's tectonic activity
-string tectonicActivtyTable(int diceRoll)
+char tectonicActivtyTable(int diceRoll)
 {
-	string tectonicActivityLevel;
+	char tectonicActivityLevel;
 
-	if 		(diceRoll <= 6					 ) {tectonicActivityLevel = "None"	 ;}
-	else if (diceRoll >= 7 	&& diceRoll <= 10) {tectonicActivityLevel = "Light"	 ;}
-	else if (diceRoll >= 11 && diceRoll <= 14) {tectonicActivityLevel = "Moderate";}
-	else if (diceRoll >= 15 && diceRoll <= 18) {tectonicActivityLevel = "Heavy"	 ;}
-	else 									   {tectonicActivityLevel = "Extreme" ;}
+	if 		(diceRoll <= 6					 ) {tectonicActivityLevel = TAL_NONE;}
+	else if (diceRoll >= 7 	&& diceRoll <= 10) {tectonicActivityLevel = TAL_LIGHT;}
+	else if (diceRoll >= 11 && diceRoll <= 14) {tectonicActivityLevel = TAL_MODERATE;}
+	else if (diceRoll >= 15 && diceRoll <= 18) {tectonicActivityLevel = TAL_HEAVY;}
+	else 									   {tectonicActivityLevel = TAL_EXTREME;}
 
 	return tectonicActivityLevel;
 }
 
 //	Returns the level of tectonic activity of the world
-string getTectonicActivity(string worldType, string volcanicActivityLevel, float hydrographicCoverage, string satelliteOrPlanet, int numberOfMajorMoons)
+char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int numberOfMajorMoons)
 {
-	string tectonicActivityLevel;
+	char tectonicActivityLevel;
 
 //	Gas giants, tiny worlds, and small worlds have no tectonic activity
-	if (worldType == "Small Gas Giant" || worldType == "Medium Gas Giant" || worldType == "Large Gas Giant" || worldType == "Tiny (Ice)" || worldType == "Tiny (Rock)" || worldType == "Tiny (Sulfur)" || worldType == "Small (Hadean)" || worldType == "Small (Ice)" || worldType == "Small (Rock)")
+	if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT || worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR || worldType == WT_TINY_SULFUR || worldType == WT_SMALL_HADEAN || worldType == WT_SMALL_ICE || worldType == WT_SMALL_ROCK)
 	{
-		tectonicActivityLevel = "None";
+		tectonicActivityLevel = TAL_NONE;
 	}
 
 //	For every other type of world
@@ -598,19 +605,19 @@ string getTectonicActivity(string worldType, string volcanicActivityLevel, float
 		int tectonicActivityTableRollModifier;
 
 //		Effects of volcanic activity on tectonic activity
-		if (volcanicActivityLevel == "None") {tectonicActivityTableRollModifier += -8;}
-		else if (volcanicActivityLevel == "Light") {tectonicActivityTableRollModifier += -4;}
-		else if (volcanicActivityLevel == "Moderate") {tectonicActivityTableRollModifier += 0;}
-		else if (volcanicActivityLevel == "Heavy") {tectonicActivityTableRollModifier += 4;}
-		else if (volcanicActivityLevel == "Extreme") {tectonicActivityTableRollModifier += 8;}
+		if 		(volcanicActivityLevel == VAL_NONE) {tectonicActivityTableRollModifier += -8;}
+		else if (volcanicActivityLevel == VAL_LIGHT) {tectonicActivityTableRollModifier += -4;}
+		else if (volcanicActivityLevel == VAL_MODERATE) {tectonicActivityTableRollModifier += 0;}
+		else if (volcanicActivityLevel == VAL_HEAVY) {tectonicActivityTableRollModifier += 4;}
+		else if (volcanicActivityLevel == VAL_EXTREME) {tectonicActivityTableRollModifier += 8;}
 
 //		The effect of liquid oceans on tectonic activity
 		if (hydrographicCoverage == 0) {tectonicActivityTableRollModifier += -4;}
 		else if (hydrographicCoverage <= 0.5) {tectonicActivityTableRollModifier += -2;}
 
 //		The effect of major moons on tectonic activity
-		if (satelliteOrPlanet == "Planet" && numberOfMajorMoons == 1) {tectonicActivityTableRollModifier += 2;}
-		else if (satelliteOrPlanet == "Planet" && numberOfMajorMoons > 1) {tectonicActivityTableRollModifier += 4;}
+		if (satelliteOrPlanet == POM_PLANET && numberOfMajorMoons == 1) {tectonicActivityTableRollModifier += 2;}
+		else if (satelliteOrPlanet == POM_PLANET && numberOfMajorMoons > 1) {tectonicActivityTableRollModifier += 4;}
 
 		tectonicActivityTableRoll += tectonicActivityTableRollModifier;
 		tectonicActivityLevel = tectonicActivtyTable(tectonicActivityTableRoll);
@@ -621,24 +628,24 @@ string getTectonicActivity(string worldType, string volcanicActivityLevel, float
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-tuple<int, int> effectsOfGeologicActivity(string volcanicActivityLevel, string tectonicActivityLevel, int resourceValueModifier, int habitabilityModifier)
+tuple<int, int> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int resourceValueModifier, int habitabilityModifier)
 {
-	if 		(volcanicActivityLevel == "None"	) {resourceValueModifier += -2;}
-	else if (volcanicActivityLevel == "Light"	) {resourceValueModifier += -1;}
-	else if (volcanicActivityLevel == "Moderate") {resourceValueModifier += 0 ;}
-	else if (volcanicActivityLevel == "Heavy"	)
+	if 		(volcanicActivityLevel == VAL_NONE	) {resourceValueModifier += -2;}
+	else if (volcanicActivityLevel == VAL_LIGHT	) {resourceValueModifier += -1;}
+	else if (volcanicActivityLevel == VAL_MODERATE) {resourceValueModifier += 0 ;}
+	else if (volcanicActivityLevel == VAL_HEAVY	)
 	{
 		resourceValueModifier += 1;
 		habitabilityModifier += -1;
 	}
-	else if (volcanicActivityLevel == "Extreme")
+	else if (volcanicActivityLevel == VAL_EXTREME)
 	{
 		resourceValueModifier += 2;
 		habitabilityModifier += -2;
 	}
 
-	if 		(tectonicActivityLevel == "Heavy"  ) {habitabilityModifier += -1;}
-	else if (tectonicActivityLevel == "Extreme") {habitabilityModifier += -2;}
+	if 		(tectonicActivityLevel == VAL_HEAVY  ) {habitabilityModifier += -1;}
+	else if (tectonicActivityLevel == VAL_EXTREME) {habitabilityModifier += -2;}
 
 	return make_tuple(habitabilityModifier, resourceValueModifier);
 }

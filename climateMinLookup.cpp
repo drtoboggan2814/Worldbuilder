@@ -1,26 +1,31 @@
-#include "declarations/constants/climateMinConstants.h"
+//	C++ libraries
 #include <string>
+
+//	Constant declarations
+#include "declarations/constants/climateMinConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
+
 using namespace std;
 
-int climateMinLookup(string worldType)
+int climateMinLookup(char worldType)
 {
 	int min;
-	
-	if 		(worldType == "Asteroid Belt") 													{min = min_AsteroidBelt;}
-	else if (worldType == "Tiny (Ice)" || worldType == "Tiny (Sulfur)") 					{min = min_Tiny_IceorSulfur;}
-	else if (worldType == "Tiny (Rock)") 													{min = min_Tiny_Rock;}
-	else if (worldType == "Small (Hadean)") 												{min = min_Small_Hadean;}
-	else if (worldType == "Small (Ice)") 													{min = min_Small_Ice;}
-	else if (worldType == "Small (Rock)") 													{min = min_Small_Rock;}
-	else if (worldType == "Standard (Hadean)") 												{min = min_Standard_Hadean;}
-	else if (worldType == "Standard (Ammonia)") 											{min = min_Standard_Ammonia;}
-	else if (worldType == "Standard (Ice)") 												{min = min_Standard_Ice;}
-	else if (worldType == "Standard (Ocean)" || worldType == "Standard (Garden)") 			{min = min_Standard_OceanorGarden;}
-	else if (worldType == "Standard (Greenhouse)" || worldType == "Standard (Chthonian)")	{min = min_Standard_GreenhouseorChthonian;}
-	else if (worldType == "Large (Ammonia)") 												{min = min_Large_Ammonia;}
-	else if (worldType == "Large (Ice)") 													{min = min_Large_Ice;}
-	else if (worldType == "Large (Ocean)" || worldType == "Large (Garden)") 				{min = min_Large_OceanorGarden;}
-	else if (worldType == "Large (Greenhouse)" || worldType == "Large (Chthonian)") 		{min = min_Large_GreenhouseorChthonian;}
+
+	if 		(worldType == WT_ASTEROID_BELT) 													{min = min_AsteroidBelt;}
+	else if (worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR) 					{min = min_Tiny_IceorSulfur;}
+	else if (worldType == WT_TINY_SULFUR) 													{min = min_Tiny_Rock;}
+	else if (worldType == WT_SMALL_HADEAN) 												{min = min_Small_Hadean;}
+	else if (worldType == WT_SMALL_ICE) 													{min = min_Small_Ice;}
+	else if (worldType == WT_SMALL_ROCK) 													{min = min_Small_Rock;}
+	else if (worldType == WT_STANDARD_HADEAN) 												{min = min_Standard_Hadean;}
+	else if (worldType == WT_STANDARD_AMMONIA) 											{min = min_Standard_Ammonia;}
+	else if (worldType == WT_STANDARD_ICE) 												{min = min_Standard_Ice;}
+	else if (worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_GARDEN) 			{min = min_Standard_OceanorGarden;}
+	else if (worldType == WT_STANDARD_GREENHOUSE || worldType == WT_STANDARD_CHTHONIAN)	{min = min_Standard_GreenhouseorChthonian;}
+	else if (worldType == WT_LARGE_AMMONIA) 												{min = min_Large_Ammonia;}
+	else if (worldType == WT_LARGE_ICE) 													{min = min_Large_Ice;}
+	else if (worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_GARDEN) 				{min = min_Large_OceanorGarden;}
+	else if (worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_CHTHONIAN) 		{min = min_Large_GreenhouseorChthonian;}
 
 	return min;
 }

@@ -1,15 +1,19 @@
+//	C++ libraries
 #include <string>
+
+//	Constant declarations
+#include "declarations/constants/worldTypeConstants.h"
 
 using namespace std;
 
-bool waterOceanChecker(string worldType, float hydrographicCoverage)
+bool waterOceanChecker(char worldType, float hydrographicCoverage)
 {
 	bool liquidWater;
-	
-	if 		(worldType == "Standard (Ice)" 	 || worldType == "Large (Ice)"		) {liquidWater = true ;}
-	else if (worldType == "Standard (Ocean)" || worldType == "Standard (Garden)") {liquidWater = true ;}
-	else if (worldType == "Large (Ocean)" 	 || worldType == "Large (Garden)"	) {liquidWater = true ;}
+
+	if 		(worldType == WT_STANDARD_ICE 	 || worldType == WT_LARGE_ICE		) {liquidWater = true ;}
+	else if (worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_GARDEN) {liquidWater = true ;}
+	else if (worldType == WT_LARGE_OCEAN 	 || worldType == WT_LARGE_GARDEN	) {liquidWater = true ;}
 	else																		  {liquidWater = false;}
-	
+
 	return liquidWater;
 }

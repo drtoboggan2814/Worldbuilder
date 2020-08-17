@@ -3,15 +3,20 @@
 
 //	C++ libraries
 #include <iostream>
-#include <string>
+//	#include <string>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <random>
 
 //	Constant declarations
+#include "declarations/constants/gasGiantArrangementConstants.h"
+#include "declarations/constants/luminosityClassConstants.h"
+#include "declarations/constants/miscConstants.h"
+#include "declarations/constants/sizeClassConstants.h"
 #include "declarations/constants/unitConversions.h"
 #include "declarations/constants/universalConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
 
 //	Structure declarations
 #include "declarations/structures/atmosphericComposition_t.h"
@@ -71,7 +76,7 @@
 //	Star system design
 #include "declarations/functions/determineStarNumber.h"
 
-using namespace std;
+//	using namespace std;
 
 /*
 //	RNG stuff
@@ -116,7 +121,7 @@ world_t worldBuilder()
 	world.blackbodyTemperature = blackbodyTemperatureCalculator(world.blackbodyCorrection, world.surfaceTemperature);
 
 //	Step 6: World Size
-//	NOTE: This step does not apply to the worldType "Asteroid Belt", and will
+//	NOTE: This step does not apply to the worldType WT_ASTEROID_BELT, and will
 //	return zero for all functions in this section
 //	Determine the world's density (as a proportion of Earth's density)
 	world.worldDensity = worldDensityTable(world.worldType);
@@ -147,7 +152,7 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 //	Calculate blackbody temperature
 	moon.blackbodyTemperature = calculateBlackbodyTemperature_ADVANCED(primary.stellarLuminosity, moon.orbitalRadius);
 //	Determine world type
-	if (planet.sizeClass == "Small Gas Giant" || planet.sizeClass == "Medium Gas Giant" || planet.sizeClass == "Large Gas Giant")
+	if (planet.sizeClass == SC_SMALL_GAS_GIANT || planet.sizeClass == SC_MEDIUM_GAS_GIANT || planet.sizeClass == SC_LARGE_GAS_GIANT)
 	{
 		moon.worldType = determineWorldType_ADVANCED(moon.sizeClass, moon.blackbodyTemperature, 2, primary.stellarMass, primary.stellarAge, planet.gasGiantTinySulfurPresent);
 	}
@@ -202,18 +207,18 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 //	Calculate the world's sidereal rotation in standard hours
 	moon.rotationPeriod = calculateRotationPeriod(moon.totalTidalEffect, moon.orbitalPeriod, moon.worldType, moon.tidalLockedOrNot);
 //	Determine if the world has a retrograde rotation
-	moon.retrogradeOrNot = checkForRetrogradeRotation("Moon");
-	moon.apparentDayLength = determineLocalCalendar(moon.rotationPeriod, moon.retrogradeOrNot, "Moon", moon.orbitalPeriod, "Day Length", planet.orbitalPeriod);
-	moon.apparentSatelliteOrbitalCycle = determineLocalCalendar(moon.rotationPeriod, moon.retrogradeOrNot, "Moon", moon.orbitalPeriod, "Orbital Cycle", planet.orbitalPeriod);
+	moon.retrogradeOrNot = checkForRetrogradeRotation(POM_MOON);
+	moon.apparentDayLength = determineLocalCalendar(moon.rotationPeriod, moon.retrogradeOrNot, POM_MOON, moon.orbitalPeriod, CALO_DAY_LENGTH, planet.orbitalPeriod);
+	moon.apparentSatelliteOrbitalCycle = determineLocalCalendar(moon.rotationPeriod, moon.retrogradeOrNot, POM_MOON, moon.orbitalPeriod, CALO_ORBITAL_CYCLE, planet.orbitalPeriod);
 //	Calculate the world's axial tilt
 	moon.axialTilt = calculateAxialTilt();
 //	Determine the world's volcanic activity
 //	NOTE: This function takes two additional arguments for moons, but I wanted to test what happens if nothing is passed
-	moon.volcanicActivityLevel = volcanicActivityTable(moon.worldType, moon.surfaceGravity, primary.stellarAge, "Moon", 0, planet.worldType);
+	moon.volcanicActivityLevel = volcanicActivityTable(moon.worldType, moon.surfaceGravity, primary.stellarAge, POM_MOON, 0, planet.worldType);
 //	Determine the effect the world's volcanic activity has on the world's atmosphere
 	moon.worldAtmosphereComposition = volcanicActivityEffectOnGardenWorld(moon.volcanicActivityLevel, moon.worldType, moon.worldAtmosphereComposition);
 //	Determine the world's tectonic activity
-	moon.tectonicActivityLevel = getTectonicActivity(moon.worldType, moon.volcanicActivityLevel, moon.hydrographicCoverage, "Moon", 0);
+	moon.tectonicActivityLevel = getTectonicActivity(moon.worldType, moon.volcanicActivityLevel, moon.hydrographicCoverage, POM_MOON, 0);
 //	Determine the effect of tectonic and volcanic activity on the world's habitability and resources
 	tie(moon.habitabilityModifier, moon.resourceValueModifier) = effectsOfGeologicActivity(moon.volcanicActivityLevel, moon.tectonicActivityLevel, moon.habitabilityModifier, moon.resourceValueModifier);
 //	Determine the world's minimum molecular weight retained
@@ -234,7 +239,7 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 
 //	Advanced world design sequence
 //	This function applies only to terrestrial worlds
-world_t worldBuilder_ADVANCED(string sizeClass, float averageOrbitalRadius, star_t primary/*, float planetMass, float parentPlanetOrbitalPeriod, string parentWorldType, string planetOrMoon*/)
+world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t primary/*, float planetMass, float parentPlanetOrbitalPeriod, char parentWorldType, string planetOrMoon*/)
 {
 //	Initialize world
 	world_t world;
@@ -242,10 +247,10 @@ world_t worldBuilder_ADVANCED(string sizeClass, float averageOrbitalRadius, star
 //	Assign the orbital radius
 	world.orbitalRadius = averageOrbitalRadius;
 //	Check if the orbital slot is empty
-	if (sizeClass == "Empty Orbit") {world.emptyOrNot == true;}
+	if (sizeClass == SC_EMPTY_ORBIT) {world.emptyOrNot == true;}
 
 //	For gas giants
-	else if (sizeClass == "Small Gas Giant" || sizeClass == "Medium Gas Giant" || sizeClass == "Large Gas Giant")
+	else if (sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT)
 	{
 //		World is present
 		world.emptyOrNot == false;
@@ -389,7 +394,7 @@ world_t worldBuilder_ADVANCED(string sizeClass, float averageOrbitalRadius, star
 //		cout << "Got to terrestrialMoonlet" << endl;
 
 //		Generate major moons
-		if (world.worldType != "Asteroid Belt" && world.numberOfMajorMoons != 0)
+		if (world.worldType != WT_ASTEROID_BELT && world.numberOfMajorMoons != 0)
 		{
 			for (int i = 0; i < world.numberOfMajorMoons; i++)
 			{
@@ -415,10 +420,9 @@ world_t worldBuilder_ADVANCED(string sizeClass, float averageOrbitalRadius, star
 				}
 
 //				Determine the moon's sizeClass
-				string moonSizeClassInput;
-				if (sizeClass == "Terrestrial Planet (Tiny)" || sizeClass == "Terrestrial Planet (Small)" || (sizeClass == "Terrestrial Planet (Standard)" && world.majorMoonArray[i].moonSizeClass < -1) || ((sizeClass == "Terrestrial Planet (Large)" || sizeClass == "Small Gas Giant" || sizeClass == "Medium Gas Giant" || sizeClass == "Large Gas Giant") && world.majorMoonArray[i].moonSizeClass == -3)) {world.majorMoonArray[i].sizeClass = "Terrestrial Planet (Tiny)";}
-				else if ((sizeClass == "Terrestrial Planet (Standard)" && world.majorMoonArray[i].moonSizeClass == -1) || ((sizeClass == "Terrestrial Planet (Large)" || sizeClass == "Small Gas Giant" || sizeClass == "Medium Gas Giant" || sizeClass == "Large Gas Giant") && world.majorMoonArray[i].moonSizeClass == -2))	{world.majorMoonArray[i].sizeClass = "Terrestrial Planet (Small)";}
-				else {world.majorMoonArray[i].sizeClass = "Terrestrial Planet (Standard)";}
+				if (sizeClass == SC_EMPTY_ORBIT || sizeClass == SC_TERRESTRIAL_PLANET_SMALL || (sizeClass == SC_TERRESTRIAL_PLANET_STANDARD && world.majorMoonArray[i].moonSizeClass < -1) || ((sizeClass == SC_TERRESTRIAL_PLANET_LARGE || sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT) && world.majorMoonArray[i].moonSizeClass == -3)) {world.majorMoonArray[i].sizeClass = SC_EMPTY_ORBIT;}
+				else if ((sizeClass == SC_TERRESTRIAL_PLANET_STANDARD && world.majorMoonArray[i].moonSizeClass == -1) || ((sizeClass == SC_TERRESTRIAL_PLANET_LARGE || sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT) && world.majorMoonArray[i].moonSizeClass == -2))	{world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_SMALL;}
+				else {world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_STANDARD;}
 
 //				Run worldBuilder_ADVANCED for each moon
 				world.majorMoonArray[i] = moonBuilder(primary, world.majorMoonArray[i], world);
@@ -448,13 +452,13 @@ world_t worldBuilder_ADVANCED(string sizeClass, float averageOrbitalRadius, star
 		world.rotationPeriod = calculateRotationPeriod(world.totalTidalEffect, world.orbitalPeriod, world.worldType, world.tidalLockedOrNot);
 //		cout << "Got to rotationPeriod" << endl;
 //		Determine if the world has a retrograde rotation
-		world.retrogradeOrNot = checkForRetrogradeRotation("Planet");
+		world.retrogradeOrNot = checkForRetrogradeRotation(POM_PLANET);
 //		cout << "Got to retrogradeOrNot" << endl;
 
 //		Local calendar
 //		A negative value for apparent day length is valid even if the world's rotation is not retrograde
 //		This means that the primary will rise in the west and set in the east
-		world.apparentDayLength = determineLocalCalendar(world.rotationPeriod, world.retrogradeOrNot, "Planet", world.orbitalPeriod, "Day Length", 0);
+		world.apparentDayLength = determineLocalCalendar(world.rotationPeriod, world.retrogradeOrNot, POM_PLANET, world.orbitalPeriod, CALO_DAY_LENGTH, 0);
 //		cout << "Got to apparentDayLength" << endl;
 
 //		Calculate the world's axial tilt
@@ -463,14 +467,14 @@ world_t worldBuilder_ADVANCED(string sizeClass, float averageOrbitalRadius, star
 
 //		Determine the world's volcanic activity
 //		NOTE: This function takes two additional arguments for moons, but I wanted to test what happens if nothing is passed
-		world.volcanicActivityLevel = volcanicActivityTable(world.worldType, world.surfaceGravity, primary.stellarAge, "Planet", world.numberOfMajorMoons, "");
-		cout << "Volcanic activity level: " << world.volcanicActivityLevel << endl;
+		world.volcanicActivityLevel = volcanicActivityTable(world.worldType, world.surfaceGravity, primary.stellarAge, POM_PLANET, world.numberOfMajorMoons, 0);
+//		cout << "Volcanic activity level: " << world.volcanicActivityLevel << endl;
 //		cout << "Got to volcanicActivityLevel" << endl;
 //		Determine the effect the world's volcanic activity has on the world's atmosphere
 		world.worldAtmosphereComposition = volcanicActivityEffectOnGardenWorld(world.volcanicActivityLevel, world.worldType, world.worldAtmosphereComposition);
 //		cout << "Got to volcanicActivityEffectOnGardenWorld" << endl;
 //		Determine the world's tectonic activity
-		world.tectonicActivityLevel = getTectonicActivity(world.worldType, world.volcanicActivityLevel, world.hydrographicCoverage, "Planet", world.numberOfMajorMoons);
+		world.tectonicActivityLevel = getTectonicActivity(world.worldType, world.volcanicActivityLevel, world.hydrographicCoverage, POM_PLANET, world.numberOfMajorMoons);
 //		cout << "Got to tectonicActivityLevel" << endl;
 //		Determine the effect of tectonic and volcanic activity on the world's habitability and resources
 		tie(world.habitabilityModifier, world.resourceValueModifier) = effectsOfGeologicActivity(world.volcanicActivityLevel, world.tectonicActivityLevel, world.habitabilityModifier, world.resourceValueModifier);
@@ -522,7 +526,7 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 	star = calculateStellarLuminosity(star);
 //	cout << "stellarLuminosity = " << star.stellarLuminosity << endl;
 //	If the star is a white dwarf, modify the star's mass
-	if (star.luminosityClass == "D")
+	if (star.luminosityClass == LC_D)
 	{
 		int whiteDwarfMassRoll = diceRoller(6, 2) - 2;
 		star.stellarMass = (whiteDwarfMassRoll * 0.05) + 0.9 + floatRNG(-0.05, 0.05);
@@ -568,7 +572,7 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 //	cout << "gasGiantArrangement = " << star.gasGiantArrangement << endl;
 
 //	If there is no gas giant
-	if (star.gasGiantArrangement == "No Gas Giant")
+	if (star.gasGiantArrangement == GGA_NO_GAS_GIANT)
 	{
 		star.firstGasGiantOrbitalRadius = 0;
 		star.firstGasGiantPresent = false;
@@ -615,14 +619,14 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 	{
 //		cout << "Worldbuilder for loop reached" << endl;
 //		If the world is not a gas giant or empty
-//		if (star.sizeClassArray[index] != "Small Gas Giant" && star.sizeClassArray[index] != "Medium Gas Giant" && star.sizeClassArray[index] != "Large Gas Giant" && star.sizeClassArray[index] != "Empty Orbit")
-//		if (star.sizeClassArray[index] == "Asteroid Belt" || star.sizeClassArray[index] == "Terrestrial Planet (Tiny)" || star.sizeClassArray[index] == "Terrestrial Planet (Small)" || star.sizeClassArray[index] == "Terrestrial Planet (Standard)" || star.sizeClassArray[index] == "Terrestrial Planet (Large)")
-		if (star.sizeClassArray[index] != "Empty Orbit")
+//		if (star.sizeClassArray[index] != WT_SMALL_GAS_GIANT && star.sizeClassArray[index] != WT_MEDIUM_GAS_GIANT && star.sizeClassArray[index] != WT_LARGE_GAS_GIANT && star.sizeClassArray[index] != SC_EMPTY_ORBIT)
+//		if (star.sizeClassArray[index] == SC_ASTEROID_BELT || star.sizeClassArray[index] == SC_EMPTY_ORBIT || star.sizeClassArray[index] == SC_TERRESTRIAL_PLANET_SMALL || star.sizeClassArray[index] == SC_TERRESTRIAL_PLANET_STANDARD || star.sizeClassArray[index] == SC_TERRESTRIAL_PLANET_LARGE)
+		if (star.sizeClassArray[index] != SC_EMPTY_ORBIT)
 		{
 //			cout << "Worldbuilder if loop reached" << endl;
 
 //			Run worldBuilder_ADVANCED
-			star.worldArray[index] = worldBuilder_ADVANCED(star.sizeClassArray[index], star.orbitalRadiusArray[index], star/*, 0, 0, "", "Planet"*/);
+			star.worldArray[index] = worldBuilder_ADVANCED(star.sizeClassArray[index], star.orbitalRadiusArray[index], star/*, 0, 0, "", POM_PLANET*/);
 		}
 //		cout << "For loop ended" << endl;
 	}

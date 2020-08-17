@@ -4,6 +4,12 @@
 #include <iomanip>
 #include <math.h>
 
+//	Constant declarations
+#include "declarations/constants/gasGiantArrangementConstants.h"
+#include "declarations/constants/luminosityClassConstants.h"
+#include "declarations/constants/stringConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
+
 //	Function declarations
 //#include "declarations/functions/printWorld.h"
 
@@ -85,21 +91,21 @@ void printAtmosphereComposition(atmosphericComposition_t atmosphereComposition)
 
 void printMoon(moon_t moon)
 {
-	bool worldTypeCanHaveAtmosphere = moon.worldType != "Asteroid Belt" && moon.worldType != "Tiny (Ice)" && moon.worldType != "Tiny (Rock)" && moon.worldType != "Tiny (Sulfur)" && moon.worldType != "Small (Hadean)" && moon.worldType != "Small (Rock)" && moon.worldType != "Standard (Hadean)" && moon.worldType != "Standard (Chthonian)" && moon.worldType != "Large (Chthonian)";
-	cout << left << setw(48) << "World type:" 									<< moon.worldType 					  					  << endl;
+	bool worldTypeCanHaveAtmosphere = moon.worldType != WT_ASTEROID_BELT && moon.worldType != WT_TINY_ICE && moon.worldType != WT_TINY_SULFUR && moon.worldType != WT_TINY_SULFUR && moon.worldType != WT_SMALL_HADEAN && moon.worldType != WT_SMALL_ROCK && moon.worldType != WT_STANDARD_HADEAN && moon.worldType != WT_STANDARD_CHTHONIAN && moon.worldType != WT_LARGE_CHTHONIAN;
+	cout << left << setw(48) << "World type:" 									<< WT_S_LOOKUP_TABLE[moon.worldType] 					  					  << endl;
 	cout << left << setw(48) << "Orbital radius:" 								<< left << setw(16) << moon.orbitalRadius 					<< "planetary diameters"	<< endl;
 	cout << left << setw(48) << "Orbital period:" 								<< left << setw(16) << moon.orbitalPeriod 			 		<< "days"					<< endl;
 	cout << left << setw(48) << "Orbital eccentricity:"							<< moon.orbitalEccentricity 			<< endl;
 	cout << left << setw(48) << "Minimum separation to primary:"				<< left << setw(16) << moon.minimumSeparation 				<< "planetary diameters"	<< endl;
 	cout << left << setw(48) << "Maximum separation to primary:"				<< left << setw(16) << moon.maximumSeparation 				<< "planetary diameters"	<< endl;
 	cout << left << setw(48) << "Apparent orbital cycle as seen from planet:"	<< left << setw(16) << moon.apparentSatelliteOrbitalCycle	<<	"hours" << endl;
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Rotation period:" 						   << left << setw(16) << moon.rotationPeriod 				  << "hours" << endl;}
-	if (moon.retrogradeOrNot == true /*&& moon.worldType != "Asteroid Belt"*/) 	{cout << left << setw(48) << "Moon has a retrograde rotation" 			   << endl;}
-	if (moon.worldType != "Asteroid Belt" && !(isinf(moon.apparentDayLength)))	{cout << left << setw(48) << "Apparent day length:" 					   << left << setw(16) << moon.apparentDayLength 			  << "hours" << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Rotation period:" 						   << left << setw(16) << moon.rotationPeriod 				  << "hours" << endl;}
+	if (moon.retrogradeOrNot == true /*&& moon.worldType != WT_ASTEROID_BELT*/) 	{cout << left << setw(48) << "Moon has a retrograde rotation" 			   << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT && !(isinf(moon.apparentDayLength)))	{cout << left << setw(48) << "Apparent day length:" 					   << left << setw(16) << moon.apparentDayLength 			  << "hours" << endl;}
 	else if (isinf(moon.apparentDayLength))										{cout << left << setw(48) << "No apparent day"							   << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Axial tilt:" 								   << left << setw(16) << moon.axialTilt 					  << "degrees" << endl;}
-	if (moon.resonantOrNot == true && moon.worldType != "Asteroid Belt")		{cout << left << setw(48) << "Moon is in a resonant orbit" 				   << endl;}
-	if (moon.tidalLockedOrNot == true && moon.worldType != "Asteroid Belt")		{cout << left << setw(48) << "Moon is tidal locked" 					   << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Axial tilt:" 								   << left << setw(16) << moon.axialTilt 					  << "degrees" << endl;}
+	if (moon.resonantOrNot == true && moon.worldType != WT_ASTEROID_BELT)		{cout << left << setw(48) << "Moon is in a resonant orbit" 				   << endl;}
+	if (moon.tidalLockedOrNot == true && moon.worldType != WT_ASTEROID_BELT)		{cout << left << setw(48) << "Moon is tidal locked" 					   << endl;}
 	cout << left << setw(48) << "Escape velocity:"								<< left << setw(16) << moon.escapeVelocity					<<	"m/s" << endl;
 	if (worldTypeCanHaveAtmosphere == true) 									{cout << left << setw(48) << "Atmosphere mass:" 						   << left << setw(16) << moon.atmosphereMass 				  << "Earth atmospheres" << endl;}
 //		Print the composition of the world's atmosphere (if it has one)
@@ -110,39 +116,39 @@ void printMoon(moon_t moon)
 	if (worldTypeCanHaveAtmosphere == true) 									{cout << left << setw(48) << "Greenhouse factor:" 						   << moon.greenhouseFactor 			  << endl;}
 																				 cout << left << setw(48) << "Absorption factor:" 						   << moon.absorptionFactor 			  << endl;
 																				 cout << left << setw(48) << "Blackbody temperature:" 					   << left << setw(16) << moon.blackbodyTemperature 		  << "Kelvin" << endl;
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Moon density:" 							   << left << setw(16) << moon.worldDensity 				  << "Earth densities" << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Moon diameter:" 							   << left << setw(16) << moon.worldDiameter 				  << "Earth diameters" << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Surface gravity:" 						   << left << setw(16) << moon.surfaceGravity 				  << "Earth gravities" << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Moon mass:" 								   << left << setw(16) << moon.worldMass 					  << "Earth masses" << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Moon density:" 							   << left << setw(16) << moon.worldDensity 				  << "Earth densities" << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Moon diameter:" 							   << left << setw(16) << moon.worldDiameter 				  << "Earth diameters" << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Surface gravity:" 						   << left << setw(16) << moon.surfaceGravity 				  << "Earth gravities" << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Moon mass:" 								   << left << setw(16) << moon.worldMass 					  << "Earth masses" << endl;}
 	if (worldTypeCanHaveAtmosphere == true) 									{cout << left << setw(48) << "Atmospheric pressure:" 					   << left << setw(16) << moon.atmosphericPressure		 	  << "standard atmospheres" << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Minimum molecular weight retained:"		   << left << setw(16) << moon.minimumMolecularWeightRetained << "grams per mole" << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Volcanic activity level:"					   << moon.volcanicActivityLevel 		  << endl;}
-	if (moon.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Tectonic activity level:"					   << moon.tectonicActivityLevel 		  << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Minimum molecular weight retained:"		   << left << setw(16) << moon.minimumMolecularWeightRetained << "grams per mole" << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Volcanic activity level:"					   << VAL_S_LOOKUP_TABLE[moon.volcanicActivityLevel] 		  << endl;}
+	if (moon.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Tectonic activity level:"					   << TAL_S_LOOKUP_TABLE[moon.tectonicActivityLevel] 		  << endl;}
 																				 cout << left << setw(48) << "Resource value modifier:" 				   << moon.resourceValueModifier 		  << endl;
 																				 cout << left << setw(48) << "Habitability modifier:" 					   << moon.habitabilityModifier 		  << endl;
 
 }
 
 //	This function prints information about the world in question to the console
-void printWorld(world_t world, string sizeClass)
+void printWorld(world_t world, char sizeClass)
 {
-	bool worldTypeCanHaveAtmosphere = world.worldType != "Asteroid Belt" && world.worldType != "Tiny (Ice)" && world.worldType != "Tiny (Rock)" && world.worldType != "Tiny (Sulfur)" && world.worldType != "Small (Hadean)" && world.worldType != "Small (Rock)" && world.worldType != "Standard (Hadean)" && world.worldType != "Standard (Chthonian)" && world.worldType != "Large (Chthonian)";
-	cout << left << setw(48) << "World type:" 						<< world.worldType << endl;
+	bool worldTypeCanHaveAtmosphere = world.worldType != WT_ASTEROID_BELT && world.worldType != WT_TINY_ICE && world.worldType != WT_TINY_SULFUR && world.worldType != WT_TINY_SULFUR && world.worldType != WT_SMALL_HADEAN && world.worldType != WT_SMALL_ROCK && world.worldType != WT_STANDARD_HADEAN && world.worldType != WT_STANDARD_CHTHONIAN && world.worldType != WT_LARGE_CHTHONIAN;
+	cout << left << setw(48) << "World type:" 						<< WT_S_LOOKUP_TABLE[world.worldType] << endl;
 	cout << left << setw(48) << "Orbital radius:" 					<< left << setw(16) << world.orbitalRadius << "au's" << endl;
 	cout << left << setw(48) << "Orbital period:" 					<< left << setw(16) << "years" << world.orbitalPeriod << endl;
 	cout << left << setw(48) << "Orbital eccentricity:" 			<< world.orbitalEccentricity << endl;
 	cout << left << setw(48) << "Minimum separation to primary:" 	<< left << setw(16) << world.minimumSeparation << "au's" << endl;
 	cout << left << setw(48) << "Maximum separation to primary:" 	<< left << setw(16) << world.maximumSeparation << "au's" << endl;
-	if (world.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Rotation period:" 					<< left << setw(16) << world.rotationPeriod << "hours" << endl;}
-	if (world.retrogradeOrNot == true /*&& world.worldType != "Asteroid Belt"*/) 	{cout << left << setw(48) << "World has a retrograde rotation" 		<< endl;}
-	if (world.worldType != "Asteroid Belt" && !(isinf(world.apparentDayLength)))	{cout << left << setw(48) << "Apparent day length:" 				<< left << setw(16) << world.apparentDayLength << "hours" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Rotation period:" 					<< left << setw(16) << world.rotationPeriod << "hours" << endl;}
+	if (world.retrogradeOrNot == true /*&& world.worldType != WT_ASTEROID_BELT*/) 	{cout << left << setw(48) << "World has a retrograde rotation" 		<< endl;}
+	if (world.worldType != WT_ASTEROID_BELT && !(isinf(world.apparentDayLength)))	{cout << left << setw(48) << "Apparent day length:" 				<< left << setw(16) << world.apparentDayLength << "hours" << endl;}
 	else if (isinf(world.apparentDayLength))										{cout << left << setw(48) << "No apparent day" << endl;}
-	if (world.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Axial tilt:" 							<< left << setw(16) << world.axialTilt << "degrees" << endl;}
-	if (world.resonantOrNot == true && world.worldType != "Asteroid Belt")			{cout << left << setw(48) << "World is in a resonant orbit" 		<< endl;}
-	if (world.tidalLockedOrNot == true && world.worldType != "Asteroid Belt")		{cout << left << setw(48) << "World is tidal locked" 				<< endl;}
-	if (world.worldType != "Asteroid Belt")											{cout << left << setw(48) << "Escape velocity:"						<< left << setw(16) << world.escapeVelocity << "m/s" << endl;}
-	if (world.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Number of major moons:" 				<< world.numberOfMajorMoons 			<< endl;}
-	if (world.worldType != "Asteroid Belt") 										{cout << left << setw(48) << "Number of moonlets:" 					<< world.terrestrialMoonlet 			<< endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Axial tilt:" 							<< left << setw(16) << world.axialTilt << "degrees" << endl;}
+	if (world.resonantOrNot == true && world.worldType != WT_ASTEROID_BELT)			{cout << left << setw(48) << "World is in a resonant orbit" 		<< endl;}
+	if (world.tidalLockedOrNot == true && world.worldType != WT_ASTEROID_BELT)		{cout << left << setw(48) << "World is tidal locked" 				<< endl;}
+	if (world.worldType != WT_ASTEROID_BELT)											{cout << left << setw(48) << "Escape velocity:"						<< left << setw(16) << world.escapeVelocity << "m/s" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Number of major moons:" 				<< world.numberOfMajorMoons 			<< endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 										{cout << left << setw(48) << "Number of moonlets:" 					<< world.terrestrialMoonlet 			<< endl;}
 //		Physical attributes
 //		cout << left << setw(48) << "Size class:" << sizeClass << endl;
 //		cout << left << setw(48) << "Overall type:" << world.overallType 											<< endl;
@@ -155,14 +161,14 @@ void printWorld(world_t world, string sizeClass)
 	if (worldTypeCanHaveAtmosphere == true) 								{cout << left << setw(48) << "Greenhouse factor:" 					<< world.greenhouseFactor 				<< endl;}
 	cout << left << setw(48) << "Absorption factor:" 				<< world.absorptionFactor << endl;
 	cout << left << setw(48) << "Blackbody temperature:" 			<< left << setw(16) << world.blackbodyTemperature << "Kelvin" << endl;
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "World density:" 						<< left << setw(16) << world.worldDensity 					<< "Earth densities" << endl;}
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "World diameter:" 						<< left << setw(16) << world.worldDiameter 					<< "Earth diameters" << endl;}
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "Surface gravity:" 					<< left << setw(16) << world.surfaceGravity 				<< "Earth gravities" << endl;}
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "World mass:" 							<< left << setw(16) << world.worldMass 						<< "Earth masses" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "World density:" 						<< left << setw(16) << world.worldDensity 					<< "Earth densities" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "World diameter:" 						<< left << setw(16) << world.worldDiameter 					<< "Earth diameters" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "Surface gravity:" 					<< left << setw(16) << world.surfaceGravity 				<< "Earth gravities" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "World mass:" 							<< left << setw(16) << world.worldMass 						<< "Earth masses" << endl;}
 	if (worldTypeCanHaveAtmosphere == true) 									{cout << left << setw(48) << "Atmospheric pressure:" 				<< left << setw(16) << world.atmosphericPressure		 	<< "standard atmospheres" << endl;}
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "Minimum molecular weight retained:"	<< left << setw(16) << world.minimumMolecularWeightRetained << "grams per mole" << endl;}
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "Volcanic activity level:"	<< world.volcanicActivityLevel << endl;}
-	if (world.worldType != "Asteroid Belt") 									{cout << left << setw(48) << "Tectonic activity level:"	<< world.tectonicActivityLevel << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "Minimum molecular weight retained:"	<< left << setw(16) << world.minimumMolecularWeightRetained << "grams per mole" << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "Volcanic activity level:"	<< VAL_S_LOOKUP_TABLE[world.volcanicActivityLevel] << endl;}
+	if (world.worldType != WT_ASTEROID_BELT) 									{cout << left << setw(48) << "Tectonic activity level:"	<< TAL_S_LOOKUP_TABLE[world.tectonicActivityLevel] << endl;}
 	cout << left << setw(48) << "Resource value modifier:" 			<< world.resourceValueModifier << endl;
 	cout << left << setw(48) << "Habitability modifier:" 			<< world.habitabilityModifier << endl;
 
@@ -187,7 +193,7 @@ void printStar(star_t star, int numberOfStars)
 	cout << setw(48) << left << "Inner limit radius:" << left << setw(16) << star.innerLimitRadius << " au's" << endl;
 	cout << setw(48) << left << "Outer limit radius:" << left << setw(16) << star.outerLimitRadius << " au's" << endl;
 	cout << setw(48) << left << "Snow line radius:" << left << setw(16) << star.snowLineRadius << " au's" << endl;
-	cout << setw(48) << left << "Gas giant arrangement:" << left << setw(16) << star.gasGiantArrangement << endl;
+	cout << setw(48) << left << "Gas giant arrangement:" << left << setw(16) << GGA_S_LOOKUP_TABLE[star.gasGiantArrangement] << endl;
 
 	if (numberOfStars != 1)
 	{
@@ -208,8 +214,8 @@ void printStar(star_t star, int numberOfStars)
 	{
 //		cout << "Worldbuilder for loop reached" << endl;
 //		If the world is not a gas giant or empty
-//		if (star.sizeClassArray[index] != "Small Gas Giant" && star.sizeClassArray[index] != "Medium Gas Giant" && star.sizeClassArray[index] != "Large Gas Giant" && star.sizeClassArray[index] != "Empty Orbit")
-		bool validWorldType = star.worldArray[index].worldType == "Asteroid Belt" || star.worldArray[index].worldType == "Standard (Garden)" || star.worldArray[index].worldType == "Standard (Ocean)" || star.worldArray[index].worldType == "Large (Garden)" || star.worldArray[index].worldType == "Large (Ocean)" || star.worldArray[index].worldType == "Standard (Ammonia)" || star.worldArray[index].worldType == "Standard (Greenhouse)" || star.worldArray[index].worldType == "Large (Ammonia)" || star.worldArray[index].worldType == "Large (Greenhouse)" || star.worldArray[index].worldType == "Tiny (Ice)" || star.worldArray[index].worldType == "Small (Hadean)" || star.worldArray[index].worldType == "Small (Ice)" || star.worldArray[index].worldType == "Standard (Hadean)" || star.worldArray[index].worldType == "Standard (Ice)" || star.worldArray[index].worldType == "Large (Ice)" || star.worldArray[index].worldType == "Tiny (Rock)" || star.worldArray[index].worldType == "Tiny (Sulfur)" || star.worldArray[index].worldType == "Small (Rock)" || star.worldArray[index].worldType == "Standard (Chthonian)" || star.worldArray[index].worldType == "Large (Chthonian)" || star.worldArray[index].worldType == "Small Gas Giant" || star.worldArray[index].worldType == "Medium Gas Giant" || star.worldArray[index].worldType == "Large Gas Giant";
+//		if (star.sizeClassArray[index] != WT_SMALL_GAS_GIANT && star.sizeClassArray[index] != WT_MEDIUM_GAS_GIANT && star.sizeClassArray[index] != WT_LARGE_GAS_GIANT && star.sizeClassArray[index] != SC_EMPTY_ORBIT)
+		bool validWorldType = star.worldArray[index].worldType == WT_ASTEROID_BELT || star.worldArray[index].worldType == WT_STANDARD_GARDEN || star.worldArray[index].worldType == WT_STANDARD_OCEAN || star.worldArray[index].worldType == WT_LARGE_GARDEN || star.worldArray[index].worldType == WT_LARGE_OCEAN || star.worldArray[index].worldType == WT_STANDARD_AMMONIA || star.worldArray[index].worldType == WT_STANDARD_GREENHOUSE || star.worldArray[index].worldType == WT_LARGE_AMMONIA || star.worldArray[index].worldType == WT_LARGE_GREENHOUSE || star.worldArray[index].worldType == WT_TINY_ICE || star.worldArray[index].worldType == WT_SMALL_HADEAN || star.worldArray[index].worldType == WT_SMALL_ICE || star.worldArray[index].worldType == WT_STANDARD_HADEAN || star.worldArray[index].worldType == WT_STANDARD_ICE || star.worldArray[index].worldType == WT_LARGE_ICE || star.worldArray[index].worldType == WT_TINY_SULFUR || star.worldArray[index].worldType == WT_TINY_SULFUR || star.worldArray[index].worldType == WT_SMALL_ROCK || star.worldArray[index].worldType == WT_STANDARD_CHTHONIAN || star.worldArray[index].worldType == WT_LARGE_CHTHONIAN || star.worldArray[index].worldType == WT_SMALL_GAS_GIANT || star.worldArray[index].worldType == WT_MEDIUM_GAS_GIANT || star.worldArray[index].worldType == WT_LARGE_GAS_GIANT;
 		if (validWorldType == true)
 		{
 //			cout << "Worldbuilder if loop reached" << endl;

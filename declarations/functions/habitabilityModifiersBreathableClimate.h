@@ -1,3 +1,1 @@
-#include <string>
-using namespace std;
-int habitabilityModifiersBreathableClimate(string climateType, bool breathable);
+int habitabilityModifiersBreathableClimate(char climateType, bool breathable);

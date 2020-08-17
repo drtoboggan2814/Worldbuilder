@@ -1,0 +1,31 @@
+#include "absorptionFactorConstants.h"
+#include <string>
+using namespace std;
+
+float absorptionFactorLookup(char worldType)
+{
+	float af;
+	
+	if 		(worldType == WT_ASTEROID_BELT) 			{af = af_AsteroidBelt;}
+	else if (worldType == WT_TINY_ICE) 			{af = af_Tiny_Ice;}
+	else if (worldType == WT_TINY_SULFUR) 			{af = af_Tiny_Sulfur;}
+	else if (worldType == WT_TINY_SULFUR) 			{af = af_Tiny_Rock;}
+	else if (worldType == WT_SMALL_HADEAN) 		{af = af_Small_Hadean;}
+	else if (worldType == WT_SMALL_ICE) 			{af = af_Small_Ice;}
+	else if (worldType == WT_SMALL_ROCK) 			{af = af_Small_Rock;}
+	else if (worldType == WT_STANDARD_HADEAN) 		{af = af_Standard_Hadean;}
+	else if (worldType == WT_STANDARD_AMMONIA) 	{af = af_Standard_Ammonia;}
+	else if (worldType == WT_STANDARD_ICE) 		{af = af_Standard_Ice;}
+	else if (worldType == WT_STANDARD_OCEAN) 		{af = af_Standard_Ocean;}
+	else if (worldType == WT_STANDARD_GARDEN) 		{af = af_Standard_Garden;}
+	else if (worldType == WT_STANDARD_CHTHONIAN)	{af = af_Standard_Chthonian;}
+	else if (worldType == WT_STANDARD_GREENHOUSE)	{af = af_Standard_Greenhouse;}
+	else if (worldType == WT_LARGE_AMMONIA) 		{af = af_Large_Ammonia;}
+	else if (worldType == WT_LARGE_ICE) 			{af = af_Large_Ice;}
+	else if (worldType == WT_LARGE_OCEAN) 			{af = af_Large_Ocean;}
+	else if (worldType == WT_LARGE_GREENHOUSE) 	{af = af_Large_Greenhouse;}
+	else if (worldType == WT_LARGE_GARDEN) 		{af = af_Large_Garden;}
+	else if (worldType == WT_LARGE_CHTHONIAN) 		{af = af_Large_Chthonian;}
+	
+	return af;
+}

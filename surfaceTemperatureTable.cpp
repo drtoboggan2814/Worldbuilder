@@ -1,6 +1,9 @@
+//	Constant declarations
 #include "declarations/constants/climateStepConstants.h"
 #include "declarations/constants/climateMinConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
 
+//	Function declarations
 #include "declarations/functions/climateStepLookup.h"
 #include "declarations/functions/climateMinLookup.h"
 #include "declarations/functions/diceRoller.h"
@@ -8,7 +11,7 @@
 
 using namespace std;
 
-int surfaceTemperatureTable(string worldType)
+int surfaceTemperatureTable(char worldType)
 {
 	int surfaceTemperature;
 	int step		= climateStepLookup(worldType);

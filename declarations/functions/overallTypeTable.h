@@ -1,3 +1,1 @@
-#include <string>
-using namespace std;
-string overallTypeTable(int rng);
+char overallTypeTable(int rng);

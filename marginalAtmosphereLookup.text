@@ -1,0 +1,69 @@
+string marginalAtmosphereLookup(int marginalAtmosphere)
+{
+	string atmosphereCondition;
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b100000000:
+			atmosphereCondition = "Chlorine or Fluorine";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b010000000:
+			atmosphereCondition = "Sulfur Compounds";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b001000000:
+			atmosphereCondition = "Nitrogen Compounds";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b000100000:
+			atmosphereCondition = "Organic Toxins";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b000010000:
+			atmosphereCondition = "Low Oxygen";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b000001000:
+			atmosphereCondition = "Pollutants";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b000000100:
+			atmosphereCondition = "High Carbon Dioxide";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b000000010:
+			atmosphereCondition = "High Oxygen";
+			break;
+	}
+	
+	switch(marginalAtmosphere)
+	{
+		case 0b000000001:
+			atmosphereCondition = "Inert Gases";
+			break;
+	}
+	
+	return atmosphereCondition;
+}

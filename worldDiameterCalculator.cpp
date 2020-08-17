@@ -1,7 +1,7 @@
 /*
 	This corresponds to "Diameter and Surface Gravity" in "Step 6: World Size"
 	on page 85 of GURPS Space 4e.
-	This function cannot take "Asteroid Belt" as its worldType parameter.
+	This function cannot take WT_ASTEROID_BELT as its worldType parameter.
 */
 
 //	C++ libraries
@@ -10,6 +10,7 @@
 
 //	Constant declarations
 #include "declarations/constants/sizeConstraintsTableConstants.h"
+#include "declarations/constants/worldTypeConstants.h"
 
 //	Function declarations
 #include "declarations/functions/floatRNG.h"
@@ -17,7 +18,7 @@
 
 using namespace std;
 
-float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, string worldType)
+float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, char worldType)
 {
 	float minDiameter, maxDiameter;
 	float variance, worldDiameter;
@@ -27,7 +28,7 @@ float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, stri
 	variance = floatRNG(-0.05, 0.05);
 
 //	If the world is "Tiny"
-	if (worldType == "Tiny (Sulfur)" || worldType == "Tiny (Ice)" || worldType == "Tiny (Rock)")
+	if (worldType == WT_TINY_SULFUR || worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR)
 	{
 //		Calculate the minimum and maximum diamaters
 		minDiameter = sqrt(blackbodyTemperature / worldDensity) * TINYMIN;
@@ -44,7 +45,7 @@ float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, stri
 	}
 
 //	If the world is "Small"
-	else if (worldType == "Small (Hadean)" || worldType == "Small (Ice)" || worldType == "Small (Rock)")
+	else if (worldType == WT_SMALL_HADEAN || worldType == WT_SMALL_ICE || worldType == WT_SMALL_ROCK)
 	{
 //		Calculate the minimum and maximum diamaters
 		minDiameter = sqrt(blackbodyTemperature / worldDensity) * SMALLMIN;
@@ -61,7 +62,7 @@ float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, stri
 	}
 
 //	If the world is "Standard"
-	else if (worldType == "Standard (Chthonian)" || worldType == "Standard (Greenhouse)" || worldType == "Standard (Ammonia)" || worldType == "Standard (Ocean)" || worldType == "Standard (Ice)" || worldType == "Standard (Hadean)" || worldType == "Standard (Garden)" )
+	else if (worldType == WT_STANDARD_CHTHONIAN || worldType == WT_STANDARD_GREENHOUSE || worldType == WT_STANDARD_AMMONIA || worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_ICE || worldType == WT_STANDARD_HADEAN || worldType == WT_STANDARD_GARDEN )
 	{
 //		Calculate the minimum and maximum diamaters
 		minDiameter = sqrt(blackbodyTemperature / worldDensity) * STANDARDMIN;
@@ -78,7 +79,7 @@ float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, stri
 	}
 
 //	If the world is "Large"
-	else if (worldType == "Large (Ammonia)" || worldType == "Large (Greenhouse)" || worldType == "Large (Chthonian)" || worldType == "Large (Ocean)" || worldType == "Large (Ice)" || worldType == "Large (Garden)")
+	else if (worldType == WT_LARGE_AMMONIA || worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_CHTHONIAN || worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_ICE || worldType == WT_LARGE_GARDEN)
 	{
 //		Calculate the minimum and maximum diamaters
 		minDiameter = sqrt(blackbodyTemperature / worldDensity) * LARGEMIN;

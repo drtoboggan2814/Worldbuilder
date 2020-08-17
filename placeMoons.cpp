@@ -1,9 +1,9 @@
 //	This file corresponds to "Step 24: Place Moons"
-#include <string>
+//	Constant declarations
+#include "declarations/constants/worldTypeConstants.h"
 
+//	Function declarations
 #include "declarations/functions/diceRoller.h"
-
-using namespace std;
 
 //	Gas giants
 
@@ -79,7 +79,7 @@ int getThirdFamily(float distanceToPrimary)
 	}
 }
 
-int getTerrestrialMajorMoons(float distanceToPrimary, string worldType)
+int getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
 {
 //	Roll for number of major moons
 	int majorMoonRoll;
@@ -87,7 +87,7 @@ int getTerrestrialMajorMoons(float distanceToPrimary, string worldType)
 	int majorMoonRollModifier;
 
 //	If the planet is within 0.5 AU of the primary, there are no moons
-	if (distanceToPrimary <= 0.5 || worldType == "Asteroid Belt") {return 0;}
+	if (distanceToPrimary <= 0.5 || worldType == WT_ASTEROID_BELT) {return 0;}
 
 	else
 	{
@@ -98,9 +98,9 @@ int getTerrestrialMajorMoons(float distanceToPrimary, string worldType)
 		else 															{majorMoonRollModifier =  0;}
 
 //		Check world size
-		if 		(worldType == "Tiny (Sulfur)" 	|| worldType == "Tiny (Ice)" 		 || worldType == "Tiny (Rock)") 																										{majorMoonRollModifier = -2;}
-		else if (worldType == "Small (Hadean)" 	|| worldType == "Small (Ice)" 		 || worldType == "Small (Rock)") 																										{majorMoonRollModifier = -1;}
-		else if (worldType == "Large (Ammonia)" || worldType == "Large (Greenhouse)" || worldType == "Large (Chthonian)" || worldType == "Large (Ocean)" || worldType == "Large (Ice)" || worldType == "Large (Garden)")	{majorMoonRollModifier =  1;}
+		if 		(worldType == WT_TINY_SULFUR 	|| worldType == WT_TINY_ICE 		 || worldType == WT_TINY_SULFUR) 																										{majorMoonRollModifier = -2;}
+		else if (worldType == WT_SMALL_HADEAN 	|| worldType == WT_SMALL_ICE 		 || worldType == WT_SMALL_ROCK) 																										{majorMoonRollModifier = -1;}
+		else if (worldType == WT_LARGE_AMMONIA || worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_CHTHONIAN || worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_ICE || worldType == WT_LARGE_GARDEN)	{majorMoonRollModifier =  1;}
 		else 						 {majorMoonRollModifier =  0;}
 
 		if (majorMoonRoll + majorMoonRollModifier <= 0) {return 0;}
@@ -108,7 +108,7 @@ int getTerrestrialMajorMoons(float distanceToPrimary, string worldType)
 	}
 }
 
-int getTerrestrialMoonlets(float distanceToPrimary, string worldType)
+int getTerrestrialMoonlets(float distanceToPrimary, char worldType)
 {
 //	Roll for number of moonlets
 	int moonletsRoll;
@@ -127,9 +127,9 @@ int getTerrestrialMoonlets(float distanceToPrimary, string worldType)
 		else 															{moonletsRollModifier =  0;}
 
 //		Check world size
-		if 		(worldType == "Tiny (Sulfur)" || worldType == "Tiny (Ice)" || worldType == "Tiny (Rock)") 																													{moonletsRollModifier = -2;}
-		else if (worldType == "Small (Hadean)" || worldType == "Small (Ice)" || worldType == "Small (Rock)") 																												{moonletsRollModifier = -1;}
-		else if (worldType == "Large (Ammonia)" || worldType == "Large (Greenhouse)" || worldType == "Large (Chthonian)" || worldType == "Large (Ocean)" || worldType == "Large (Ice)" || worldType == "Large (Garden)")	{moonletsRollModifier =  1;}
+		if 		(worldType == WT_TINY_SULFUR || worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR) 																													{moonletsRollModifier = -2;}
+		else if (worldType == WT_SMALL_HADEAN || worldType == WT_SMALL_ICE || worldType == WT_SMALL_ROCK) 																												{moonletsRollModifier = -1;}
+		else if (worldType == WT_LARGE_AMMONIA || worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_CHTHONIAN || worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_ICE || worldType == WT_LARGE_GARDEN)	{moonletsRollModifier =  1;}
 		else 						 {moonletsRollModifier =  0;}
 
 		if (moonletsRoll + moonletsRollModifier <= 0) {return 0;}
