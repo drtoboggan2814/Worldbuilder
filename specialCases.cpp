@@ -93,6 +93,7 @@ tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float su
 
 //		Apply the hydrographic coverage modifier
 	hydrographicCoverage += tideLockedHydrographicCoverageModifier(atmosphericPressureCategory);
+	hydrographicCoverage = (hydrographicCoverage <= 0) ? 0 : hydrographicCoverage;
 
 	return make_tuple(atmosphericPressure, atmosphericPressureCategory, hydrographicCoverage);
 }

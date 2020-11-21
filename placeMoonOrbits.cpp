@@ -1,5 +1,6 @@
 //	C++ libraries
-#include <string>
+//	#include <string>
+#include <cstdint>
 
 //	Structure declarations
 #include "declarations/structures/marginalAtmosphere_t.h"
@@ -10,12 +11,12 @@
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
 
-using namespace std;
+//	using namespace std;
 
 //	This function creates orbital slots for a planet's major moons
-float placeMoonOrbits(float planetDiameter, int moonSizeClass, int family)
+float placeMoonOrbits(float planetDiameter, int8_t moonSizeClass, int8_t family)
 {
-	float orbitalRadius;
+	float orbitalRadius = 0;
 	int moonOrbitModifier = 0;
 	int moonOrbitRoll = diceRoller(6, 2);
 
@@ -24,6 +25,7 @@ float placeMoonOrbits(float planetDiameter, int moonSizeClass, int family)
 	{
 		if 		(moonSizeClass == -2) {moonOrbitModifier += 2;}
 		else if (moonSizeClass == -1) {moonOrbitModifier += 4;}
+		else						  {moonOrbitModifier = 0;}
 		orbitalRadius = (moonOrbitRoll + moonOrbitModifier) * 2.5 * planetDiameter;
 	}
 
@@ -37,7 +39,7 @@ float placeMoonOrbits(float planetDiameter, int moonSizeClass, int family)
 	else if (family == 2)
 	{
 		int secondFamilyRoll = diceRoller(6, 3) + 3;
-		orbitalRadius = (secondFamilyRoll >= 15) ? secondFamilyRoll + diceRoller(6, 2) : orbitalRadius;
+		orbitalRadius = (secondFamilyRoll >= 15) ? secondFamilyRoll + diceRoller(6, 2) : secondFamilyRoll;
 		orbitalRadius = (orbitalRadius / 2) * planetDiameter;
 	}
 

@@ -3,7 +3,7 @@
 
 struct marginalAtmosphere_t
 {
-	int marginalAtmosphereArray[9];
+	char marginalAtmosphereArray[9];
 };
 
 #endif

@@ -8,7 +8,7 @@ struct planetaryOrbitsArray_t
 {
 //	Can a structure have a flexible array?
 	float planetaryOrbitsArray[32];
-	int firstWorldIndex;
+	char firstWorldIndex;
 };
 
 #endif

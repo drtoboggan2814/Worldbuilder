@@ -3,6 +3,7 @@
 
 //	C++ libraries
 #include <cmath>
+#include <cstdint>
 #include <iostream>
 #include <string>
 #include <tuple>
@@ -13,8 +14,10 @@
 #include "declarations/constants/planetaryOrbitalEccentricityTableConstants.h"
 #include "declarations/constants/miscConstants.h"
 #include "declarations/constants/sizeClassConstants.h"
+#include "declarations/constants/stringConstants.h"
 #include "declarations/constants/tectonicActivityLevelConstants.h"
 #include "declarations/constants/volcanicActivityLevelConstants.h"
+#include "declarations/constants/unitConversions.h"
 #include "declarations/constants/universalConstants.h"
 #include "declarations/constants/worldTypeConstants.h"
 
@@ -42,11 +45,12 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, int moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
+char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, char moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
 {
-	char worldType;
+	char worldType = 0;
+//	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int)sizeClass] << endl;
 
-	if (sizeClass == SC_EMPTY_ORBIT)
+	if (sizeClass == SC_TERRESTRIAL_PLANET_TINY)
 	{
 		if (blackbodyTemperature <= 140)
 		{
@@ -117,9 +121,29 @@ char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, int
 	}
 
 //	For asteroid belts and gas giants
-	else
+	else if (sizeClass == SC_ASTEROID_BELT)
 	{
-		worldType = sizeClass;
+		worldType = WT_ASTEROID_BELT;
+	}
+
+	else if (sizeClass == SC_SMALL_GAS_GIANT)
+	{
+		worldType = WT_SMALL_GAS_GIANT;
+	}
+
+	else if (sizeClass == SC_MEDIUM_GAS_GIANT)
+	{
+		worldType = WT_MEDIUM_GAS_GIANT;
+	}
+
+	else if (sizeClass == SC_LARGE_GAS_GIANT)
+	{
+		worldType = WT_LARGE_GAS_GIANT;
+	}
+
+	else if (sizeClass == SC_EMPTY_ORBIT)
+	{
+		worldType = WT_EMPTY_ORBIT;
 	}
 
 	return worldType;
@@ -141,15 +165,15 @@ float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float black
 float getGasGiantMass(char gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
-	float gasGiantMass;
+	float gasGiantMass = 0;
 	float massVariance = floatRNG(-0.5, 0.5);
 //	int tableIndex, tableIndexPlusMinus;
 
 	float tableInUse[9];
 
-	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = smallMassTable[i] ;}}
-	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = mediumMassTable[i];}}
-	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = largeMassTable[i] ;}}
+	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = SMALLMASSTABLE[i] ;}}
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = MEDIUMMASSTABLE[i];}}
+	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = LARGEMASSTABLE[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantMass = tableInUse[0];}
 	else if (diceRoll >= 9 && diceRoll <= 10) {gasGiantMass = tableInUse[1];}
@@ -170,14 +194,14 @@ float getGasGiantMass(char gasGiantSize)
 float getGasGiantDensity(char gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
-	float gasGiantDensity;
+	float gasGiantDensity = 0;
 	float densityVariance = floatRNG(-0.1, 0.1);
 
 	float tableInUse[9];
 
-	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = smallDensityTable[i] ;}}
-	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = mediumDensityTable[i];}}
-	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = largeDensityTable[i] ;}}
+	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = SMALLDENSITYTABLE[i] ;}}
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = MEDIUMDENSITYTABLE[i];}}
+	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = LARGEDENSITYTABLE[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantDensity = tableInUse[0];}
 	else if (diceRoll >= 9 && diceRoll <= 10) {gasGiantDensity = tableInUse[1];}
@@ -224,9 +248,9 @@ float calculatePlanetaryOrbitalPeriod(float planetOrbitalRadius, float stellarMa
 //	This function returns the world's orbital eccentricity, with a variance added on
 float planetaryOrbitalEccentricityTable(int diceRoll)
 {
-	float planetaryOrbitalEccentricity;
+	float planetaryOrbitalEccentricity = 0;
 	float variance = floatRNG(-0.05, 0.05);
-	int constantTableIndex;
+	int constantTableIndex = 0;
 
 	if 		(diceRoll <= 3					 ) {planetaryOrbitalEccentricity = eccentricityConstants[0 ]; constantTableIndex = 0 ;}
 	else if (diceRoll >= 4 	&& diceRoll <= 6 ) {planetaryOrbitalEccentricity = eccentricityConstants[1 ]; constantTableIndex = 1 ;}
@@ -243,7 +267,7 @@ float planetaryOrbitalEccentricityTable(int diceRoll)
 	if 		(variance < 0					 ) {planetaryOrbitalEccentricity += variance * (eccentricityConstants[constantTableIndex] - eccentricityConstants[constantTableIndex - 1]);}
 	else									   {planetaryOrbitalEccentricity += variance * (eccentricityConstants[constantTableIndex + 1] - eccentricityConstants[constantTableIndex]);}
 
-
+	planetaryOrbitalEccentricity = (planetaryOrbitalEccentricity < 0.00001) ? 0 : planetaryOrbitalEccentricity;
 	return planetaryOrbitalEccentricity;
 }
 
@@ -276,9 +300,9 @@ float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float p
 	return maximumSeparation;
 }
 
-float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, int moonSize)
+float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, char moonSize)
 {
-	float satelliteOrbitalRadius;
+	float satelliteOrbitalRadius = 0;
 
 //	For the moonlets of a gas giant's first family
 	if (gasGiantMoonType == GGM_FIRST_FAMILY && moonType == MT_MOONLET)
@@ -320,7 +344,7 @@ float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char 
 //	For terrestrial moonlets
 	else
 	{
-		int terrestrialMoonletRoll = diceRoller(6, 1) + 4;
+		int8_t terrestrialMoonletRoll = diceRoller(6, 1) + 4;
 		satelliteOrbitalRadius = (terrestrialMoonletRoll / 4) * planetDiameter;
 	}
 
@@ -363,7 +387,7 @@ float calculateTotalTidalEffect(float satelliteTidalForce, float primaryTidalFor
 //	Returns the modifier for the world's rotation period
 int rotationPeriodTable(char worldType)
 {
-	int modifier;
+	int modifier = 0;
 	if 		(worldType == WT_LARGE_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT) 																																										{modifier = 0;}
 	else if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_LARGE_GARDEN || worldType == WT_LARGE_OCEAN || worldType == WT_LARGE_AMMONIA || worldType == WT_LARGE_GREENHOUSE || worldType == WT_LARGE_ICE || worldType == WT_LARGE_CHTHONIAN)  {modifier = 6;}
 	else if (worldType == WT_STANDARD_ICE || worldType == WT_STANDARD_GARDEN || worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_AMMONIA || worldType == WT_STANDARD_GREENHOUSE) 														{modifier = 10;}
@@ -375,7 +399,7 @@ int rotationPeriodTable(char worldType)
 //	If the world's rotation period is especially slow, this table returns an appropriate rotation period
 int specialRotationTable(int specialRotationTableRoll)
 {
-	int specialRotation;
+	int specialRotation = 0;
 	if 		(specialRotationTableRoll == 7 ) {specialRotation = diceRoller(6, 1) * 2  ;}
 	else if (specialRotationTableRoll == 8 ) {specialRotation = diceRoller(6, 1) * 5  ;}
 	else if (specialRotationTableRoll == 9 ) {specialRotation = diceRoller(6, 1) * 10 ;}
@@ -389,7 +413,7 @@ int specialRotationTable(int specialRotationTableRoll)
 //	This function returns the planet's sidereal rotation in standard hours
 float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, char worldType, bool tidalLockedOrNot)
 {
-	float rotationPeriod;
+	float rotationPeriod = 0;
 
 //	If the world is tidally locked, then its rotation and orbital periods are equal
 	if (tidalLockedOrNot == true) {rotationPeriod = worldOrbitalPeriod;}
@@ -428,7 +452,7 @@ float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, 
 //	This function determines if a world's rotation is retrograde
 bool checkForRetrogradeRotation(bool satelliteOrPlanet)
 {
-	bool retrogradeOrNot;
+	bool retrogradeOrNot = false;
 	int diceRoll = diceRoller(6, 3);
 
 	if (satelliteOrPlanet == POM_PLANET) {retrogradeOrNot = (diceRoll >= 13) ? true : false;}
@@ -441,7 +465,8 @@ bool checkForRetrogradeRotation(bool satelliteOrPlanet)
 //	satellite's apprent orbital cycle as seen from the planet it orbits
 float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool satelliteOrPlanet, float worldOrbitalPeriod, bool satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
 {
-	float siderealPeriod, apparentLength;
+	float siderealPeriod = 0;
+	float apparentLength = 0;
 	const float YEARS_TO_DAYS = 365.26;
 	const float DAYS_TO_HOURS = 24;
 //	To calculate the length of a day on a planet in hours
@@ -474,9 +499,9 @@ float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool sa
 }
 
 //	This table returns the world's axial tilt in degrees
-int axialTiltTable(int diceRoll)
+int8_t axialTiltTable(int diceRoll)
 {
-	int axialTilt;
+	int8_t axialTilt = 0;
 	if 		(diceRoll >= 3 	|| diceRoll <= 6 ) {axialTilt = 0  + (diceRoller(6, 2) - 2);}
 	else if (diceRoll >= 7 	|| diceRoll <= 9 ) {axialTilt = 10 + (diceRoller(6, 2) - 2);}
 	else if (diceRoll >= 10 || diceRoll <= 12) {axialTilt = 20 + (diceRoller(6, 2) - 2);}
@@ -487,9 +512,9 @@ int axialTiltTable(int diceRoll)
 }
 
 //	If the roll for the world's axial tilt is 17 or 18, use this table
-int extendedAxialTiltTable(int diceRoll)
+int8_t extendedAxialTiltTable(int diceRoll)
 {
-	int axialTilt;
+	int8_t axialTilt = 0;
 	if 		(diceRoll == 1 || diceRoll == 2) {axialTilt = 50 + (diceRoller(6, 2) - 2);}
 	else if (diceRoll == 3 || diceRoll == 4) {axialTilt = 60 + (diceRoller(6, 2) - 2);}
 	else if (diceRoll == 5) 				 {axialTilt = 70 + (diceRoller(6, 2) - 2);}
@@ -499,17 +524,17 @@ int extendedAxialTiltTable(int diceRoll)
 }
 
 //	This function uses the two tables above and returns the world's axial tilt
-int calculateAxialTilt()
+int8_t calculateAxialTilt()
 {
 	int diceRoll = diceRoller(6, 3);
-	int axialTilt = (diceRoll >= 17) ? extendedAxialTiltTable(diceRoll) : axialTiltTable(diceRoll);
+	int8_t axialTilt = (diceRoll >= 17) ? extendedAxialTiltTable(diceRoll) : axialTiltTable(diceRoll);
 	return axialTilt;
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int numberOfMajorMoons, char parentWorldType)
+char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, char parentWorldType)
 {
-	char volcanicActivityLevel;
+	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
 	if (worldType != WT_SMALL_GAS_GIANT && worldType != WT_MEDIUM_GAS_GIANT && worldType != WT_LARGE_GAS_GIANT)
 	{
@@ -576,7 +601,7 @@ atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivi
 //	This function serves as a lookup table for the world's tectonic activity
 char tectonicActivtyTable(int diceRoll)
 {
-	char tectonicActivityLevel;
+	char tectonicActivityLevel = 0;
 
 	if 		(diceRoll <= 6					 ) {tectonicActivityLevel = TAL_NONE;}
 	else if (diceRoll >= 7 	&& diceRoll <= 10) {tectonicActivityLevel = TAL_LIGHT;}
@@ -588,9 +613,9 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int numberOfMajorMoons)
+char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons)
 {
-	char tectonicActivityLevel;
+	char tectonicActivityLevel = TAL_NONE;
 
 //	Gas giants, tiny worlds, and small worlds have no tectonic activity
 	if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT || worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR || worldType == WT_TINY_SULFUR || worldType == WT_SMALL_HADEAN || worldType == WT_SMALL_ICE || worldType == WT_SMALL_ROCK)
@@ -602,7 +627,7 @@ char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydro
 	else
 	{
 		int tectonicActivityTableRoll = diceRoller(6, 3);
-		int tectonicActivityTableRollModifier;
+		int tectonicActivityTableRollModifier = 0;
 
 //		Effects of volcanic activity on tectonic activity
 		if 		(volcanicActivityLevel == VAL_NONE) {tectonicActivityTableRollModifier += -8;}
@@ -628,7 +653,7 @@ char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydro
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-tuple<int, int> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int resourceValueModifier, int habitabilityModifier)
+tuple<int8_t, int8_t> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier)
 {
 	if 		(volcanicActivityLevel == VAL_NONE	) {resourceValueModifier += -2;}
 	else if (volcanicActivityLevel == VAL_LIGHT	) {resourceValueModifier += -1;}
@@ -658,4 +683,97 @@ double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass)
 //	v_e = sqrt((2*G*M) / r)
 	double escapeVelocity = sqrt((2 * UNIVERSAL_GRAVITATIONAL_CONSTANT * escapeMass) / distanceToCenterOfMass);
 	return escapeVelocity;
+}
+
+//	Determine the world's magnetic field strength
+//	NOTE: This is from World Generation: Generic System & Planet Building Resources
+//	magneticFieldStrength is returned as a factor of Earth's magnetic field strength
+//	Since Earth's magnetic field strength is variable across the surface, so too is it on another world
+//	If a detailed analysis is required, then a surface map of the world is needed
+//	As a result, this only gives a rough estimate that is of minimal utility
+float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, char worldType)
+{
+	float magFactor = 10 * (1 / sqrt(rotationPeriod / 24)) * (worldDensity * worldDensity) * (sqrt(worldMass) / stellarAge);
+	magFactor = (worldType == WT_TINY_ICE || worldType == WT_SMALL_ICE || worldType == WT_STANDARD_ICE || worldType == WT_LARGE_ICE) ? magFactor * 0.5 : magFactor;
+
+	float magneticFieldStrength = 0;
+	int diceRoll = diceRoller(10, 1);
+	if 		(magFactor < 0.05 || (magFactor >= 0.05 && magFactor < 0.5 && diceRoll < 6) || (diceRoll < 4 && magFactor >= 0.5 && magFactor < 1))																									{magneticFieldStrength = 0;}
+	else if ((diceRoll >= 1 && diceRoll <= 3 && magFactor >= 1 && magFactor < 2) || ((diceRoll == 4 || diceRoll == 5) && magFactor >= 0.5 && magFactor < 1) || ((diceRoll == 6 || diceRoll == 7) && magFactor >= 0.05 && magFactor < 0.5))		{magneticFieldStrength = diceRoller(10, 1) * 0.001;}
+	else if (((diceRoll == 4 || diceRoll == 5) && magFactor >= 1 && magFactor < 2) || ((diceRoll == 6 || diceRoll == 7) && magFactor >= 0.5 && magFactor < 1) || ((diceRoll == 8 || diceRoll == 9) && magFactor >= 0.05 && magFactor < 0.5))	{magneticFieldStrength = diceRoller(10, 1) * 0.002;}
+	else if (((diceRoll == 6 || diceRoll == 7) && magFactor >= 1 && magFactor < 2) || ((diceRoll == 8 || diceRoll == 9) && magFactor >= 0.5 && magFactor < 1) || (diceRoll == 10 && magFactor >= 0.05 && magFactor < 0.5))						{magneticFieldStrength = diceRoller(10, 1) * 0.01;}
+	else if ((diceRoll >= 1 && diceRoll <= 3 && magFactor >= 2 && magFactor < 4) || ((diceRoll == 8 || diceRoll == 9) && magFactor >= 1 && magFactor < 2) || (diceRoll == 10 && magFactor >= 0.5 && magFactor < 1))								{magneticFieldStrength = diceRoller(10, 1) * 0.05;}
+	else if ((diceRoll >= 1 && diceRoll <= 3 && magFactor >= 4) || ((diceRoll == 4 || diceRoll == 5) && magFactor >= 2 && magFactor < 4) || (diceRoll == 10 && magFactor >= 1 && magFactor < 2))												{magneticFieldStrength = diceRoller(10, 1) * 0.1;}
+	else if (((diceRoll == 4 || diceRoll == 5) && magFactor >= 4) || ((diceRoll == 6 || diceRoll == 7) && magFactor >= 2 && magFactor < 4))																										{magneticFieldStrength = diceRoller(10, 1) * 0.2;}
+	else if (((diceRoll == 6 || diceRoll == 7) && magFactor >= 4) || ((diceRoll == 8 || diceRoll == 9) && magFactor >= 2 && magFactor < 4))																										{magneticFieldStrength = diceRoller(10, 1) * 0.3;}
+	else if (((diceRoll == 8 || diceRoll == 9) && magFactor >= 4) || (diceRoll == 10 && magFactor >= 2 && magFactor < 4))																														{magneticFieldStrength = diceRoller(10, 1) * 0.5;}
+	else																																																										{magneticFieldStrength = diceRoller(10, 1) * 1;}
+
+	return magneticFieldStrength;
+}
+/*
+//	NOTE: This is from Alternity Cosmos
+float getMagneticField(float worldMass, float rotationPeriod, char worldType)
+{
+	float magneticFieldStrength = 0;
+	if (worldMass < 0.03)
+	{
+		magneticFieldStrength = 0;
+	}
+
+	else if (worldMass >= 0.03 && worldMass < 0.3)
+	{
+		int diceRoll = diceRoller(6, 3);
+		magneticFieldStrength = diceRoll > 3 ? floatRNG(0.01, 0.1) : 0;
+	}
+
+	else if (worldMass >= 0.3 && worldMass < 3)
+	{
+		magneticFieldStrength = rotationPeriod < 500 ? floatRNG(0.1, 10) : floatRNG(0.01, 0.1);
+	}
+
+	else if (worldType = WT_LARGE_CHTHONIAN)
+	{
+
+	}
+}
+*/
+
+//	Determine the apparent size of a body as seen from another
+//	The return value is the angular diameter of the body in the sky
+//	NOTE: This is from Atomic Rockets
+float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody)
+{
+//	This value is in arcseconds
+	float angularDiameter = RAD_IN_ASEC * (bodyDiameter / distanceFromBody);
+	return angularDiameter;
+}
+
+//	Determine the distance to the horizon
+//	The return value is in meters
+//	NOTE: This is not included in GURPS Space 4e
+float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface)
+{
+	float distanceToHorizon = sqrt(worldDiameter * EARTH_RADIUS_IN_KM * 2 * KM_TO_M * distanceFromSurface);
+	return distanceToHorizon;
+}
+
+//	Determine angular velocity
+//	The return value is in m/s
+//	NOTE: This is not included in GURPS Space 4e
+float getEquatorialRotationVelocity(float diameter, float rotationPeriod)
+{
+	float radius = (diameter / 2) * EARTH_RADIUS_IN_KM * KM_TO_M;
+	float angularVelocity = (2 * M_PI) / (rotationPeriod * HOUR_TO_SEC);
+	float equatorialRotationVelocity = angularVelocity * radius;
+	return equatorialRotationVelocity;
+}
+
+//	Determine total surface area
+tuple<float, float, float> getSurfaceArea(float worldDiameter, float hydrographicCoverage)
+{
+	float totalSurfaceArea = 4 * M_PI * pow((worldDiameter / 2) * EARTH_RADIUS_IN_KM, 2);
+	float liquidSurfaceArea = totalSurfaceArea * hydrographicCoverage;
+	float landSurfaceArea = totalSurfaceArea - liquidSurfaceArea;
+	return make_tuple(totalSurfaceArea, liquidSurfaceArea, landSurfaceArea);
 }

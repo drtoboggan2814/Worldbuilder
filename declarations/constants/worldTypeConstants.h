@@ -8,6 +8,7 @@ const char OT_BARREN = 1;
 const char OT_GARDEN = 2;
 
 //	worldType
+const char WT_EMPTY_ORBIT = -1;
 const char WT_ASTEROID_BELT = 0;
 const char WT_TINY_ICE = 1;
 const char WT_TINY_SULFUR = 2;

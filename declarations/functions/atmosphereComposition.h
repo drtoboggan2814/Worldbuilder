@@ -1,6 +1,5 @@
-#include <string>
+#include "../structures/atmosphericComposition_t.h"
 
 //#include "../structures/atmosphericComposition_t.h"
 
-using namespace std;
 atmosphericComposition_t atmosphereComposition(char worldType);

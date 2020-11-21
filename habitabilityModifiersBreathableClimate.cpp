@@ -1,9 +1,10 @@
 //	Constant declarations
+#include <cstdint>
 #include "declarations/constants/climateTypeConstants.h"
 
-int habitabilityModifiersBreathableClimate(char climateType, bool breathable)
+int8_t habitabilityModifiersBreathableClimate(char climateType, bool breathable)
 {
-	int habitabilityModifier;
+	int8_t habitabilityModifier;
 
 	if (breathable == true)
 	{

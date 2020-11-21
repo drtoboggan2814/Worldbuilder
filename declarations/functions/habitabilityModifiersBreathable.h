@@ -1,1 +1,2 @@
-int habitabilityModifiersBreathable(char pressureCategory, bool breathable);
+#include <cstdint>
+int8_t habitabilityModifiersBreathable(char pressureCategory, bool breathable);

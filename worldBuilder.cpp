@@ -1,10 +1,14 @@
 //	This holds the main function of the GURPS Space 4e worldbuilding process
 //	This follows the steps outlined in the book
 
+//	Boost libraries
+//	#include <boost/python.hpp>
+
 //	C++ libraries
 #include <iostream>
+
 //	#include <string>
-#include <stdlib.h>
+#include <cstdlib>
 #include <time.h>
 #include <math.h>
 #include <random>
@@ -72,9 +76,13 @@
 #include "declarations/functions/calculateStellarTemperature.h"
 #include "declarations/functions/calculateStellarLuminosity.h"
 #include "declarations/functions/determineStarRadius.h"
+#include "declarations/functions/solarPowerFunctions.h"
 
 //	Star system design
 #include "declarations/functions/determineStarNumber.h"
+
+	#include "declarations/functions/readFromHYGCSV.h"
+//	#include "declarations/functions/runPython.h"
 
 //	using namespace std;
 
@@ -182,6 +190,8 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 	moon.worldDensity = worldDensityTable(moon.worldType);
 //	Determine the world's diameter
 	moon.worldDiameter = worldDiameterCalculator(moon.blackbodyTemperature, moon.worldDensity, moon.worldType);
+//	Calculate surface area
+	tie(moon.totalSurfaceArea, moon.liquidSurfaceArea, moon.landSurfaceArea) = getSurfaceArea(moon.worldDiameter, moon.hydrographicCoverage);
 //	Determine the world's surface gravity
 	moon.surfaceGravity = surfaceGravityCalculator(moon.worldDensity, moon.worldDiameter);
 //	Determine the world's atmospheric pressure
@@ -208,6 +218,7 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 	moon.rotationPeriod = calculateRotationPeriod(moon.totalTidalEffect, moon.orbitalPeriod, moon.worldType, moon.tidalLockedOrNot);
 //	Determine if the world has a retrograde rotation
 	moon.retrogradeOrNot = checkForRetrogradeRotation(POM_MOON);
+	moon.equatorialRotationVelocity = getEquatorialRotationVelocity(moon.worldDiameter, moon.rotationPeriod);
 	moon.apparentDayLength = determineLocalCalendar(moon.rotationPeriod, moon.retrogradeOrNot, POM_MOON, moon.orbitalPeriod, CALO_DAY_LENGTH, planet.orbitalPeriod);
 	moon.apparentSatelliteOrbitalCycle = determineLocalCalendar(moon.rotationPeriod, moon.retrogradeOrNot, POM_MOON, moon.orbitalPeriod, CALO_ORBITAL_CYCLE, planet.orbitalPeriod);
 //	Calculate the world's axial tilt
@@ -232,6 +243,8 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 //	Check if the world is in a resonant orbit
 //	If so, determine the effects that has on the world
 	tie(moon.resonantOrNot, moon.apparentDayLength) = resonantWorldEffects(moon.orbitalEccentricity, moon.tidalLockedOrNot, moon.orbitalPeriod, moon.apparentDayLength);
+//	Get the moon's magnetic field strength
+	moon.magneticFieldStrength = getMagneticField(moon.worldMass, moon.worldDensity, moon.rotationPeriod, primary.stellarAge, moon.worldType);
 
 	return moon;
 
@@ -242,15 +255,26 @@ moon_t moonBuilder(star_t primary, moon_t moon, world_t planet)
 world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t primary/*, float planetMass, float parentPlanetOrbitalPeriod, char parentWorldType, string planetOrMoon*/)
 {
 //	Initialize world
-	world_t world;
+	world_t world = {0};
+/*	if (sizeClass == SC_ASTEROID_BELT)
+	{
+		cout << "sizeClass = SC_ASTEROID_BELT" << endl;
+		cout << "averageOrbitalRadius = " << averageOrbitalRadius << endl;
+	}
+*/
+	world.sizeClass = sizeClass;
 
 //	Assign the orbital radius
 	world.orbitalRadius = averageOrbitalRadius;
 //	Check if the orbital slot is empty
-	if (sizeClass == SC_EMPTY_ORBIT) {world.emptyOrNot == true;}
+	if (sizeClass == SC_EMPTY_ORBIT)
+	{
+		world.emptyOrNot = true;
+		world.worldType = WT_EMPTY_ORBIT;
+	}
 
 //	For gas giants
-	else if (sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT)
+	else if (sizeClass == SC_SMALL_GAS_GIANT || sizeClass == SC_MEDIUM_GAS_GIANT || sizeClass == SC_LARGE_GAS_GIANT)
 	{
 //		World is present
 		world.emptyOrNot == false;
@@ -260,10 +284,14 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 		world.worldType = determineWorldType_ADVANCED(sizeClass, world.blackbodyTemperature, 0, primary.stellarMass, primary.stellarAge, false);
 //		Determine world mass
 		world.worldMass = getGasGiantMass(world.worldType);
+//		cout << "worldMass = " << world.worldMass << endl;
 //		Determine world density
 		world.worldDensity = getGasGiantDensity(world.worldType);
 //		Determine world diameter
 		world.worldDiameter = getGasGiantDiameter(world.worldMass, world.worldDensity);
+		world.totalSurfaceArea = 0;
+		world.liquidSurfaceArea = 0;
+		world.landSurfaceArea = 0;
 //		Determine surface gravity at cloud tops
 		world.surfaceGravity = surfaceGravityCalculator(world.worldDensity, world.worldDiameter);
 //		Determine orbital period
@@ -276,44 +304,93 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 		world.maximumSeparation = calculatePlanetPrimaryMaximumSeparation(world.orbitalRadius, world.orbitalEccentricity);
 //		Determine the world's escape velocity
 		world.escapeVelocity = getEscapeVelocity(world.worldMass * EARTH_MASS_IN_KG, (world.worldDiameter / 2) * (EARTH_RADIUS_IN_KM * KM_TO_M));
+//		Calculate the world's sidereal rotation in standard hours
+		world.rotationPeriod = calculateRotationPeriod(world.totalTidalEffect, world.orbitalPeriod, world.worldType, world.tidalLockedOrNot);
+//		cout << "Got to rotationPeriod" << endl;
+//		Determine if the world has a retrograde rotation
+		world.retrogradeOrNot = checkForRetrogradeRotation(POM_PLANET);
+		world.equatorialRotationVelocity = getEquatorialRotationVelocity(world.worldDiameter, world.rotationPeriod);
+		world.surfaceIrradiance = solarPowerAtDistance(primary.stellarRadius, world.orbitalRadius, primary.energyRadiated);
 //		Determine number of moons
 		world.firstFamilyMoonlets = getFirstFamily(world.orbitalRadius);
 		world.secondFamilyMajorMoons = getSecondFamily(world.orbitalRadius);
 		world.thirdFamilyMoonlets = getThirdFamily(world.orbitalRadius);
+//		Local calendar
+//		A negative value for apparent day length is valid even if the world's rotation is not retrograde
+//		This means that the primary will rise in the west and set in the east
+		world.apparentDayLength = determineLocalCalendar(world.rotationPeriod, world.retrogradeOrNot, POM_PLANET, world.orbitalPeriod, CALO_DAY_LENGTH, 0);
+//		cout << "Got to apparentDayLength" << endl;
+
+//		Calculate the world's axial tilt
+		world.axialTilt = calculateAxialTilt();
+//		cout << "Got to axialTilt" << endl;
+//		Determine the world's minimum molecular weight retained
+		world.minimumMolecularWeightRetained = minimumMolecularWeightRetainedCalculator(world.blackbodyTemperature, world.worldDiameter, world.worldDensity, world.worldType);
+//		If the world is tide locked
+		if (world.tidalLockedOrNot == true)
+		{
+			tie(world.atmosphericPressure, world.atmosphericPressureCategory, world.hydrographicCoverage) = tideLockedWorldEffects(world.tidalLockedOrNot, world.surfaceTemperature, world.atmosphericPressureCategory, world.atmosphericPressure, world.atmosphereMass, world.surfaceGravity, world.worldType, world.hydrographicCoverage);
+		}
+//		Check if the world is in a resonant orbit
+//		If so, determine the effects that has on the world
+		tie(world.resonantOrNot, world.apparentDayLength) = resonantWorldEffects(world.orbitalEccentricity, world.tidalLockedOrNot,	world.orbitalPeriod, world.apparentDayLength);
+
 //		Generate moonlets in the first family
-		for (int i = 0; i < world.firstFamilyMoonlets; i++)
+		for (int8_t i = 0; i < world.firstFamilyMoonlets; i++)
 		{
 			world.firstFamilyMoonletArray[i].orbitalRadius = placeMoonOrbits(world.worldDiameter, 0, 1);
 		}
 
 //		Generate major moons in second family
-		for (int i = 0; i < world.secondFamilyMajorMoons; i++)
+		if (world.secondFamilyMajorMoons != 0)
 		{
-			world.majorMoonArray[i].moonSizeClass = moonSizeTable();
-			world.majorMoonArray[i].orbitalRadius = placeMoonOrbits(world.worldDiameter, world.majorMoonArray[i].moonSizeClass, 2);
-
-			if (i != 0)
+			for (int8_t i = 0; i < world.secondFamilyMajorMoons; i++)
 			{
-//				Iterate through all previous moons
-				for (int j = 0; j < i; j++)
+//				cout << "secondFamilyMajorMoons = " << (int)world.secondFamilyMajorMoons << endl;
+//				cout << "i = " << (int)i << endl;
+				world.majorMoonArray[i].moonSizeClass = moonSizeTable();
+//				cout << "set moonSizeClass" << endl;
+				world.majorMoonArray[i].orbitalRadius = placeMoonOrbits(world.worldDiameter, world.majorMoonArray[i].moonSizeClass, 2);
+//				cout << "set orbitalRadius" << endl;
+				if (i != 0)
 				{
-//					If the distance between moon i and any of the previous moons is less than the planet's diameter
-					if (world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius <  world.worldDiameter)
+	//				Iterate through all previous moons
+					for (int8_t j = 0; j < i; j++)
 					{
-//						Decrement by one and repeat
-						i += -1;
-						break;
+//						cout << "abs(world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius) = " << abs(world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius) << endl;
+//						cout << "worldDiameter = " << world.worldDiameter << endl;
+//						cout << "j = " << (int)j << endl;
+	//					If the distance between moon i and any of the previous moons is less than the planet's diameter
+						if (abs(world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius) < world.worldDiameter)
+						{
+	//						Decrement by one and repeat
+							i += -1;
+							break;
+						}
 					}
 				}
-			}
-		}
 
+//				Determine the moon's sizeClass
+				if (world.majorMoonArray[i].moonSizeClass == -3) {world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_TINY;}
+				else if (world.majorMoonArray[i].moonSizeClass == -2)	{world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_SMALL;}
+				else {world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_STANDARD;}
+//				cout << "set sizeClass" << endl;
+	//			Run worldBuilder_ADVANCED for each moon
+				world.majorMoonArray[i] = moonBuilder(primary, world.majorMoonArray[i], world);
+//				cout << "built moon" << endl;
+			}
+//			cout << "finished moonbuilding" << endl;
+		}
 //		Generate moonlets in the third family
 		for (int i = 0; i < world.thirdFamilyMoonlets; i++)
 		{
 			world.thirdFamilyMoonletArray[i].orbitalRadius = placeMoonOrbits(world.worldDiameter, 0, 3);
 		}
 
+//		Get the world's magnetic field strength
+//		cout << "about to set magneticFieldStrength" << endl;
+		world.magneticFieldStrength = getMagneticField(world.worldMass, world.worldDensity, world.rotationPeriod, primary.stellarAge, world.worldType);
+//		cout << "set magneticFieldStrength" << endl;
 	}
 
 	else
@@ -325,6 +402,7 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 		world.blackbodyTemperature = calculateBlackbodyTemperature_ADVANCED(primary.stellarLuminosity, world.orbitalRadius);
 //		Determine world type
 		world.worldType = determineWorldType_ADVANCED(sizeClass, world.blackbodyTemperature, 0, primary.stellarMass, primary.stellarAge, false);
+//		cout << "worldType = " << world.worldType << endl;
 //		cout << "Got to worldType" << endl;
 //		Place major moons
 
@@ -362,6 +440,8 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 //		Determine the world's diameter
 		world.worldDiameter = worldDiameterCalculator(world.blackbodyTemperature, world.worldDensity, world.worldType);
 //		cout << "Got to worldDiameter" << endl;
+//		Calculate surface area
+		tie(world.totalSurfaceArea, world.liquidSurfaceArea, world.landSurfaceArea) = getSurfaceArea(world.worldDiameter, world.hydrographicCoverage);
 //		Determine the world's surface gravity
 		world.surfaceGravity = surfaceGravityCalculator(world.worldDensity, world.worldDiameter);
 //		cout << "Got to surfaceGravity" << endl;
@@ -410,8 +490,12 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 					for (int j = 0; j < i; j++)
 					{
 //						If the distance between moon i and any of the previous moons is less than 5 times the planet's diameter
-						if (world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius < (5 * world.worldDiameter))
+						if (abs(world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius) < (5 * world.worldDiameter))
 						{
+//							cout << "majorMoonArray[" << i << "].orbital radius = " << world.majorMoonArray[i].orbitalRadius << endl;
+//							cout << "majorMoonArray[" << j << "].orbital radius = " << world.majorMoonArray[j].orbitalRadius << endl;
+//							cout << " 5 * planetDiameter = " << 5 * world.worldDiameter << endl;
+//							cout << "i - j = " << world.majorMoonArray[i].orbitalRadius - world.majorMoonArray[j].orbitalRadius << endl;
 //							Decrement by one and repeat
 							i += -1;
 							break;
@@ -420,7 +504,7 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 				}
 
 //				Determine the moon's sizeClass
-				if (sizeClass == SC_EMPTY_ORBIT || sizeClass == SC_TERRESTRIAL_PLANET_SMALL || (sizeClass == SC_TERRESTRIAL_PLANET_STANDARD && world.majorMoonArray[i].moonSizeClass < -1) || ((sizeClass == SC_TERRESTRIAL_PLANET_LARGE || sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT) && world.majorMoonArray[i].moonSizeClass == -3)) {world.majorMoonArray[i].sizeClass = SC_EMPTY_ORBIT;}
+				if (sizeClass == SC_EMPTY_ORBIT || sizeClass == SC_TERRESTRIAL_PLANET_SMALL || (sizeClass == SC_TERRESTRIAL_PLANET_STANDARD && world.majorMoonArray[i].moonSizeClass < -1) || ((sizeClass == SC_TERRESTRIAL_PLANET_LARGE || sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT) && world.majorMoonArray[i].moonSizeClass == -3)) {world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_TINY;}
 				else if ((sizeClass == SC_TERRESTRIAL_PLANET_STANDARD && world.majorMoonArray[i].moonSizeClass == -1) || ((sizeClass == SC_TERRESTRIAL_PLANET_LARGE || sizeClass == WT_SMALL_GAS_GIANT || sizeClass == WT_MEDIUM_GAS_GIANT || sizeClass == WT_LARGE_GAS_GIANT) && world.majorMoonArray[i].moonSizeClass == -2))	{world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_SMALL;}
 				else {world.majorMoonArray[i].sizeClass = SC_TERRESTRIAL_PLANET_STANDARD;}
 
@@ -454,7 +538,8 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 //		Determine if the world has a retrograde rotation
 		world.retrogradeOrNot = checkForRetrogradeRotation(POM_PLANET);
 //		cout << "Got to retrogradeOrNot" << endl;
-
+		world.equatorialRotationVelocity = getEquatorialRotationVelocity(world.worldDiameter, world.rotationPeriod);
+		world.surfaceIrradiance = solarPowerAtDistance(primary.stellarRadius, world.orbitalRadius, primary.energyRadiated);
 //		Local calendar
 //		A negative value for apparent day length is valid even if the world's rotation is not retrograde
 //		This means that the primary will rise in the west and set in the east
@@ -493,18 +578,27 @@ world_t worldBuilder_ADVANCED(char sizeClass, float averageOrbitalRadius, star_t
 //		If so, determine the effects that has on the world
 		tie(world.resonantOrNot, world.apparentDayLength) = resonantWorldEffects(world.orbitalEccentricity, world.tidalLockedOrNot,	world.orbitalPeriod, world.apparentDayLength);
 //		cout << "Got to resonantWorldEffects" << endl;
+//		Get the world's magnetic field strength
+		world.magneticFieldStrength = getMagneticField(world.worldMass, world.worldDensity, world.rotationPeriod, primary.stellarAge, world.worldType);
 	}
 
+/*
+	if (world.worldType == WT_ASTEROID_BELT)
+	{
+		cout << "worldType = WT_ASTEROID_BELT" << endl;
+		cout << "averageOrbitalRadius = " << world.orbitalRadius << endl;
+	}
+*/
 //	cout << "Got to return world" << endl;
 	return world;
 }
 
 
 //	Star design sequence
-star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
+star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius, float inputLuminosity = 0)
 {
 //	Initialize the star
-	star_t star;
+	star_t star = {0};
 
 //	Which star is this?
 	star.starNumber = companionStar;
@@ -513,19 +607,21 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 	star.stellarMass = stellarMassTable();
 //	cout << "stellarMass = " << star.stellarMass << endl;
 //	Determine the star's age
-	star.stellarAge = stellarAgeTable(starSystem.gardenWorldPresent);
+	star.stellarAge = starSystem.systemAge;
 //	Check if star.stellarAge == 0
 	if (star.stellarAge == 0) {star.stellarAge = stellarAgeTable(starSystem.gardenWorldPresent);}
 //	cout << "stellarAge = " << star.stellarAge << endl;
 //	Determine the star's characteristics
 	star = determineStellarCharacteristics(star);
+//	Calculate the energy radiated by the star
+	star.energyRadiated = stefanBoltzmannCalculator(star.tableTemperature);
 //	Determine the star's temperature
 	star = calculateStellarTemperature(star);
 //	cout << "stellarTemperature = " << star.stellarTemperature << endl;
 //	Determine the star's luminosity
 	star = calculateStellarLuminosity(star);
 //	cout << "stellarLuminosity = " << star.stellarLuminosity << endl;
-//	If the star is a white dwarf, modify the star's mass
+//	If the star is a white dwarf, modify the star's mass and reset the star's starType
 	if (star.luminosityClass == LC_D)
 	{
 		int whiteDwarfMassRoll = diceRoller(6, 2) - 2;
@@ -534,6 +630,8 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 
 //	Determine the radius of the star
 	star = determineStarRadius(star);
+//	Determine the equatorial rotation velocity of the star
+//	star.equatorialRotationVelocity = getEquatorialRotationVelocity(star.stellarRadius * 2, star.rotation)
 //	Determine the escape velocity of the star
 	star.escapeVelocity = getEscapeVelocity(star.stellarMass * SOL_MASS_IN_KG, star.stellarRadius * SOL_RADIUS_IN_KM);
 //	cout << "stellarRadius = " << star.stellarRadius << endl;
@@ -615,22 +713,26 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 //	for (int i = 0; i < star.numberOfOrbits; i++) {cout << "star.sizeClassArray[" << i << "] = " << star.sizeClassArray[i] << endl;}
 
 //	Build the worlds around the star
+	star.sizeClassIndex = 0;
 	for (int index = 0; index < star.numberOfOrbits; index++)
 	{
 //		cout << "Worldbuilder for loop reached" << endl;
 //		If the world is not a gas giant or empty
 //		if (star.sizeClassArray[index] != WT_SMALL_GAS_GIANT && star.sizeClassArray[index] != WT_MEDIUM_GAS_GIANT && star.sizeClassArray[index] != WT_LARGE_GAS_GIANT && star.sizeClassArray[index] != SC_EMPTY_ORBIT)
 //		if (star.sizeClassArray[index] == SC_ASTEROID_BELT || star.sizeClassArray[index] == SC_EMPTY_ORBIT || star.sizeClassArray[index] == SC_TERRESTRIAL_PLANET_SMALL || star.sizeClassArray[index] == SC_TERRESTRIAL_PLANET_STANDARD || star.sizeClassArray[index] == SC_TERRESTRIAL_PLANET_LARGE)
+//		std::string sizeClassString = star.sizeClassArray[index];
+//		cout << "star.sizeClassArray[" << index << "] = " << +star.sizeClassArray[index] << endl;
+
 		if (star.sizeClassArray[index] != SC_EMPTY_ORBIT)
 		{
 //			cout << "Worldbuilder if loop reached" << endl;
-
 //			Run worldBuilder_ADVANCED
-			star.worldArray[index] = worldBuilder_ADVANCED(star.sizeClassArray[index], star.orbitalRadiusArray[index], star/*, 0, 0, "", POM_PLANET*/);
+			star.worldArray[star.sizeClassIndex] = worldBuilder_ADVANCED(star.sizeClassArray[index], star.orbitalRadiusArray[index], star/*, 0, 0, "", POM_PLANET*/);
+			star.sizeClassIndex += 1;
 		}
 //		cout << "For loop ended" << endl;
 	}
-
+//	cout << "star.sizeClassIndex = " << (int)star.sizeClassIndex << endl;
 
 //	Return the star
 	return star;
@@ -640,7 +742,7 @@ star_t starBuilder(starSystem_t starSystem, int companionStar, float companionAI
 starSystem_t starSystemBuilder()
 {
 //	Initialize the star system
-	starSystem_t starSystem;
+	starSystem_t starSystem = {0};
 
 //	Determine the number of stars in the system
 	starSystem.numberOfStars = determineStarNumber();
@@ -649,7 +751,7 @@ starSystem_t starSystemBuilder()
 	starSystem = companionStarOrbits(starSystem);
 //	This value is temporary
 	starSystem.gardenWorldPresent = false;
-
+	starSystem.systemAge = stellarAgeTable(starSystem.gardenWorldPresent);
 //	Build the system's stars
 //	For each star in the system
 	for (int i = 0; i < starSystem.numberOfStars; i++)
@@ -684,13 +786,13 @@ starSystem_t starSystemBuilder()
 
 int main()
 {
-
-
-	world_t world;
-	star_t star;
-	starSystem_t starSystem;
-	starSystem = starSystemBuilder();
+//	for (int i = 0; i < 100; i++)
+//	{
+	starSystem_t starSystem = starSystemBuilder();
 	printStarSystem(starSystem);
-
+//	}
+//	int starID = 32263;
+//	getStarData(starID);
+//	runPython(2, {"multiply.py", 2, 3})
 	return 0;
 }

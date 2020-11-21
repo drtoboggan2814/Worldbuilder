@@ -4,6 +4,7 @@
 	It returns the world's resource value modifier.
 */
 //	C++ libraries
+#include <cstdint>
 #include <string>
 
 //	Constant declarations
@@ -14,9 +15,9 @@
 
 using namespace std;
 
-int resourceDeterminator(char worldType)
+int8_t resourceDeterminator(char worldType)
 {
-	int resourceValueModifier;
+	int8_t resourceValueModifier;
 	int diceRoll = diceRoller(6, 3);
 
 	if (worldType == WT_ASTEROID_BELT)

@@ -48,7 +48,7 @@ int getOrbitContentsRollModifier(star_t primary, int currentIndex)
 	const int ADJACENT_TO_INNER_OR_OUTER_LIMIT = -3;
 
 //	The final modifier to be applied to orbitContentsRoll
-	int finalModifier;
+	int finalModifier = 0;
 
 //	Check if the orbit is adjacent to a forbidden zone
 	if (primary.orbitalRadiusArray[currentIndex + 1] >= primary.outerForbiddenZone || primary.orbitalRadiusArray[currentIndex - 1] <= primary.innerForbiddenZone										) {finalModifier += ADJACENT_TO_FORBIDDEN_ZONE		;}

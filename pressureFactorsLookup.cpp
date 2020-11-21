@@ -12,7 +12,7 @@ using namespace std;
 
 int pressureFactorsLookup(char worldType)
 {
-	int pressureFactor;
+	int pressureFactor = 0;
 
 	if 		(worldType == WT_SMALL_ICE) 																													{pressureFactor = pf_Small_Ice;}
 	else if (worldType == WT_STANDARD_AMMONIA 	|| worldType == WT_STANDARD_ICE || worldType == WT_STANDARD_OCEAN || worldType == WT_STANDARD_GARDEN)	{pressureFactor = pf_Standard_AIOG;}

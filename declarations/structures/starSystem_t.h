@@ -1,11 +1,13 @@
 #ifndef STARSYSTEM_T
 #define STARSYSTEM_T
 
+#include "star_t.h"
+
 struct starSystem_t
 {
-	int numberOfStars;
+	char numberOfStars;
 	star_t stars[3];
-
+	float systemAge;
 	bool gardenWorldPresent;
 };
 

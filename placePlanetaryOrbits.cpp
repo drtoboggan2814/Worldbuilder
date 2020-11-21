@@ -35,7 +35,7 @@ float getOrbitalRadius(float outermostLegalDistance)
 }
 
 //	This function returns the orbital radii of the primary in ascending order
-star_t placePlanetaryOrbits(star_t primary, int numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
+star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
 {
 //	Keep track of the distance between each orbit
 	float distanceBetweenOrbits = 0;
@@ -104,7 +104,7 @@ star_t placePlanetaryOrbits(star_t primary, int numberOfStars, float companionAI
 //	Check if the initial orbit is less than or equal to the first placed orbit
 	bool lessThanFirstOrbit = (distanceFromPrimary <= primary.orbitalRadiusArray[0]) || (distanceFromPrimary == primary.orbitalRadiusArray[0]);
 
-	cout << endl << "INWARD" << endl;
+//	cout << endl << "INWARD" << endl;
 
 //	cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << endl;
 //	cout << "inCorrectRadius = " << inCorrectRadius << endl;
@@ -246,7 +246,7 @@ star_t placePlanetaryOrbits(star_t primary, int numberOfStars, float companionAI
 	primary.numberOfOrbits = (innerWorldIndex >= outerWorldIndex) ? innerWorldIndex : outerWorldIndex;
 //	Sort orbital radii in ascending order
 //	Temp value for sorting
-	float tempValue;
+	float tempValue = 0;
 	for (int i = 0; i < outerWorldIndex + 1; i++)
 	{
 		for (int j = i + 1; j < outerWorldIndex + 1; j++)

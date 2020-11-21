@@ -3,18 +3,18 @@
 
 struct atmosphericComposition_t
 {
-	int toxicity;
-	int chlorineOrFluorine;
-	int lowOxygen;
-	int highOxygen;
-	int organicToxins;
-	int sulfurCompounds;
-	int suffocating;
-	int highCarbonDioxide;
-	int inertGases;
-	int nitrogenCompounds;
-	int pollutants;
-	int corrosive;
+	char toxicity;
+	char chlorineOrFluorine;
+	char lowOxygen;
+	char highOxygen;
+	char organicToxins;
+	char sulfurCompounds;
+	char suffocating;
+	char highCarbonDioxide;
+	char inertGases;
+	char nitrogenCompounds;
+	char pollutants;
+	char corrosive;
 };
 
 #endif

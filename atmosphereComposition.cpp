@@ -1,5 +1,5 @@
 //	C++ libraries
-#include <string>
+//	#include <string>
 
 //	Constant declarations
 #include "declarations/constants/worldTypeConstants.h"
@@ -13,7 +13,7 @@
 #include "declarations/functions/marginalAtmosphereTable.h"
 
 
-using namespace std;
+//	using namespace std;
 
 atmosphericComposition_t atmosphereComposition(char worldType)
 {

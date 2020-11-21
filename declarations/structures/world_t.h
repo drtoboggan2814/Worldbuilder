@@ -1,6 +1,7 @@
 #ifndef WORLD_T
 #define WORLD_T
 
+#include <cstdint>
 #include "atmosphericComposition_t.h"
 #include "moonlet_t.h"
 #include "moon_t.h"
@@ -22,9 +23,9 @@ struct world_t
 //	Describes the specific type of world it is
 	char worldType;
 //	The world's resource value modifier
-	int resourceValueModifier;
+	int8_t resourceValueModifier;
 //	The world's habitability modifier
-	int habitabilityModifier;
+	int8_t habitabilityModifier;
 
 //	Physical attributes
 //	The world's density in terms of the Earth
@@ -47,6 +48,18 @@ struct world_t
 	float blackbodyCorrection;
 //	The world's blackbody temperature in K
 	float blackbodyTemperature;
+//	The world's magnetic field strength in term of Earth's
+	float magneticFieldStrength;
+//	The equatorial rotation velocity in m/s
+	float equatorialRotationVelocity;
+//	The irradiance received at the top of the world's atmosphere
+	float surfaceIrradiance;
+//	Average surface area (not every world will be mapped)
+	float totalSurfaceArea;
+//	Land surface area
+	float landSurfaceArea;
+//	Liquid surface area
+	float liquidSurfaceArea;
 
 //	Atmosphere
 //	The world's atmospheric mass in terms of the Earth's
@@ -82,7 +95,7 @@ struct world_t
 //	The length of an apparent day in hours
 	float apparentDayLength;
 //	The world's axial tilt in degrees
-	int axialTilt;
+	int8_t axialTilt;
 //	Is the world in a stable resonant pattern
 	bool resonantOrNot;
 //	Is the world tidally locked
@@ -92,15 +105,15 @@ struct world_t
 
 //	Moons
 //	The major moons of the world (maximum of 12)
-	moon_t majorMoonArray[12];
+	moon_t majorMoonArray[8];
 //	The orbital radii of each major moon
-	float majorMoonOrbitalRadiusArray[12];
+	float majorMoonOrbitalRadiusArray[8];
 //	The number of major moons
-	int numberOfMajorMoons;
+	int8_t numberOfMajorMoons;
 //	The number of moonlets orbiting a terrestrial world
-	int terrestrialMoonlet;
+	int8_t terrestrialMoonlet;
 //	The size class of the moon
-	int moonSizeClass;
+	int8_t moonSizeClass;
 
 //	For moons
 //	The orbital radius of the moon around its planet
@@ -121,14 +134,18 @@ struct world_t
 	float totalTidalEffect;
 
 //	For gas giants
-	int firstFamilyMoonlets;
-	int secondFamilyMajorMoons;
-	int thirdFamilyMoonlets;
-	int ringSystemVisibility;
+	int8_t firstFamilyMoonlets;
+	int8_t secondFamilyMajorMoons;
+	int8_t thirdFamilyMoonlets;
+	int8_t ringSystemVisibility;
 	bool gasGiantTinySulfurPresent;
 
 	moonlet_t firstFamilyMoonletArray[12];
 	moonlet_t thirdFamilyMoonletArray[6];
+
+//	Mapping information
+	uint8_t hexesPerSide;
+	uint16_t totalHexes;
 };
 
 #endif

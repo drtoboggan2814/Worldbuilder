@@ -1,3 +1,4 @@
+#include "../structures/star_t.h"
 //	This functions returns a string representing the size of the gas giant
 char getGasGiantSize(int diceRoll);
 

@@ -43,15 +43,21 @@ int diceRNG(int dieNum)
 	default_random_engine generator (seed);
 	uniform_int_distribution<int> diceRoll(1, dieNum);
 	int result = diceRoll(generator);
+//	cout << "diceRNG = " << result << endl;
 	return result;
 }
 
 int diceRoller(int dieNum, int dieCount)
 {
-	int result = 0;
-	for (int i = 0; i < dieCount; i++)
+	if (dieNum == 0 || dieCount == 0) {return 0;}
+	else
 	{
-		result += diceRNG(dieNum);
+		int result = 0;
+		for (int i = 0; i < dieCount; i++)
+		{
+			result += diceRNG(dieNum);
+			if (i == dieCount - 1) {break;}
+		}
+		return result;
 	}
-	return result;
 }
