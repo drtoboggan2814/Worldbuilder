@@ -12,7 +12,6 @@ struct worldBuilderParameters_t
 	bool eccentricityPresent;
 	bool inclinationPresent;
 	bool orbitalPeriodPresent;
-	bool semiMajorAxisPresent;
 
 	//	Physical parameters
 	bool densityPresent;
