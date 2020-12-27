@@ -1,13 +1,8 @@
-//	C++ libraries
-#include <string>
-
 //	Constant declarations
 #include "declarations/constants/climateStepConstants.h"
 #include "declarations/constants/worldTypeConstants.h"
 
-using namespace std;
-
-int climateStepLookup(char worldType)
+int climateStepLookup(const char& worldType)
 {
 	int step;
 

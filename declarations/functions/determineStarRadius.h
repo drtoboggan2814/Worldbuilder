@@ -1,2 +1,1 @@
-#include "../structures/star_t.h"
-star_t determineStarRadius(star_t primary);
+float determineStarRadius(const char &luminosityClass, const float &stellarLuminosity, const float &stellarTemperature);

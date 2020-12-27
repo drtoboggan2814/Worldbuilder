@@ -8,7 +8,7 @@
 	It takes the world's surface gravity, atmospheric mass, and world type as parameters.
 	The world's calculated atmospheric pressure in terms of Earth's is returned.
 */
-float atmosphericPressureCalculator(float atmosphereMass, float surfaceGravity, char worldType)
+float atmosphericPressureCalculator(const float& atmosphereMass, const float& surfaceGravity, const char& worldType)
 {
 	int pressureFactor;
 	float atmosphericPressure;

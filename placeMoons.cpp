@@ -1,5 +1,5 @@
 //	This file corresponds to "Step 24: Place Moons"
-#include <cstdlib>
+#include <cstdint>
 //	Constant declarations
 #include "declarations/constants/worldTypeConstants.h"
 
@@ -9,7 +9,7 @@
 //	Gas giants
 
 //	Generate the number of moonlets in the gas giant's first family
-int8_t getFirstFamily(float distanceToPrimary)
+int8_t getFirstFamily(const float& distanceToPrimary)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = diceRoller(6, 2);
@@ -28,37 +28,38 @@ int8_t getFirstFamily(float distanceToPrimary)
 
 //	See how visible the ring system is
 //	0 is not visible, 1 can be seen through a telescope, 2 is comparable to Saturn
-int8_t getRingSystemVisibility(int moonlets)
+int8_t getRingSystemVisibility(const int& moonlets)
 {
 	if 		(moonlets <  6				   ) {return 0;}
 	else if (moonlets >= 6 && moonlets < 10) {return 1;}
 	else 									 {return 2;}
 }
 
-int8_t getSecondFamily(float distanceToPrimary)
+int8_t getSecondFamily(const float& distanceToPrimary)
 {
-//	Roll for the number of major moons
-	int majorMoonRoll = 0;
-//	Modifier for majorMoonRoll
-	int majorMoonRollModifier = 0;
+//	Initialize return value
+	int8_t numberOfSecondFamilyMoons = 0;
 
 //	If the gas giant is within 0.1 AU of the primary, there are no moons in the second family
-	if (distanceToPrimary <= 0.1) {return 0;}
+	if (distanceToPrimary <= 0.1) {numberOfSecondFamilyMoons = 0;}
 
 	else
 	{
-		majorMoonRoll = diceRoller(6, 1);
+		int majorMoonRoll = diceRoller(6, 1);
+		int majorMoonRollModifier = 0;
 
 		if 		(distanceToPrimary > 0.1  && distanceToPrimary <= 0.5 ) {majorMoonRollModifier = -5;}
 		else if (distanceToPrimary > 0.5  && distanceToPrimary <= 0.75) {majorMoonRollModifier = -4;}
 		else if (distanceToPrimary > 0.75 && distanceToPrimary <= 1.5 ) {majorMoonRollModifier = -1;}
 		else 															{majorMoonRollModifier =  0;}
 
-		return majorMoonRoll + majorMoonRollModifier;
+		numberOfSecondFamilyMoons = majorMoonRoll + majorMoonRollModifier;
 	}
+
+	return numberOfSecondFamilyMoons;
 }
 
-int8_t getThirdFamily(float distanceToPrimary)
+int8_t getThirdFamily(const float& distanceToPrimary)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;
@@ -80,7 +81,7 @@ int8_t getThirdFamily(float distanceToPrimary)
 	}
 }
 
-int8_t getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
+int8_t getTerrestrialMajorMoons(const float distanceToPrimary, const char& worldType)
 {
 //	Roll for number of major moons
 	int majorMoonRoll = 0;
@@ -109,7 +110,7 @@ int8_t getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
 	}
 }
 
-int8_t getTerrestrialMoonlets(float distanceToPrimary, char worldType)
+int8_t getTerrestrialMoonlets(const float& distanceToPrimary, const char& worldType)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;

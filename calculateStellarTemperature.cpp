@@ -9,38 +9,37 @@
 #include "declarations/functions/floatRNG.h"
 #include "declarations/functions/diceRoller.h"
 
-//	Structure declarations
-#include "declarations/structures/world_t.h"
-#include "declarations/structures/star_t.h"
-
-star_t calculateStellarTemperature(star_t primary)
+float calculateStellarTemperature(const char &luminosityClass, const float &stellarMass, const float &stellarAge, const float &sSpan, const float &tableTemperature)
 {
+//	Initialize return value
+	float stellarTemperature;
+
 	float variance = floatRNG(-100, 100);
 	int firstRoll;
 	float currentTemperature;
 
 //	If the star is a giant
-	if (primary.luminosityClass == LC_III)
+	if (luminosityClass == LC_III)
 	{
 		firstRoll = diceRoller(6, 2);
 		currentTemperature = ( 2 * (firstRoll - 2)) + 3000;
-		primary.stellarTemperature = currentTemperature + variance;
+		stellarTemperature = currentTemperature + variance;
 	}
 
 //	If it is a subgiant
-	else if (primary.luminosityClass == LC_IV)
+	else if (luminosityClass == LC_IV)
 	{
-		currentTemperature = primary.stellarMass - ((primary.stellarAge / primary.sSpan) * (primary.stellarMass - 4800));
-		primary.stellarTemperature = currentTemperature + variance;
+		currentTemperature = stellarMass - ((stellarAge / sSpan) * (stellarMass - 4800));
+		stellarTemperature = currentTemperature + variance;
 	}
 
 //	If it is on the main sequence or a white dwarf
 	else
 	{
-		primary.stellarTemperature = primary.tableTemperature + variance;
+		stellarTemperature = tableTemperature + variance;
 	}
 
-	return primary;
+	return stellarTemperature;
 /*
 //	If the star is a giant
 	if (age > (sSpan + mSpan))

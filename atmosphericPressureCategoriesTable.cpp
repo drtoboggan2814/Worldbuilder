@@ -1,7 +1,7 @@
 //	Constant declarations
 #include "declarations/constants/atmosphericPressureCategoryConstants.h"
 
-char atmosphericPressureCategoriesTable(float atmosphericPressure)
+char atmosphericPressureCategoriesTable(const float& atmosphericPressure)
 {
 	char pressureCategory;
 	if 		(atmosphericPressure == 0								  ) {pressureCategory = APC_NONE;}

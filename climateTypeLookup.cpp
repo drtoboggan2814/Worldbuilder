@@ -1,7 +1,7 @@
 //	Constant declarations
 #include "declarations/constants/climateTypeConstants.h"
 
-char climateTypeLookup(int surfaceTemperature)
+char climateTypeLookup(const int& surfaceTemperature)
 {
 	char climateType;
 

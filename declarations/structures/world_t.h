@@ -1,10 +1,15 @@
 #ifndef WORLD_T
 #define WORLD_T
 
+//	C++ libraries
 #include <cstdint>
+#include <string>
+
+//	Structure declarations
 #include "atmosphericComposition_t.h"
-#include "moonlet_t.h"
 #include "moon_t.h"
+#include "moonlet_t.h"
+#include "tectonicPlate_t.h"
 
 //	#include <string>
 
@@ -16,6 +21,7 @@ struct world_t
 //	True if empty, false otherwise
 	bool emptyOrNot;
 	char sizeClass;
+	bool randomWorld;
 //	Overall attributes and GURPS scores
 
 //	Describes the overall type the world is
@@ -146,6 +152,24 @@ struct world_t
 //	Mapping information
 	uint8_t hexesPerSide;
 	uint16_t totalHexes;
+	uint16_t waterHexCount;
+	uint16_t landHexCount;
+	uint8_t numberOfMajorOceans;
+	uint8_t numberOfMinorOceans;
+	uint8_t numberOfSmallSeas;
+	uint8_t numberOfScatteredLakes;
+	uint8_t numberOfMajorContinents;
+	uint8_t numberOfMinorContinents;
+	uint8_t numberOfMajorIslands;
+	uint8_t numberOfArchipelagoes;
+//	Tectonic plates
+	uint8_t tectonicPlateCount;
+	tectonicPlate_t tectonicPlateArray[16];
+
+//	Identification
+	int planetDBIndex;
+	std::string planetName;
+
 };
 
 #endif

@@ -7,25 +7,22 @@
 //	Function declarations
 #include "declarations/functions/floatRNG.h"
 
-//	Structure declarations
-#include "declarations/structures/world_t.h"
-#include "declarations/structures/star_t.h"
-
-star_t determineStarRadius(star_t primary)
+float determineStarRadius(const char &luminosityClass, const float &stellarLuminosity, const float &stellarTemperature)
 {
-
+//	Initialize return value
+	float stellarRadius;
 //	For white dwarfs
-	if (primary.luminosityClass == LC_D)
+	if (luminosityClass == LC_D)
 	{
-		primary.stellarRadius = floatRNG(0.005, 0.015);
+		stellarRadius = floatRNG(0.005, 0.015);
 	}
 
 //	All other stars
 	else
 	{
 //		R = (155000 * sqrt*(L)) / T^2
-		primary.stellarRadius = 155000 * sqrt(primary.stellarLuminosity) / (primary.stellarTemperature * primary.stellarTemperature);
+		stellarRadius = 155000 * sqrt(stellarLuminosity) / (stellarTemperature * stellarTemperature);
 	}
 
-	return primary;
+	return stellarRadius;
 }

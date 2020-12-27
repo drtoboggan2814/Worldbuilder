@@ -1,2 +1,2 @@
 #include "../structures/atmosphericComposition_t.h"
-bool breathableChecker(atmosphericComposition_t atmosphereComposition);
+bool breathableChecker(const atmosphericComposition_t& atmosphereComposition);

@@ -1,3 +1,1 @@
-#include <string>
-using namespace std;
-int climateMinLookup(char worldType);
+int climateMinLookup(const char& worldType);

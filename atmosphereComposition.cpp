@@ -15,7 +15,7 @@
 
 //	using namespace std;
 
-atmosphericComposition_t atmosphereComposition(char worldType)
+atmosphericComposition_t atmosphereComposition(const char& worldType)
 {
 //	Initialize the atmospheric composition
 	atmosphericComposition_t atmosphereComposition;

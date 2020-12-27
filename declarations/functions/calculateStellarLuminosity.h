@@ -1,2 +1,1 @@
-#include "../structures/star_t.h"
-star_t calculateStellarLuminosity(star_t primary);
+float calculateStellarLuminosity(const char &luminosityClass, const float &stellarAge, const float &mSpan, const float &lMax, const float &lMin);

@@ -1,5 +1,5 @@
 //	This calculates the mass of the star, and returns the mass and a variance
-
+//	Function declarations
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
 

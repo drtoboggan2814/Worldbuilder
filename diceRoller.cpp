@@ -14,7 +14,7 @@
 #include <chrono>
 using namespace std;
 
-int diceRNG(int dieNum)
+int diceRNG(const int& dieNum)
 {/*
 	int diceArray[dieCount];
 	int i;
@@ -47,7 +47,7 @@ int diceRNG(int dieNum)
 	return result;
 }
 
-int diceRoller(int dieNum, int dieCount)
+int diceRoller(const int& dieNum, const int& dieCount)
 {
 	if (dieNum == 0 || dieCount == 0) {return 0;}
 	else

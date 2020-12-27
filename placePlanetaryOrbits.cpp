@@ -1,14 +1,21 @@
 //	C+= libraries
 #include <iostream>
 
+//	Constant declarations
+#include "declarations/constants/csvLengthConstants.h"
+
 //	Structure declarations
 #include "declarations/structures/star_t.h"
 
 //	Function declarations
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
+#include "declarations/functions/placingFirstPlanets.h"
 
-using namespace std;
+//	Third party
+#include "declarations/third_party/rapidcsv.h"
+
+//	using namespace std;
 
 //	This function returns the ratio between orbits
 float orbitalSpacingTable()
@@ -28,14 +35,14 @@ float orbitalSpacingTable()
 }
 
 //	Get the orbital radius of the first world
-float getOrbitalRadius(float outermostLegalDistance)
+float getOrbitalRadius(const float& outermostLegalDistance)
 {
 	int diceRoll = diceRoller(6, 1);
 	return outermostLegalDistance / ((diceRoll * 0.05) + 1);
 }
 
 //	This function returns the orbital radii of the primary in ascending order
-star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
+star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, const bool& randomStar, const char& numberOfStars, const float& companionAInnerForbiddenZone, const float& companionAOuterForbiddenZone, const float& companionBInnerForbiddenZone, const float& companionBOuterForbiddenZone, const float& companionAOrbitalRadius, const float& companionBOrbitalRadius)
 {
 //	Keep track of the distance between each orbit
 	float distanceBetweenOrbits = 0;
@@ -45,25 +52,163 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 	float currentOrbitalRatio = 0;
 //	The array index of the world closest to the primary
 	int innerWorldIndex = 0;
-
-//	If the first gas giant has already been placed, use that orbital radius as the basline for the others
-	if (primary.firstGasGiantPresent == true)
+	std::cout << "primary.innerForbiddenZone == " << primary.innerForbiddenZone << std::endl;
+	std::cout << "primary.outerLimitRadius == " << primary.outerLimitRadius << std::endl;
+//	If the star is generated randomly
+	int orbitalRadiusIndex;
+	bool matchWasFound = false;
+	if (randomStar == true)
 	{
-		primary.orbitalRadiusArray[0] = primary.firstGasGiantOrbitalRadius;
-//		//cout << "primary.firstGasGiantOrbitalRadius = " << primary.firstGasGiantOrbitalRadius << endl;
+		orbitalRadiusIndex = 0;
+//		If the first gas giant has already been placed, use that orbital radius as the basline for the others
+		if (primary.firstGasGiantPresent == true)
+		{
+			primary.orbitalRadiusArray[0] = primary.firstGasGiantOrbitalRadius;
+		}
+
+//		Otherwise, generate the firt planetary orbit
+		else
+		{
+			float divisor;
+			if (primary.outerLimitRadius > primary.innerForbiddenZone || primary.innerForbiddenZone == 0) {divisor = primary.outerLimitRadius;}
+			else {divisor = primary.innerForbiddenZone;}
+
+			primary.orbitalRadiusArray[0] = getOrbitalRadius(divisor);
+		}
 	}
 
-//	Otherwise, generate the firt planetary orbit
+//	If the star is generated from a .csv
 	else
 	{
-		float divisor;
-		if (primary.outerLimitRadius > primary.innerForbiddenZone || primary.innerForbiddenZone == 0) {divisor = primary.outerLimitRadius;}
-		else {divisor = primary.innerForbiddenZone;}
+		std::cout << "\nEntered .csv placePlanetaryOrbits" << std::endl;
+//		Initialize index
+		orbitalRadiusIndex = 0;
+		//		If the star has a gas giant
+		if (primary.firstGasGiantPresent == true)
+		{
+			std::cout << "primary.firstGasGiantPresent == true" << std::endl;
+			primary.orbitalRadiusArray[0] = primary.firstGasGiantOrbitalRadius;
+			orbitalRadiusIndex = 1;
+		}
 
-		primary.orbitalRadiusArray[0] = getOrbitalRadius(divisor);
+		else
+		{
+			std::cout << "primary.firstGasGiantPresent == false" << std::endl;
+			float divisor;
+			std::cout << "primary.innerForbiddenZone == " << primary.innerForbiddenZone << std::endl;
+			std::cout << "primary.outerLimitRadius == " << primary.outerLimitRadius << std::endl;
+			if (primary.outerLimitRadius > primary.innerForbiddenZone || primary.innerForbiddenZone == 0) {divisor = primary.outerLimitRadius;}
+			else {divisor = primary.innerForbiddenZone;}
+			std::cout << "divisor == " << divisor << std::endl;
+			primary.orbitalRadiusArray[0] = getOrbitalRadius(divisor);
+			std::cout << "primary.orbitalRadiusArray[0] == " << primary.orbitalRadiusArray[0] << std::endl;
+		}
+
+
+
+//		Go through worldDoc and check if a terrestrial world is in the system
+		for (int i = 0; i < WORLDDOC_LENGTH; i++)
+		{
+//			If a match is found
+			if (csv_starWorldMatch(primary, worldDoc) == true)
+			{
+				matchWasFound = true;
+				std::cout << "\nA match between starDoc and worldDoc has been found" << std::endl;
+//				Assign worlds to star
+				if (worldDoc.GetCell<std::string>("pl_letter", i) == "b")
+				{
+//					Assign orbital radius
+					primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i);
+//					Record the world's index in the worldDoc
+					primary.worldArray[orbitalRadiusIndex].planetDBIndex = i;
+//					Check for other worlds in the system
+					if (worldDoc.GetCell<std::string>("pl_letter", i + 1) == "c")
+					{
+//						Assign orbital radius
+						primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 1);
+//						Record the world's index in the worldDoc
+						primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 1;
+						orbitalRadiusIndex = 2;
+
+						if (worldDoc.GetCell<std::string>("pl_letter", i + 2) == "d")
+						{
+//							Assign orbital radius
+							primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 2);
+//							Record the world's index in the worldDoc
+							primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 2;
+							orbitalRadiusIndex = 3;
+
+							if (worldDoc.GetCell<std::string>("pl_letter", i + 3) == "e")
+							{
+//								Assign orbital radius
+								primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 3);
+//								Record the world's index in the worldDoc
+								primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 3;
+								orbitalRadiusIndex = 4;
+
+								if (worldDoc.GetCell<std::string>("pl_letter", i + 4) == "f")
+								{
+//									Assign orbital radius
+									primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 4);
+//									Record the world's index in the worldDoc
+									primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 4;
+									orbitalRadiusIndex = 5;
+
+									if (worldDoc.GetCell<std::string>("pl_letter", i + 5) == "g")
+									{
+//										Assign orbital radius
+										primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 5);
+//										Record the world's index in the worldDoc
+										primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 5;
+										orbitalRadiusIndex = 6;
+
+										if (worldDoc.GetCell<std::string>("pl_letter", i + 6) == "h")
+										{
+//											Assign orbital radius
+											primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 6);
+//											Record the world's index in the worldDoc
+											primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 6;
+											orbitalRadiusIndex = 7;
+										}
+//										If there are no further worlds in the system, break
+										else	{break;}
+									}
+//									If there are no further worlds in the system, break
+									else	{break;}
+								}
+//								If there are no further worlds in the system, break
+								else	{break;}
+							}
+//							If there are no further worlds in the system, break
+							else	{break;}
+						}
+//						If there are no further worlds in the system, break
+						else	{break;}
+
+					}
+
+//					If there are no further worlds in the system, break
+					else	{break;}
+				}
+			}
+		}
+
+/*
+		if (matchWasFound == false)
+		{
+			//	std::cout << "\nNo match was found between starDoc and worldDoc\n" << std::endl;
+			float divisor;
+			if (primary.outerLimitRadius > primary.innerForbiddenZone || primary.innerForbiddenZone == 0) {divisor = primary.outerLimitRadius;}
+			else {divisor = primary.innerForbiddenZone;}
+			//	std::cout << "divisor == " << divisor << std::endl;
+			primary.orbitalRadiusArray[0] = getOrbitalRadius(divisor);
+			//	std::cout << "primary.orbitalRadiusArray[0] == " << primary.orbitalRadiusArray[0] << "\n" << std::endl;
+
+		}
+*/
 	}
-
-//	//cout << "primary.orbitalRadiusArray[0] = " << primary.orbitalRadiusArray[0] << endl;
+//	//	std::cout << "orbitalRadiusIndex == " << orbitalRadiusIndex << std::endl;
+//	////	std::cout << "primary.orbitalRadiusArray[0] = " << primary.orbitalRadiusArray[0] << std::endl;
 
 //	Work inward from the first planet
 //	While the distance between orbits is greater than 0.15 AU, the orbital radius of the first world, falls between the star's inner and outer radii, and is not in the forbidden zone
@@ -104,26 +249,35 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 //	Check if the initial orbit is less than or equal to the first placed orbit
 	bool lessThanFirstOrbit = (distanceFromPrimary <= primary.orbitalRadiusArray[0]) || (distanceFromPrimary == primary.orbitalRadiusArray[0]);
 
-//	cout << endl << "INWARD" << endl;
+	std::cout << "\nINWARD" << std::endl;
 
-//	cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << endl;
-//	cout << "inCorrectRadius = " << inCorrectRadius << endl;
-//	cout << "lessThanFirstOrbit = " << lessThanFirstOrbit << endl;
+	std::cout << "inPrimaryForbiddenZone = " 	<< inPrimaryForbiddenZone 	<< std::endl;
+	std::cout << "inCorrectRadius = " 			<< inCorrectRadius 			<< std::endl;
+	std::cout << "lessThanFirstOrbit = " 		<< lessThanFirstOrbit 		<< std::endl;
 
+	std::cout << "orbitalRadiusIndex == " << orbitalRadiusIndex << std::endl;
+	std::cout << "distanceBetweenOrbits == " << distanceBetweenOrbits << std::endl;
 	for (int index = 1; (distanceBetweenOrbits >= 0.15 && !inPrimaryForbiddenZone && inCorrectRadius && lessThanFirstOrbit); index++)
 	{
+		//	std::cout << "Entered inward orbit generation for loop successfully" << std::endl;
+//		If the index is less than or equal to orbitalRadiusIndex, then a planet has already been placed there
+		if (index <= orbitalRadiusIndex && randomStar == false && matchWasFound == true)	{continue;}
+
 //		Get the current orbital ratio
 		currentOrbitalRatio = orbitalSpacingTable();
-//		cout << "currentOrbitalRatio = " << currentOrbitalRatio << endl;
+		std::cout << "currentOrbitalRatio = " << currentOrbitalRatio << std::endl;
 //		Determine the orbital radius
+		std::cout << "index == " << index << std::endl;
+		std::cout << "primary.orbitalRadiusArray[" << index << "] == " << primary.orbitalRadiusArray[index] << std::endl;
+		std::cout << "primary.orbitalRadiusArray[" << index - 1 << "] == " << primary.orbitalRadiusArray[index - 1] << std::endl;
 		distanceFromPrimary = primary.orbitalRadiusArray[index - 1] / currentOrbitalRatio;
-//		cout << "distanceFromPrimary = " << distanceFromPrimary << endl;
+		std::cout << "distanceFromPrimary = " << distanceFromPrimary << std::endl;
 //		Determine the current distance between orbits
 		distanceBetweenOrbits = primary.orbitalRadiusArray[index - 1] - distanceFromPrimary;
-//		cout << "distanceBetweenOrbits = " << distanceBetweenOrbits << endl;
+		std::cout << "distanceBetweenOrbits = " << distanceBetweenOrbits << std::endl;
 //		Store the orbital radius in the array
 		primary.orbitalRadiusArray[index] = distanceFromPrimary;
-//		cout << "primary.orbitalRadiusArray[" << index << "] = " << primary.orbitalRadiusArray[index] << endl;
+		std::cout << "primary.orbitalRadiusArray[" << index << "] = " << primary.orbitalRadiusArray[index] << std::endl;
 //		Store the current index
 		innerWorldIndex = index;
 //		Check if the orbit falls between the star's inner and outer radii
@@ -144,9 +298,9 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 		}
 
 
-//		cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << endl;
-//		cout << "inCorrectRadius = " << inCorrectRadius << endl;
-//		cout << "lessThanFirstOrbit = " << lessThanFirstOrbit << endl;
+		std::cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << std::endl;
+		std::cout << "inCorrectRadius = " << inCorrectRadius << std::endl;
+		std::cout << "lessThanFirstOrbit = " << lessThanFirstOrbit << std::endl;
 
 
 //		If any of the flags turn true, redo the for loop
@@ -156,6 +310,8 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 		}
 	}
 
+	//	std::cout << "\nInward orbit generation loop exited successfully\n" << std::endl;
+
 //	Delete last entry if invalid and subtract one from innerWorldIndex
 	if (distanceBetweenOrbits < 0.15)
 	{
@@ -163,20 +319,20 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 		innerWorldIndex -= 1;
 	}
 
-//	cout << "innerWorldIndex = " << innerWorldIndex << endl;
+	std::cout << "innerWorldIndex = " << innerWorldIndex << std::endl;
 
-	//cout << endl << "OUTWARD" << endl;
+	std::cout << std::endl << "OUTWARD" << std::endl;
 //	Work outward from the first planet placed
 //	Generate the orbital radius of the next furthest world from the first placed world
 //	Determine the new orbital ratio
 	currentOrbitalRatio = orbitalSpacingTable();
-//	cout << "currentOrbitalRatio = " << currentOrbitalRatio << endl;
+	std::cout << "currentOrbitalRatio = " << currentOrbitalRatio << std::endl;
 //	Reset the distance from the primary to the first placed orbit
 	distanceFromPrimary = primary.orbitalRadiusArray[0] * currentOrbitalRatio;
-//	cout << "distanceFromPrimary = " << distanceFromPrimary << endl;
+	std::cout << "distanceFromPrimary = " << distanceFromPrimary << std::endl;
 //	Reset the distance between the orbits to factor in the first placed orbit
 	distanceBetweenOrbits = distanceFromPrimary - primary.orbitalRadiusArray[0];
-//	cout << "distanceBetweenOrbits = " << distanceBetweenOrbits << endl;
+	std::cout << "distanceBetweenOrbits = " << distanceBetweenOrbits << std::endl;
 
 //	Last index value (easier than sizeof())
 	int outerWorldIndex = 0;
@@ -191,26 +347,26 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 
 //	Set the orbital radius of the orbit after the first to distanceBetweenOrbits
 	if (distanceBetweenOrbits >= 0.15 && !inPrimaryForbiddenZone && inCorrectRadius && greaterThanFirstOrbit) {primary.orbitalRadiusArray[innerWorldIndex + 1] = distanceFromPrimary;}
-//	cout << "primary.orbitalRadiusArray[" << innerWorldIndex + 1 << "] = " << primary.orbitalRadiusArray[innerWorldIndex + 1] << endl;
-//	cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << endl;
-//	cout << "inCorrectRadius = " << inCorrectRadius << endl;
-//	cout << "greaterThanFirstOrbit = " << greaterThanFirstOrbit << endl;
+	std::cout << "primary.orbitalRadiusArray[" << innerWorldIndex + 1 << "] = " << primary.orbitalRadiusArray[innerWorldIndex + 1] << std::endl;
+	std::cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << std::endl;
+	std::cout << "inCorrectRadius = " << inCorrectRadius << std::endl;
+	std::cout << "greaterThanFirstOrbit = " << greaterThanFirstOrbit << std::endl;
 
 //	While the distance between orbits is greater than 0.15 AU, the star's inner limit radius, and the first planet's orbital radius and less than the star's outer limit radius and any forbidden zones
 	for (int index = innerWorldIndex + 2; (distanceBetweenOrbits >= 0.15 && !inPrimaryForbiddenZone && inCorrectRadius && greaterThanFirstOrbit); index++)
 	{
 //		Get the current orbital ratio
 		currentOrbitalRatio = orbitalSpacingTable();
-//		cout << "currentOrbitalRatio = " << currentOrbitalRatio << endl;
+		std::cout << "currentOrbitalRatio = " << currentOrbitalRatio << std::endl;
 //		Determine the orbital radius
 		distanceFromPrimary = primary.orbitalRadiusArray[index - 1] * currentOrbitalRatio;
-//		cout << "distanceFromPrimary = " << distanceFromPrimary << endl;
+		std::cout << "distanceFromPrimary = " << distanceFromPrimary << std::endl;
 //		Determine the current distance between orbits
 		distanceBetweenOrbits = distanceFromPrimary - primary.orbitalRadiusArray[index - 1];
-//		cout << "distanceBetweenOrbits = " << distanceBetweenOrbits << endl;
+		std::cout << "distanceBetweenOrbits = " << distanceBetweenOrbits << std::endl;
 //		Store the orbital radius in the array
 		primary.orbitalRadiusArray[index] = distanceFromPrimary;
-//		cout << "primary.orbitalRadiusArray[" << index << "] = " << primary.orbitalRadiusArray[index] << endl;
+		std::cout << "primary.orbitalRadiusArray[" << index << "] = " << primary.orbitalRadiusArray[index] << std::endl;
 //		Store the current index
 		outerWorldIndex = index;
 //		Check if the orbit falls between the star's inner and outer radii
@@ -220,9 +376,9 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 //		Check if the orbit is in the forbidden zone
 		inPrimaryForbiddenZone = (numberOfStars > 1) && (primary.orbitalRadiusArray[index] <= primary.outerForbiddenZone && primary.orbitalRadiusArray[index] >= primary.innerForbiddenZone);
 
-//		cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << endl;
-//		cout << "inCorrectRadius = " << inCorrectRadius << endl;
-//		cout << "greaterThanFirstOrbit = " << greaterThanFirstOrbit << endl;
+		std::cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << std::endl;
+		std::cout << "inCorrectRadius = " << inCorrectRadius << std::endl;
+		std::cout << "greaterThanFirstOrbit = " << greaterThanFirstOrbit << std::endl;
 
 		if (numberOfStars > 1)
 		{
@@ -240,7 +396,7 @@ star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionA
 			index - 1;
 		}
 	}
-//	cout << "outerWorldIndex = " << outerWorldIndex << endl;
+	std::cout << "outerWorldIndex = " << outerWorldIndex << std::endl;
 
 //	outerWorldIndex holds the index of the last orbit placed, so it also gives the number of orbits
 	primary.numberOfOrbits = (innerWorldIndex >= outerWorldIndex) ? innerWorldIndex : outerWorldIndex;

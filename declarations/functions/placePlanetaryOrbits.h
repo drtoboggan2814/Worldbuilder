@@ -3,7 +3,7 @@
 float orbitalSpacingTable();
 
 //	Get the orbital radius of the first world
-float getOrbitalRadius(float outermostLegalDistance);
+float getOrbitalRadius(const float& outermostLegalDistance);
 
 //	This function returns the orbital
-star_t placePlanetaryOrbits(star_t primary, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius);
+star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, const bool& randomStar, const char& numberOfStars, const float& companionAInnerForbiddenZone, const float& companionAOuterForbiddenZone, const float& companionBInnerForbiddenZone, const float& companionBOuterForbiddenZone, const float& companionAOrbitalRadius, const float& companionBOrbitalRadius);

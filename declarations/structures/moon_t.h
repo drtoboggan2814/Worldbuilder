@@ -3,6 +3,8 @@
 
 #include <cstdint>
 #include "atmosphericComposition_t.h"
+#include "tectonicPlate_t.h"
+
 
 //	This structure describes a moon orbiting a larger world
 
@@ -60,6 +62,24 @@ struct moon_t
 	float landSurfaceArea;
 //	Liquid surface area
 	float liquidSurfaceArea;
+
+//	Mapping information
+	uint8_t hexesPerSide;
+	uint16_t totalHexes;
+	uint16_t waterHexCount;
+	uint16_t landHexCount;
+	uint8_t numberOfMajorOceans;
+	uint8_t numberOfMinorOceans;
+	uint8_t numberOfSmallSeas;
+	uint8_t numberOfScatteredLakes;
+	uint8_t numberOfMajorContinents;
+	uint8_t numberOfMinorContinents;
+	uint8_t numberOfMajorIslands;
+	uint8_t numberOfArchipelagoes;
+//	Tectonic plates
+	uint8_t tectonicPlateCount;
+	tectonicPlate_t tectonicPlateArray[16];
+
 };
 
 #endif

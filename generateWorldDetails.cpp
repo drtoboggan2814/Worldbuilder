@@ -5,7 +5,7 @@
 #include <cmath>
 #include <cstdint>
 #include <iostream>
-#include <string>
+//	#include <string>
 #include <tuple>
 
 //	Constant declarations
@@ -28,7 +28,7 @@
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
 
-using namespace std;
+//	using namespace std;
 
 //	BLACKBODY TEMPERATURE
 //	Calculate the blackbody temperature of the world and its moons (if any)
@@ -45,7 +45,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, char moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
+char determineWorldType_ADVANCED(const char& sizeClass, const float& blackbodyTemperature, const char& moonStatus, const float& stellarMass, const float& stellarAge, const bool& gasGiantTinySulfurPresent)
 {
 	char worldType = 0;
 //	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int)sizeClass] << endl;
@@ -151,7 +151,7 @@ char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, cha
 
 //	CLIMATE
 //	This function calculates the world's average surface temperature
-float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float blackbodyCorrection)
+float averageSurfaceTemperature_ADVANCED(const float& blackbodyTemperature, const float& blackbodyCorrection)
 {
 	float averageSurfaceTemperature = blackbodyCorrection * blackbodyTemperature;
 	return averageSurfaceTemperature;
@@ -162,7 +162,7 @@ float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float black
 	This function applies only to gas giants, as the original functions still apply
 	to terrestrial worlds
 */
-float getGasGiantMass(char gasGiantSize)
+float getGasGiantMass(const char& gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
 	float gasGiantMass = 0;
@@ -191,7 +191,7 @@ float getGasGiantMass(char gasGiantSize)
 	return gasGiantMass;
 }
 
-float getGasGiantDensity(char gasGiantSize)
+float getGasGiantDensity(const char& gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
 	float gasGiantDensity = 0;
@@ -218,7 +218,7 @@ float getGasGiantDensity(char gasGiantSize)
 	return gasGiantDensity;
 }
 
-float getGasGiantDiameter(float gasGiantMass, float gasGiantDensity)
+float getGasGiantDiameter(const float& gasGiantMass, const float& gasGiantDensity)
 {
 	float gasGiantDiameter = cbrt(gasGiantMass / gasGiantDensity);
 	return gasGiantDiameter;
@@ -231,14 +231,14 @@ float getGasGiantDiameter(float gasGiantMass, float gasGiantDensity)
 	orbital periods calculated are treated as one star that the next star outwards
 	orbits
 */
-float calculateStellarOrbitalPeriod(float averageOrbitalRadius, float solarMassSum)
+float calculateStellarOrbitalPeriod(const float& averageOrbitalRadius, const float& solarMassSum)
 {
 	float stellarOrbitalPeriod = sqrt(pow(averageOrbitalRadius, 3) / solarMassSum);
 	return stellarOrbitalPeriod;
 }
 
 //	This function returns a planet's orbital period around its primary
-float calculatePlanetaryOrbitalPeriod(float planetOrbitalRadius, float stellarMass, float planetMass)
+float calculatePlanetaryOrbitalPeriod(const float& planetOrbitalRadius, const float& stellarMass, const float& planetMass)
 {
 	const float EARTHTOSOLARMASS = 0.000003;
 	float planetaryOrbitalPeriod = sqrt(pow(planetOrbitalRadius, 3) / (stellarMass + planetMass * EARTHTOSOLARMASS));
@@ -246,7 +246,7 @@ float calculatePlanetaryOrbitalPeriod(float planetOrbitalRadius, float stellarMa
 }
 
 //	This function returns the world's orbital eccentricity, with a variance added on
-float planetaryOrbitalEccentricityTable(int diceRoll)
+float planetaryOrbitalEccentricityTable(const int& diceRoll)
 {
 	float planetaryOrbitalEccentricity = 0;
 	float variance = floatRNG(-0.05, 0.05);
@@ -271,7 +271,7 @@ float planetaryOrbitalEccentricityTable(int diceRoll)
 	return planetaryOrbitalEccentricity;
 }
 
-float calculatePlanetaryOrbitalEccentricity(char worldType, char gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius)
+float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& gasGiantArrangement, const float& snowLineRadius, const float& planetOrbitalRadius, const float& innerLimitRadius)
 {
 	int eccentricityRoll = diceRoller(6, 3);
 	if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT)
@@ -288,19 +288,19 @@ float calculatePlanetaryOrbitalEccentricity(char worldType, char gasGiantArrange
 
 //	The following two functions return the minimum and maximum separations
 //	between a planet and its primary, respectively
-float calculatePlanetPrimaryMinimumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity)
+float calculatePlanetPrimaryMinimumSeparation(const float& planetOrbitalRadius, const float& planetaryOrbitalEccentricity)
 {
 	float minimumSeparation = (1 - planetaryOrbitalEccentricity) * planetOrbitalRadius;
 	return minimumSeparation;
 }
 
-float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity)
+float calculatePlanetPrimaryMaximumSeparation(const float& planetOrbitalRadius, const float& planetaryOrbitalEccentricity)
 {
 	float maximumSeparation = (1 + planetaryOrbitalEccentricity) * planetOrbitalRadius;
 	return maximumSeparation;
 }
 
-float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, char moonSize)
+float calculateSatelliteOrbitalRadius(const float& planetDiameter, const bool& moonType, const char& gasGiantMoonType, const float& distanceToClosestMoon, const char& moonSize)
 {
 	float satelliteOrbitalRadius = 0;
 
@@ -351,41 +351,41 @@ float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char 
 	return satelliteOrbitalRadius;
 }
 
-float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass)
+float calculateSatelliteOrbitalPeriod(const float& satelliteOrbitalRadius, const float& planetMass, const float& satteliteMass)
 {
 //	0.166 is given by the errata, while the book gives 0.0588
 	float satteliteOrbitalPeriod = 0.166 * sqrt(pow(satelliteOrbitalRadius, 3) / (planetMass + satteliteMass));
 	return satteliteOrbitalPeriod;
 }
 
-float calculateTidalForceOnPlanetBySatellite(float satteliteMass, float planetDiameter, float satelliteOrbitalRadius)
+float calculateTidalForceOnPlanetBySatellite(const float& satteliteMass, const float& planetDiameter, const float& satelliteOrbitalRadius)
 {
 //	22.3 * 10^6 is given by the errata, while the book gives 17.8 * 10^6
 	float tidalForceExerted = ((22.3 * pow(10, 6)) * satteliteMass * planetDiameter) / pow(satelliteOrbitalRadius, 3);
 	return tidalForceExerted;
 }
 
-float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius)
+float calculateTidalForceOnSatelliteByPlanet(const float& planetMass, const float& satelliteDiameter, const float& satelliteOrbitalRadius)
 {
 	float tidalForceExerted = ((17.8 * pow(10, 6)) * planetMass * satelliteDiameter) / pow(satelliteOrbitalRadius, 3);
 	return tidalForceExerted;
 }
 
-float calculateTidalForceOnPlanetByPrimary(float solarMass, float planetDiameter, float planetOrbitalRadius)
+float calculateTidalForceOnPlanetByPrimary(const float& solarMass, const float& planetDiameter, const float& planetOrbitalRadius)
 {
 	float tidalForceExerted = (0.46 * solarMass * planetDiameter) / pow(planetOrbitalRadius, 3);
 	return tidalForceExerted;
 }
 
 //	This function can apply to both planets and satellites
-float calculateTotalTidalEffect(float satelliteTidalForce, float primaryTidalForcee, float planetTidalForce, float starSystemAge, float worldMass)
+float calculateTotalTidalEffect(const float& satelliteTidalForce, const float& primaryTidalForcee, const float& planetTidalForce, const float& starSystemAge, const float& worldMass)
 {
 	float totalTidalEffect = ((primaryTidalForcee + satelliteTidalForce + planetTidalForce) * starSystemAge) / worldMass;
 	return totalTidalEffect;
 }
 
 //	Returns the modifier for the world's rotation period
-int rotationPeriodTable(char worldType)
+int rotationPeriodTable(const char& worldType)
 {
 	int modifier = 0;
 	if 		(worldType == WT_LARGE_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT) 																																										{modifier = 0;}
@@ -397,7 +397,7 @@ int rotationPeriodTable(char worldType)
 }
 
 //	If the world's rotation period is especially slow, this table returns an appropriate rotation period
-int specialRotationTable(int specialRotationTableRoll)
+int specialRotationTable(const int& specialRotationTableRoll)
 {
 	int specialRotation = 0;
 	if 		(specialRotationTableRoll == 7 ) {specialRotation = diceRoller(6, 1) * 2  ;}
@@ -411,7 +411,7 @@ int specialRotationTable(int specialRotationTableRoll)
 }
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, char worldType, bool tidalLockedOrNot)
+float calculateRotationPeriod(const float& totalTidalEffect, const float& worldOrbitalPeriod, const char& worldType, const bool& tidalLockedOrNot)
 {
 	float rotationPeriod = 0;
 
@@ -450,7 +450,7 @@ float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, 
 }
 
 //	This function determines if a world's rotation is retrograde
-bool checkForRetrogradeRotation(bool satelliteOrPlanet)
+bool checkForRetrogradeRotation(const bool& satelliteOrPlanet)
 {
 	bool retrogradeOrNot = false;
 	int diceRoll = diceRoller(6, 3);
@@ -463,26 +463,27 @@ bool checkForRetrogradeRotation(bool satelliteOrPlanet)
 
 //	This function can return the length of a day on a planet or satellite or the
 //	satellite's apprent orbital cycle as seen from the planet it orbits
-float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool satelliteOrPlanet, float worldOrbitalPeriod, bool satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
+float determineLocalCalendar(const float& rotationPeriod, const bool& retrogradeOrNot, const bool& satelliteOrPlanet, const float& worldOrbitalPeriod, const bool& satelliteDayLengthOrOrbitalCycle, const float& parentPlanetOrbitalPeriod)
 {
 	float siderealPeriod = 0;
 	float apparentLength = 0;
+	float rotationPeriodTemp = rotationPeriod;
 	const float YEARS_TO_DAYS = 365.26;
 	const float DAYS_TO_HOURS = 24;
 //	To calculate the length of a day on a planet in hours
 	if (satelliteOrPlanet == POM_PLANET)
 	{
 		siderealPeriod = worldOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
-		rotationPeriod *= (retrogradeOrNot == true) ? -1 : 1;
-		apparentLength = (siderealPeriod * rotationPeriod) / (siderealPeriod - rotationPeriod);
+		rotationPeriodTemp *= (retrogradeOrNot == true) ? -1 : 1;
+		apparentLength = (siderealPeriod * rotationPeriodTemp) / (siderealPeriod - rotationPeriodTemp);
 	}
 
 //	To calculate the length of a day on a satellite
 	else if (satelliteOrPlanet == POM_MOON && satelliteDayLengthOrOrbitalCycle == CALO_DAY_LENGTH)
 	{
 		siderealPeriod = parentPlanetOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
-		rotationPeriod *= (retrogradeOrNot == true) ? -1 : 1;
-		apparentLength = (siderealPeriod * rotationPeriod) / (siderealPeriod - rotationPeriod);
+		rotationPeriodTemp *= (retrogradeOrNot == true) ? -1 : 1;
+		apparentLength = (siderealPeriod * rotationPeriodTemp) / (siderealPeriod - rotationPeriodTemp);
 	}
 
 //	To calculate the apparent length of a moon's orbital cycle seen from the
@@ -490,16 +491,16 @@ float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool sa
 	else if (satelliteDayLengthOrOrbitalCycle == CALO_ORBITAL_CYCLE)
 	{
 		siderealPeriod = worldOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
-		rotationPeriod = parentPlanetOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
-		rotationPeriod *= (retrogradeOrNot == true) ? -1 : 1;
-		apparentLength = (siderealPeriod * rotationPeriod) / (siderealPeriod - rotationPeriod);
+		rotationPeriodTemp = parentPlanetOrbitalPeriod * YEARS_TO_DAYS * DAYS_TO_HOURS;
+		rotationPeriodTemp *= (retrogradeOrNot == true) ? -1 : 1;
+		apparentLength = (siderealPeriod * rotationPeriodTemp) / (siderealPeriod - rotationPeriodTemp);
 	}
 
 	return apparentLength;
 }
 
 //	This table returns the world's axial tilt in degrees
-int8_t axialTiltTable(int diceRoll)
+int8_t axialTiltTable(const int& diceRoll)
 {
 	int8_t axialTilt = 0;
 	if 		(diceRoll >= 3 	|| diceRoll <= 6 ) {axialTilt = 0  + (diceRoller(6, 2) - 2);}
@@ -512,7 +513,7 @@ int8_t axialTiltTable(int diceRoll)
 }
 
 //	If the roll for the world's axial tilt is 17 or 18, use this table
-int8_t extendedAxialTiltTable(int diceRoll)
+int8_t extendedAxialTiltTable(const int& diceRoll)
 {
 	int8_t axialTilt = 0;
 	if 		(diceRoll == 1 || diceRoll == 2) {axialTilt = 50 + (diceRoller(6, 2) - 2);}
@@ -532,7 +533,7 @@ int8_t calculateAxialTilt()
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, char parentWorldType)
+char volcanicActivityTable(const char& worldType, const float& surfaceGravity, const float& worldAge, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons, const char& parentWorldType)
 {
 	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
@@ -579,27 +580,27 @@ char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge,
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
-atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, atmosphericComposition_t worldAtmosphereComposition)
+atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcanicActivityLevel, const char& worldType, const atmosphericComposition_t& worldAtmosphereComposition)
 {
 	int checkForEffects = diceRoller(6, 3);
 	int sulfurOrPollutants = diceRoller(6, 1);
-
+	atmosphericComposition_t worldAtmosphereCompositionTemp = worldAtmosphereComposition;
 	if (((checkForEffects <= 8 && volcanicActivityLevel == VAL_HEAVY) || (checkForEffects <= 14 && volcanicActivityLevel == VAL_EXTREME)) && (worldType == WT_LARGE_GARDEN || worldType == WT_STANDARD_GARDEN))
 	{
-		if 		(sulfurOrPollutants >= 1 && sulfurOrPollutants <= 2) {worldAtmosphereComposition.sulfurCompounds = 1;}
-		else if (sulfurOrPollutants >= 3 && sulfurOrPollutants <= 4) {worldAtmosphereComposition.pollutants = 1;}
+		if 		(sulfurOrPollutants >= 1 && sulfurOrPollutants <= 2) {worldAtmosphereCompositionTemp.sulfurCompounds = 1;}
+		else if (sulfurOrPollutants >= 3 && sulfurOrPollutants <= 4) {worldAtmosphereCompositionTemp.pollutants = 1;}
 		else
 		{
-			worldAtmosphereComposition.sulfurCompounds = 1;
-			worldAtmosphereComposition.pollutants = 1;
+			worldAtmosphereCompositionTemp.sulfurCompounds = 1;
+			worldAtmosphereCompositionTemp.pollutants = 1;
 		}
 	}
 
-	return worldAtmosphereComposition;
+	return worldAtmosphereCompositionTemp;
 }
 
 //	This function serves as a lookup table for the world's tectonic activity
-char tectonicActivtyTable(int diceRoll)
+char tectonicActivtyTable(const int& diceRoll)
 {
 	char tectonicActivityLevel = 0;
 
@@ -613,7 +614,7 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons)
+char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, const float& hydrographicCoverage, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons)
 {
 	char tectonicActivityLevel = TAL_NONE;
 
@@ -653,32 +654,36 @@ char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydro
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-tuple<int8_t, int8_t> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier)
+tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, const int8_t& resourceValueModifier, const int8_t& habitabilityModifier)
 {
-	if 		(volcanicActivityLevel == VAL_NONE	) {resourceValueModifier += -2;}
-	else if (volcanicActivityLevel == VAL_LIGHT	) {resourceValueModifier += -1;}
-	else if (volcanicActivityLevel == VAL_MODERATE) {resourceValueModifier += 0 ;}
-	else if (volcanicActivityLevel == VAL_HEAVY	)
+	char volcanicActivityLevelTemp = volcanicActivityLevel;
+	char tectonicActivityLevelTemp = tectonicActivityLevel;
+	int8_t resourceValueModifierTemp = resourceValueModifier;
+	int8_t habitabilityModifierTemp = habitabilityModifier;
+	if 		(volcanicActivityLevelTemp == VAL_NONE	) {resourceValueModifierTemp += -2;}
+	else if (volcanicActivityLevelTemp == VAL_LIGHT	) {resourceValueModifierTemp += -1;}
+	else if (volcanicActivityLevelTemp == VAL_MODERATE) {resourceValueModifierTemp += 0 ;}
+	else if (volcanicActivityLevelTemp == VAL_HEAVY	)
 	{
-		resourceValueModifier += 1;
-		habitabilityModifier += -1;
+		resourceValueModifierTemp += 1;
+		habitabilityModifierTemp += -1;
 	}
-	else if (volcanicActivityLevel == VAL_EXTREME)
+	else if (volcanicActivityLevelTemp == VAL_EXTREME)
 	{
-		resourceValueModifier += 2;
-		habitabilityModifier += -2;
+		resourceValueModifierTemp += 2;
+		habitabilityModifierTemp += -2;
 	}
 
-	if 		(tectonicActivityLevel == VAL_HEAVY  ) {habitabilityModifier += -1;}
-	else if (tectonicActivityLevel == VAL_EXTREME) {habitabilityModifier += -2;}
+	if 		(tectonicActivityLevelTemp == VAL_HEAVY  ) {habitabilityModifierTemp += -1;}
+	else if (tectonicActivityLevelTemp == VAL_EXTREME) {habitabilityModifierTemp += -2;}
 
-	return make_tuple(habitabilityModifier, resourceValueModifier);
+	return make_tuple(habitabilityModifierTemp, resourceValueModifierTemp);
 }
 
 //	Calculate the body's escape velocity
 //	NOTE: This is not included in GURPS 4e Space
 //	Parameters must be passed in terms of m and kg
-double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass)
+double getEscapeVelocity(const double& escapeMass, const double& distanceToCenterOfMass)
 {
 //	v_e = sqrt((2*G*M) / r)
 	double escapeVelocity = sqrt((2 * UNIVERSAL_GRAVITATIONAL_CONSTANT * escapeMass) / distanceToCenterOfMass);
@@ -691,7 +696,7 @@ double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass)
 //	Since Earth's magnetic field strength is variable across the surface, so too is it on another world
 //	If a detailed analysis is required, then a surface map of the world is needed
 //	As a result, this only gives a rough estimate that is of minimal utility
-float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, char worldType)
+float getMagneticField(const float& worldMass, const float& worldDensity, const float& rotationPeriod, const float& stellarAge, const char& worldType)
 {
 	float magFactor = 10 * (1 / sqrt(rotationPeriod / 24)) * (worldDensity * worldDensity) * (sqrt(worldMass) / stellarAge);
 	magFactor = (worldType == WT_TINY_ICE || worldType == WT_SMALL_ICE || worldType == WT_STANDARD_ICE || worldType == WT_LARGE_ICE) ? magFactor * 0.5 : magFactor;
@@ -713,7 +718,7 @@ float getMagneticField(float worldMass, float worldDensity, float rotationPeriod
 }
 /*
 //	NOTE: This is from Alternity Cosmos
-float getMagneticField(float worldMass, float rotationPeriod, char worldType)
+float getMagneticField(float worldMass, float rotationPeriod, const char& worldType)
 {
 	float magneticFieldStrength = 0;
 	if (worldMass < 0.03)
@@ -742,7 +747,7 @@ float getMagneticField(float worldMass, float rotationPeriod, char worldType)
 //	Determine the apparent size of a body as seen from another
 //	The return value is the angular diameter of the body in the sky
 //	NOTE: This is from Atomic Rockets
-float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody)
+float apparentOrbitingBodySize(const float& bodyDiameter, const float& distanceFromBody)
 {
 //	This value is in arcseconds
 	float angularDiameter = RAD_IN_ASEC * (bodyDiameter / distanceFromBody);
@@ -752,7 +757,7 @@ float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody)
 //	Determine the distance to the horizon
 //	The return value is in meters
 //	NOTE: This is not included in GURPS Space 4e
-float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface)
+float calculateDistanceToHorizon(const float& worldDiameter, const float& distanceFromSurface)
 {
 	float distanceToHorizon = sqrt(worldDiameter * EARTH_RADIUS_IN_KM * 2 * KM_TO_M * distanceFromSurface);
 	return distanceToHorizon;
@@ -761,7 +766,7 @@ float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface)
 //	Determine angular velocity
 //	The return value is in m/s
 //	NOTE: This is not included in GURPS Space 4e
-float getEquatorialRotationVelocity(float diameter, float rotationPeriod)
+float getEquatorialRotationVelocity(const float& diameter, const float& rotationPeriod)
 {
 	float radius = (diameter / 2) * EARTH_RADIUS_IN_KM * KM_TO_M;
 	float angularVelocity = (2 * M_PI) / (rotationPeriod * HOUR_TO_SEC);
@@ -770,7 +775,7 @@ float getEquatorialRotationVelocity(float diameter, float rotationPeriod)
 }
 
 //	Determine total surface area
-tuple<float, float, float> getSurfaceArea(float worldDiameter, float hydrographicCoverage)
+tuple<float, float, float> getSurfaceArea(const float& worldDiameter, const float& hydrographicCoverage)
 {
 	float totalSurfaceArea = 4 * M_PI * pow((worldDiameter / 2) * EARTH_RADIUS_IN_KM, 2);
 	float liquidSurfaceArea = totalSurfaceArea * hydrographicCoverage;

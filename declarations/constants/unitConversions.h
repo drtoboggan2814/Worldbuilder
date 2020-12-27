@@ -9,6 +9,18 @@ const double EARTH_MASS_IN_KG = 5.97237 * pow(10, 24);
 const double EARTH_RADIUS_IN_KM = 6378.1366;
 //	Source: http://asa.hmnao.com/static/files/2018/Astronomical_Constants_2018.pdf
 
+//	Earth's density in g/cm^3
+const double EARTH_DENSITY_IN_GRAMS_PER_CUBIC_CM = 5.515;
+//	Source: Allen's Astrophyscial Quantities, 4E
+
+//	Jupiter's mass in terms of Earth's
+const double JUPITER_MASS_IN_EARTH_MASS = 317.82;
+//	Source: Allen's Astrophyscial Quantities, 4E
+
+//	Jupiter's radius in terms of Earth's
+const double JUPITER_RADIUS_IN_EARTH_RADIUS = 11.209;
+//	Source: Allen's Astrophyscial Quantities, 4E
+
 //	Convert the mass of Sol into kg
 const double SOL_MASS_IN_KG = 1988500 * pow(10, 24);
 //	Source: https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html

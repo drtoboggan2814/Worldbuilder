@@ -1,2 +1,1 @@
-#include "../structures/star_t.h"
-star_t calculateStellarTemperature(star_t primary);
+float calculateStellarTemperature(const char &luminosityClass, const float &stellarMass, const float &stellarAge, const float &sSpan, const float &tableTemperature);

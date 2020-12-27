@@ -1,6 +1,11 @@
 #include <math.h>
 
 //	Universal constants
+//	Also includes .csv lengths
+
+const int WORLDDOC_LENGTH = 309;
+const int STARDOC_LENGTH = 4288;
+
 //	Universal gravitational constant G (m^3 kg^-1 s^-2)
 const double UNIVERSAL_GRAVITATIONAL_CONSTANT = 6.67428 * pow(10, -11);
 //	Source: http://asa.hmnao.com/static/files/2018/Astronomical_Constants_2018.pdf

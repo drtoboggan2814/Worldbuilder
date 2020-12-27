@@ -1,1 +1,1 @@
-char atmosphericPressureCategoriesTable(float atmosphericPressure);
+char atmosphericPressureCategoriesTable(const float& atmosphericPressure);

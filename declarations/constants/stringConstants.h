@@ -4,6 +4,7 @@
 #include <string>
 
 //	This file defines string constants for printing purposes
+const std::string SPECTRAL_TYPE_LOOKUP_TABLE[34] = {"M7", "M6", "M5", "M4", "M4", "M3", "M2", "M1", "M0", "K8", "K6", "K5", "K4", "K2", "K0", "G8", "G6", "G4", "G2", "G1", "G0", "F9", "F8", "F7", "F6", "F5", "F4", "F3", "F2", "F0", "A9", "A7", "A6", "A5"};
 
 //	Atmospheric pressure category strings
 const std::string APC_NONE_S = "None";

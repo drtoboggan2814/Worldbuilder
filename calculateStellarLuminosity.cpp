@@ -8,42 +8,43 @@
 #include "declarations/functions/floatRNG.h"
 
 //	Struct declarations
-#include "declarations/structures/world_t.h"
-#include "declarations/structures/star_t.h"
 
-star_t calculateStellarLuminosity(star_t primary)
+float calculateStellarLuminosity(const char &luminosityClass, const float &stellarAge, const float &mSpan, const float &lMax, const float &lMin)
 {
+//	Initialize return value
+	float stellarLuminosity;
+
 	float variance = floatRNG(-0.1, 0.1);
-	float currentLuminosity = primary.lMin + ((primary.stellarAge / primary.mSpan) * (primary.lMax - primary.lMin));
+	float currentLuminosity = lMin + ((stellarAge / mSpan) * (lMax - lMin));
 
 //	If the star is a giant
-	if (primary.luminosityClass == LC_III)
+	if (luminosityClass == LC_III)
 	{
 		currentLuminosity *= 25;
 		variance *= currentLuminosity;
-		primary.stellarLuminosity = currentLuminosity;
+		stellarLuminosity = currentLuminosity;
 	}
 
 //	If the star is a white dwarf
-	else if (primary.luminosityClass == LC_D)
+	else if (luminosityClass == LC_D)
 	{
 		currentLuminosity = 0.01;
 		variance *= currentLuminosity;
-		primary.stellarLuminosity = currentLuminosity + variance;
+		stellarLuminosity = currentLuminosity + variance;
 	}
 
 //	If it is a subgiant
-	else if (primary.luminosityClass == LC_IV)
+	else if (luminosityClass == LC_IV)
 	{
-		primary.stellarLuminosity = primary.lMax + (variance * primary.lMax);
+		stellarLuminosity = lMax + (variance * lMax);
 	}
 
 //	If it is on the main sequence
 	else
 	{
 		variance *= currentLuminosity;
-		primary.stellarLuminosity = currentLuminosity;
+		stellarLuminosity = currentLuminosity;
 	}
 
-	return primary;
+	return stellarLuminosity;
 }

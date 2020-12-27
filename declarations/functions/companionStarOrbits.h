@@ -1,9 +1,9 @@
 #include "../structures/starSystem_t.h"
 #include "../structures/star_t.h"
-float getRadiusMultiplier(int diceRoll);
+float getRadiusMultiplier(const int& diceRoll);
 
-float getEccentricity(int diceRoll);
+float getEccentricity(const int& diceRoll);
 
-star_t orbitalSeparationTable(char numberOfStars, int companionStar, star_t primary, bool gardenWorldPresent);
+star_t orbitalSeparationTable(const char& numberOfStars, const int& companionStar, star_t& primary, const bool& gardenWorldPresent);
 
-starSystem_t companionStarOrbits(starSystem_t starSystem);
+starSystem_t companionStarOrbits(starSystem_t& starSystem);

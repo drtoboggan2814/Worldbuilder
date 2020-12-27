@@ -76,7 +76,12 @@ struct star_t
 	char firstWorldIndex;
 //	Record the object in each of the world's orbital slots
 	world_t worldArray[16];
-	int8_t sizeClassIndex;
+	int sizeClassIndex;
+
+//	Indices of worlds that match this star in worldDoc
+	int preplacedWorldIndex[7];
+//	Number of worlds that match this star in starDoc
+	int numberOfCSVPlanets;
 
 /*
 //	This array holds the orbits of each planet in the system
@@ -99,6 +104,7 @@ struct star_t
 	std::string harvardLetter;
 	std::string yerkesClassification;
 	float numericValue;
+	std::string starClassification;
 
 //	Apparent color of the star
 	uint8_t starColor_r;
@@ -115,6 +121,14 @@ struct star_t
 	double cartesianVelocityX;
 	double cartesianVelocityY;
 	double cartesianVelocityZ;
+
+//	Identification
+	int hygIndex;
+	int hipIndex;
+	int hdIndex;
+	int hrIndex;
+	std::string glieseIndex;
+	std::string properName;
 
 };
 
