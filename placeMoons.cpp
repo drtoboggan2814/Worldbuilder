@@ -28,7 +28,7 @@ int8_t getFirstFamily(const float& distanceToPrimary)
 
 //	See how visible the ring system is
 //	0 is not visible, 1 can be seen through a telescope, 2 is comparable to Saturn
-int8_t getRingSystemVisibility(const int& moonlets)
+int8_t getRingSystemVisibility(int moonlets)
 {
 	if 		(moonlets <  6				   ) {return 0;}
 	else if (moonlets >= 6 && moonlets < 10) {return 1;}
@@ -81,7 +81,7 @@ int8_t getThirdFamily(const float& distanceToPrimary)
 	}
 }
 
-int8_t getTerrestrialMajorMoons(const float distanceToPrimary, const char& worldType)
+int8_t getTerrestrialMajorMoons(const float& distanceToPrimary, const char& worldType)
 {
 //	Roll for number of major moons
 	int majorMoonRoll = 0;

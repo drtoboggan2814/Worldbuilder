@@ -67,7 +67,7 @@ star_t extrapolateStellarClassification(double originalLuminosity)
 */
 
 //	Lookup physical parameters
-float lookupStellarMass(std::string& harvardLetter, const char& yerkesIndex, const int& intNumericValue)
+float lookupStellarMass(std::string& harvardLetter, const char& yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
 	float stellarMass;
@@ -83,7 +83,7 @@ float lookupStellarMass(std::string& harvardLetter, const char& yerkesIndex, con
 	return stellarMass;
 }
 
-float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex, const int& intNumericValue)
+float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
 	float stellarRadius;
@@ -99,7 +99,7 @@ float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex, c
 	return stellarRadius;
 }
 
-float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesIndex, const int& intNumericValue)
+float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
 	float stellarTemperature;
@@ -117,7 +117,7 @@ float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesInd
 
 
 //	Determine stellar parameters
-std::tuple<float, float, float> extrapolateStellarParameters(const int& currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, const float& floatNumericValue, const int& intNumericValue)
+std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, const float& floatNumericValue, int intNumericValue)
 {
 //	Check parameters
 //	std::cout << "harvardLetter = " << harvardLetter << std::endl;
@@ -242,7 +242,7 @@ std::string getHarvardLetter(std::string& starType, const bool& harvardPresent)
 }
 
 //	Loop through index tables to find a match
-std::string checkYerkesIndexTable(const int& index)
+std::string checkYerkesIndexTable(int index)
 {
 //	Check index value
 //	std::cout << "Yerkes index value = " << index << std::endl;

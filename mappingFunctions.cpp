@@ -124,7 +124,7 @@ uint16_t getLandHexCount(const uint16_t& totalHexCount, const uint16_t& waterHex
 
 //	Mapping water hexes
 //	Return the number of major oceans
-uint8_t getMajorOceans(const int& diceRoll)
+uint8_t getMajorOceans(int diceRoll)
 {
 	uint8_t numberOfMajorOceans = 0;
 	if 		(diceRoll <= 6)		{numberOfMajorOceans = 0;}
@@ -135,7 +135,7 @@ uint8_t getMajorOceans(const int& diceRoll)
 }
 
 //	Return the number of minor oceans
-uint8_t getMinorOceans(const int& diceRoll)
+uint8_t getMinorOceans(int diceRoll)
 {
 	uint8_t numberOfMinorOceans = 0;
 	if 		(diceRoll <= 6)		{numberOfMinorOceans = 0;}
@@ -145,7 +145,7 @@ uint8_t getMinorOceans(const int& diceRoll)
 }
 
 //	Return the number of small seas
-uint8_t getSmallSeas(const int& diceRoll)
+uint8_t getSmallSeas(int diceRoll)
 {
 	uint8_t numberOfSmallSeas = 0;
 	if 		(diceRoll < 5)	{numberOfSmallSeas = 0;}
@@ -157,7 +157,7 @@ uint8_t getSmallSeas(const int& diceRoll)
 }
 
 //	Return the number of scattered lakes
-uint8_t getScatteredLakes(const int& diceRoll)
+uint8_t getScatteredLakes(int diceRoll)
 {
 	uint8_t numberOfScatteredLakes = 0;
 	if 		(diceRoll < 3)						{numberOfScatteredLakes = 0;}
@@ -171,7 +171,7 @@ uint8_t getScatteredLakes(const int& diceRoll)
 //	NOTE: "Mapping Land Hexes" in Traveller: The New Era - World Tamer's Handbook starts at 16 and ends at 36
 //	Ensure that this is factored into the diceRoll
 //	Return the number of major continents
-uint8_t getMajorContinents(const int& diceRoll)
+uint8_t getMajorContinents(int diceRoll)
 {
 	uint8_t numberOfMajorContinents = 0;
 	if (diceRoll < (31 - 16))	{numberOfMajorContinents = diceRoller(6, MAJOR_CONTINENT_MULTIPLIER_COEFFICIENT[diceRoll]) + MAJOR_CONTINENT_ADDITION_COEFFICIENT[diceRoll];}
@@ -181,7 +181,7 @@ uint8_t getMajorContinents(const int& diceRoll)
 }
 
 //	Return the number of minor continents
-uint8_t getMinorContinents(const int& diceRoll)
+uint8_t getMinorContinents(int diceRoll)
 {
 	uint8_t numberOfMinorContinents = 0;
 	if (diceRoll < (31 - 16))	{numberOfMinorContinents = diceRoller(6, MINOR_CONTINENT_MULTIPLIER_COEFFICIENT[diceRoll]) + MINOR_CONTINENT_ADDITION_COEFFICIENT[diceRoll];}
@@ -191,7 +191,7 @@ uint8_t getMinorContinents(const int& diceRoll)
 }
 
 //	Return the number of major islands
-uint8_t getMajorIslands(const int& diceRoll)
+uint8_t getMajorIslands(int diceRoll)
 {
 	uint8_t numberOfMajorIslands = 0;
 	if 		(diceRoll < (30 - 16))	{numberOfMajorIslands = diceRoller(6, 3) - 3;}
@@ -203,7 +203,7 @@ uint8_t getMajorIslands(const int& diceRoll)
 }
 
 //	Return the number of archipelagoes
-uint8_t getArchipelagoes(const int& diceRoll)
+uint8_t getArchipelagoes(int diceRoll)
 {
 	uint8_t numberOfArchipelagoes = 0;
 	if 		(diceRoll < (32 - 16))							{numberOfArchipelagoes = diceRoller(6, 2);}

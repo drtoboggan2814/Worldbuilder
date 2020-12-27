@@ -5,7 +5,7 @@
 //	Function declarations
 #include "declarations/functions/diceRoller.h"
 
-uint8_t csv_DetermineStarCount(const int& comp1, const int& comp2, const int& comp3)
+uint8_t csv_DetermineStarCount(int comp1, int comp2, int comp3)
 {
 //	Initialize return value
 	uint8_t csv_StarCount;

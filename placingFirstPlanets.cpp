@@ -78,7 +78,7 @@ bool csv_starWorldMatch(star_t& star, rapidcsv::Document& worldDoc)
 }
 
 //	Check for conventional gas giant
-bool csv_checkForConventionalGasGiant(const float& snowLineRadius, rapidcsv::Document& worldDoc, const int& firstWorldIndex, const int& numberOfPlanets)
+bool csv_checkForConventionalGasGiant(const float& snowLineRadius, rapidcsv::Document& worldDoc, int firstWorldIndex, int numberOfPlanets)
 {
 //	Initialize return value
 	bool arrangementIsConventional;
@@ -99,7 +99,7 @@ bool csv_checkForConventionalGasGiant(const float& snowLineRadius, rapidcsv::Doc
 
 //	Check for eccentric Jupiter (eccentric gas giant)
 //	Source:  Wittenmyer; Endl, Michael; Cochran, William D.; Levison, Harold F. (2007). "Dynamical and Observational Constraints on Additional Planets in Highly Eccentric Planetary Systems". The Astronomical Journal. 134 (3): 1276–1284.
-bool csv_checkForEccentricGasGiant(rapidcsv::Document& worldDoc, const int& firstWorldDocIndex, const int& numberOfPlanets)
+bool csv_checkForEccentricGasGiant(rapidcsv::Document& worldDoc, int firstWorldDocIndex, int numberOfPlanets)
 {
 //	Initialize return value
 	bool arrangementIsEccentric;
@@ -122,7 +122,7 @@ bool csv_checkForEccentricGasGiant(rapidcsv::Document& worldDoc, const int& firs
 
 //	Check for hot Jupiter (Epistellar gas giant)
 //	Source:  Wang, Ji; Fischer, Debra A.; Horch, Elliott P.; Huang, Xu (2015). "On the Occurrence Rate of Hot Jupiters in Different Stellar Environments". The Astrophysical Journal. 799 (2): 229.
-bool csv_checkForEpistellarGasGiant(rapidcsv::Document& worldDoc, const int& firstWorldDocIndex, const int& numberOfPlanets)
+bool csv_checkForEpistellarGasGiant(rapidcsv::Document& worldDoc, int firstWorldDocIndex, int numberOfPlanets)
 {
 //	Initialize return value
 	bool arrangementIsEpistellar;
@@ -141,7 +141,7 @@ bool csv_checkForEpistellarGasGiant(rapidcsv::Document& worldDoc, const int& fir
 }
 
 //	Determine the number of planets that orbit a star generated from a .csv
-int csv_determineNumberOfCSVPlanets(rapidcsv::Document& worldDoc, const int& firstWorldDocIndex)
+int csv_determineNumberOfCSVPlanets(rapidcsv::Document& worldDoc, int firstWorldDocIndex)
 {
 //	Initialize return value
 	int numberOfPlanets;

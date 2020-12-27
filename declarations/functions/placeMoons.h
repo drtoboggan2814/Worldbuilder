@@ -8,7 +8,7 @@ int8_t getFirstFamily(const float& distanceToPrimary);
 
 //	0 is not visible, 1 can be seen through a telescope, 2 is comparable to Saturn
 
-int8_t getRingSystemVisibility(const int& moonlets);
+int8_t getRingSystemVisibility(int moonlets);
 
 int8_t getSecondFamily(const float& distanceToPrimary);
 

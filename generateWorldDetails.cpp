@@ -48,7 +48,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 char determineWorldType_ADVANCED(const char& sizeClass, const float& blackbodyTemperature, const char& moonStatus, const float& stellarMass, const float& stellarAge, const bool& gasGiantTinySulfurPresent)
 {
 	char worldType = 0;
-//	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int)sizeClass] << endl;
+//	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int )sizeClass] << endl;
 
 	if (sizeClass == SC_TERRESTRIAL_PLANET_TINY)
 	{
@@ -171,9 +171,9 @@ float getGasGiantMass(const char& gasGiantSize)
 
 	float tableInUse[9];
 
-	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = SMALLMASSTABLE[i] ;}}
-	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = MEDIUMMASSTABLE[i];}}
-	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = LARGEMASSTABLE[i] ;}}
+	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int  i = 0; i < 9; i++) {tableInUse[i] = SMALLMASSTABLE[i] ;}}
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int  i = 0; i < 9; i++) {tableInUse[i] = MEDIUMMASSTABLE[i];}}
+	else 										 {for (int  i = 0; i < 9; i++) {tableInUse[i] = LARGEMASSTABLE[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantMass = tableInUse[0];}
 	else if (diceRoll >= 9 && diceRoll <= 10) {gasGiantMass = tableInUse[1];}
@@ -199,9 +199,9 @@ float getGasGiantDensity(const char& gasGiantSize)
 
 	float tableInUse[9];
 
-	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int i = 0; i < 9; i++) {tableInUse[i] = SMALLDENSITYTABLE[i] ;}}
-	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int i = 0; i < 9; i++) {tableInUse[i] = MEDIUMDENSITYTABLE[i];}}
-	else 										 {for (int i = 0; i < 9; i++) {tableInUse[i] = LARGEDENSITYTABLE[i] ;}}
+	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int  i = 0; i < 9; i++) {tableInUse[i] = SMALLDENSITYTABLE[i] ;}}
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int  i = 0; i < 9; i++) {tableInUse[i] = MEDIUMDENSITYTABLE[i];}}
+	else 										 {for (int  i = 0; i < 9; i++) {tableInUse[i] = LARGEDENSITYTABLE[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantDensity = tableInUse[0];}
 	else if (diceRoll >= 9 && diceRoll <= 10) {gasGiantDensity = tableInUse[1];}
@@ -246,7 +246,7 @@ float calculatePlanetaryOrbitalPeriod(const float& planetOrbitalRadius, const fl
 }
 
 //	This function returns the world's orbital eccentricity, with a variance added on
-float planetaryOrbitalEccentricityTable(const int& diceRoll)
+float planetaryOrbitalEccentricityTable(int diceRoll)
 {
 	float planetaryOrbitalEccentricity = 0;
 	float variance = floatRNG(-0.05, 0.05);
@@ -397,7 +397,7 @@ int rotationPeriodTable(const char& worldType)
 }
 
 //	If the world's rotation period is especially slow, this table returns an appropriate rotation period
-int specialRotationTable(const int& specialRotationTableRoll)
+int specialRotationTable(int specialRotationTableRoll)
 {
 	int specialRotation = 0;
 	if 		(specialRotationTableRoll == 7 ) {specialRotation = diceRoller(6, 1) * 2  ;}
@@ -500,7 +500,7 @@ float determineLocalCalendar(const float& rotationPeriod, const bool& retrograde
 }
 
 //	This table returns the world's axial tilt in degrees
-int8_t axialTiltTable(const int& diceRoll)
+int8_t axialTiltTable(int diceRoll)
 {
 	int8_t axialTilt = 0;
 	if 		(diceRoll >= 3 	|| diceRoll <= 6 ) {axialTilt = 0  + (diceRoller(6, 2) - 2);}
@@ -513,7 +513,7 @@ int8_t axialTiltTable(const int& diceRoll)
 }
 
 //	If the roll for the world's axial tilt is 17 or 18, use this table
-int8_t extendedAxialTiltTable(const int& diceRoll)
+int8_t extendedAxialTiltTable(int diceRoll)
 {
 	int8_t axialTilt = 0;
 	if 		(diceRoll == 1 || diceRoll == 2) {axialTilt = 50 + (diceRoller(6, 2) - 2);}
@@ -600,7 +600,7 @@ atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcani
 }
 
 //	This function serves as a lookup table for the world's tectonic activity
-char tectonicActivtyTable(const int& diceRoll)
+char tectonicActivtyTable(int diceRoll)
 {
 	char tectonicActivityLevel = 0;
 

@@ -1,2 +1,2 @@
-int diceRNG(const int& dieNum);
-int diceRoller(const int& dieNum, const int& dieCount);
+int diceRNG(int dieNum);
+int diceRoller(int dieNum, int dieCount);

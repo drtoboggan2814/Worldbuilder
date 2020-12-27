@@ -62,7 +62,7 @@ float calculateTotalTidalEffect(const float& satelliteTidalForce, const float& p
 int rotationPeriodTable(const char& worldType);
 
 //	If the world's rotation period is especially slow, this table returns an appropriate rotation period
-int specialRotationTable(const int& specialRotationTableRoll);
+int specialRotationTable(int specialRotationTableRoll);
 
 //	This function returns the planet's sidereal rotation in standard hours
 float calculateRotationPeriod(const float& totalTidalEffect, const float& worldOrbitalPeriod, const char& worldType, const bool& tidalLockedOrNot);
@@ -74,10 +74,10 @@ bool checkForRetrogradeRotation(const bool& satelliteOrPlanet);
 //	satellite's apprent orbital cycle as seen from the planet it orbits
 float determineLocalCalendar(const float& rotationPeriod, const bool& retrogradeOrNot, const bool& satelliteOrPlanet, const float& worldOrbitalPeriod, const bool& satelliteDayLengthOrOrbitalCycle, const float& parentPlanetOrbitalPeriod);
 //	This table returns the world's axial tilt in degrees
-int8_t axialTiltTable(const int& diceRoll);
+int8_t axialTiltTable(int diceRoll);
 
 //	If the roll for the world's axial tilt is 17 or 18, use this table
-int8_t extendedAxialTiltTable(const int& diceRoll);
+int8_t extendedAxialTiltTable(int diceRoll);
 
 //	This function uses the two tables above and returns the world's axial tilt
 int8_t calculateAxialTilt();
@@ -90,7 +90,7 @@ char volcanicActivityTable(const char& worldType, const float& surfaceGravity, c
 atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcanicActivityLevel, const char& worldType, const atmosphericComposition_t& worldAtmosphereComposition);
 
 //	This function serves as a lookup table for the world's tectonic activity
-char tectonicActivtyTable(const int& diceRoll);
+char tectonicActivtyTable(int diceRoll);
 
 //	Returns the level of tectonic activity of the world
 char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, const float& hydrographicCoverage, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons);

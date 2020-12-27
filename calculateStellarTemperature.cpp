@@ -9,7 +9,7 @@
 #include "declarations/functions/floatRNG.h"
 #include "declarations/functions/diceRoller.h"
 
-float calculateStellarTemperature(const char &luminosityClass, const float &stellarMass, const float &stellarAge, const float &sSpan, const float &tableTemperature)
+float calculateStellarTemperature(const char& luminosityClass, const float& stellarMass, const float& stellarAge, const float& sSpan, const float& tableTemperature)
 {
 //	Initialize return value
 	float stellarTemperature;
@@ -22,7 +22,7 @@ float calculateStellarTemperature(const char &luminosityClass, const float &stel
 	if (luminosityClass == LC_III)
 	{
 		firstRoll = diceRoller(6, 2);
-		currentTemperature = ( 2 * (firstRoll - 2)) + 3000;
+		currentTemperature = (2 * (firstRoll - 2)) + 3000;
 		stellarTemperature = currentTemperature + variance;
 	}
 
@@ -45,7 +45,7 @@ float calculateStellarTemperature(const char &luminosityClass, const float &stel
 	if (age > (sSpan + mSpan))
 	{
 		firstRoll = diceRoller(6, 2);
-		currentTemperature = ( 2 * (firstRoll - 2)) + 3000;
+		currentTemperature = (int 2 * (firstRoll - 2)) + 3000;
 		return currentTemperature + variance;
 	}
 

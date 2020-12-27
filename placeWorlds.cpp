@@ -21,7 +21,7 @@
 using namespace std;
 
 //	This functions returns a string representing the size of the gas giant
-char getGasGiantSize(const int& diceRoll)
+char getGasGiantSize(int diceRoll)
 {
 	if 		(diceRoll >= 3  && diceRoll <= 10) 	{return SC_SMALL_GAS_GIANT;}
 	else if (diceRoll >= 11 && diceRoll <= 16) 	{return SC_MEDIUM_GAS_GIANT;}
@@ -29,7 +29,7 @@ char getGasGiantSize(const int& diceRoll)
 }
 
 //	This function returns a string representing the non-gas giant contents of the orbit
-char orbitContentsTable(const int& orbitContentsRoll)
+char orbitContentsTable(int orbitContentsRoll)
 {
 	if 		(orbitContentsRoll <= 3								) {return SC_EMPTY_ORBIT					 ;}
 	else if (orbitContentsRoll >= 4  && orbitContentsRoll <= 6	) {return SC_ASTEROID_BELT				 ;}
@@ -41,7 +41,7 @@ char orbitContentsTable(const int& orbitContentsRoll)
 
 //	This function checks which modifiers should be applied to orbitContentsRoll
 //	currentIndex is the current index of the for loop iterating through the orbits
-int getOrbitContentsRollModifier(star_t& primary, const int& currentIndex)
+int getOrbitContentsRollModifier(star_t& primary, int currentIndex)
 {
 //	orbitContentsRoll modifier should the orbit be adjacent to a forbidden zone
 	const int ADJACENT_TO_FORBIDDEN_ZONE = -6;
@@ -79,7 +79,7 @@ int getOrbitContentsRollModifier(star_t& primary, const int& currentIndex)
 //	NOTE: The distinguishing values for terrestrial worlds were pulled out of my ass
 //	They do somewhat agree with GURPS Space 4e's assignment of worlds in the Solar System
 //	This setup allows for Mercury to be tiny, Mars to be small, Earth and Venus to standard, and any world twice as massive as Earth to be large
-char csv_determineWorldSizeClass(star_t& primary, rapidcsv::Document& worldDoc, const int& currentIndex)
+char csv_determineWorldSizeClass(star_t& primary, rapidcsv::Document& worldDoc, int currentIndex)
 {
 //	Initialize return value
 	char worldSizeClass;

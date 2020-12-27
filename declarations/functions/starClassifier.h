@@ -14,13 +14,13 @@ float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex);
 float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesIndex);
 
 //	Determine stellar parameters
-std::tuple<float, float, float> extrapolateStellarParameters(const int& currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, const float& floatNumericValue, const int& intNumericValue);
+std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, const float& floatNumericValue, int intNumericValue);
 
 //	Determine Harvard classification
 std::string getHarvardLetter(std::string& starType);
 
 //	Loop through index tables to find a match
-std::string checkYerkesIndexTable(const int& index);
+std::string checkYerkesIndexTable(int index);
 
 //	Get Yerkes classification
 std::string getYerkesClassification(std::string& harvardLetter, const double& originalLuminosity);

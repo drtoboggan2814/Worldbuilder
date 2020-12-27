@@ -1,1 +1,1 @@
-char climateTypeLookup(const int& surfaceTemperature);
+char climateTypeLookup(int surfaceTemperature);

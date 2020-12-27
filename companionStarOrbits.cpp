@@ -17,7 +17,7 @@ using namespace std;
 //	Function declarations
 #include "declarations/functions/diceRoller.h"
 
-float getRadiusMultiplier(const int& diceRoll)
+float getRadiusMultiplier(int diceRoll)
 {
 	if (diceRoll <= 6) {return 0.05;}
 	else if (diceRoll >= 7 && diceRoll <= 9) {return 0.5;}
@@ -26,7 +26,7 @@ float getRadiusMultiplier(const int& diceRoll)
 	else {return 50;}
 }
 
-float getEccentricity(const int& diceRoll)
+float getEccentricity(int diceRoll)
 {
 	if (diceRoll <= 3) {return 0;}
 	else if (diceRoll == 4) {return 0.1;}
@@ -42,7 +42,7 @@ float getEccentricity(const int& diceRoll)
 }
 
 //	Determine the star's orbital eccentricity and its minimum, maximum, and average orbital separations from its primary
-star_t orbitalSeparationTable(const char& numberOfStars, const int& companionStar, star_t& primary, const bool& gardenWorldPresent)
+star_t orbitalSeparationTable(const char& numberOfStars, int companionStar, star_t& primary, const bool& gardenWorldPresent)
 {
 //	The first roll gives the general idea of how widely separated the primary is from its companion
 	int firstRoll;
