@@ -11,7 +11,7 @@
 
 char gasGiantArrangementTable();
 
-bool csv_starWorldMatch(star_t& star, rapidcsv::Document& worldDoc);
+bool csv_starWorldMatch(star_t star, rapidcsv::Document& worldDoc);
 
 bool csv_checkForConventionalGasGiant(float snowLineRadius, rapidcsv::Document& worldDoc, int firstWorldIndex, int numberOfPlanets);
 
@@ -21,7 +21,7 @@ bool csv_checkForEpistellarGasGiant(rapidcsv::Document& worldDoc, int firstWorld
 
 int csv_determineNumberOfCSVPlanets(rapidcsv::Document& worldDoc, int firstWorldDocIndex);
 
-std::tuple<int, bool, char, float, int> csv_determineGasGiantArrangement(star_t& star, rapidcsv::Document& worldDoc);
+std::tuple<int, bool, char, float, int> csv_determineGasGiantArrangement(star_t star, rapidcsv::Document& worldDoc);
 
 //	This function returns the orbital radius of the first gas giant in the system
 float placeFirstGasGiant(float snowLineRadius, char gasGiantType);

@@ -12,7 +12,7 @@ using namespace std;
 #include "declarations/structures/world_t.h"
 #include "declarations/structures/star_t.h"
 
-star_t determineStellarCharacteristics(star_t& star)
+star_t determineStellarCharacteristics(star_t star)
 {
 //	Iterate through stellarEvolutionTableConstants for the star's type
 	for (int i = 0; i < 34; i++)

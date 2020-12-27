@@ -219,12 +219,12 @@ Entered fillOrbits
 firstOrbitPastSnowLine == 0
 gasGiantArrangement == Epistellar Gas Giant
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x1238BC: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:379)
+==4709==    at 0x1238BC: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:379)
 ==4709==    by 0x168AF7: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1157)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
 ==4709==  Uninitialised value was created by a stack allocation
-==4709==    at 0x1232E0: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
+==4709==    at 0x1232E0: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
 ==4709== 
 
 star.numberOfOrbits == 
@@ -1404,12 +1404,12 @@ Entered fillOrbits
 firstOrbitPastSnowLine == 0
 gasGiantArrangement == Eccentric Gas Giant
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12367A: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:302)
+==4709==    at 0x12367A: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:302)
 ==4709==    by 0x168AF7: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1157)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
 ==4709==  Uninitialised value was created by a stack allocation
-==4709==    at 0x1232E0: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
+==4709==    at 0x1232E0: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
 ==4709== 
 
 star.numberOfOrbits == 
@@ -1965,12 +1965,12 @@ Entered fillOrbits
 firstOrbitPastSnowLine == 0
 gasGiantArrangement == Conventional Gas Giant
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x1234DC: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:238)
+==4709==    at 0x1234DC: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:238)
 ==4709==    by 0x168AF7: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1157)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
 ==4709==  Uninitialised value was created by a stack allocation
-==4709==    at 0x1232E0: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
+==4709==    at 0x1232E0: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
 ==4709== 
 
 star.numberOfOrbits == 
@@ -7598,7 +7598,7 @@ glieseIndex == Gl 4.2A
 properName == 
 starType = F7V
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12D744: csv_determineGasGiantArrangement(star_t&, rapidcsv::Document&) (placingFirstPlanets.cpp:213)
+==4709==    at 0x12D744: csv_determineGasGiantArrangement(star_t, rapidcsv::Document&) (placingFirstPlanets.cpp:213)
 ==4709==    by 0x1687F5: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1116)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
@@ -7610,7 +7610,7 @@ numberOfPlanets == 2
 i == 0
 i == 1
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12D888: csv_determineGasGiantArrangement(star_t&, rapidcsv::Document&) (placingFirstPlanets.cpp:222)
+==4709==    at 0x12D888: csv_determineGasGiantArrangement(star_t, rapidcsv::Document&) (placingFirstPlanets.cpp:222)
 ==4709==    by 0x1687F5: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1116)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
@@ -7618,7 +7618,7 @@ i == 1
 ==4709==    at 0x12BB82: csv_checkForEccentricGasGiant(rapidcsv::Document&, int const&, int const&) (placingFirstPlanets.cpp:103)
 ==4709== 
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12D9CA: csv_determineGasGiantArrangement(star_t&, rapidcsv::Document&) (placingFirstPlanets.cpp:231)
+==4709==    at 0x12D9CA: csv_determineGasGiantArrangement(star_t, rapidcsv::Document&) (placingFirstPlanets.cpp:231)
 ==4709==    by 0x1687F5: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1116)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
@@ -7892,7 +7892,7 @@ radius is not provided
 ==4709== 
 ==4709== 1 errors in context 1 of 22:
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12D9CA: csv_determineGasGiantArrangement(star_t&, rapidcsv::Document&) (placingFirstPlanets.cpp:231)
+==4709==    at 0x12D9CA: csv_determineGasGiantArrangement(star_t, rapidcsv::Document&) (placingFirstPlanets.cpp:231)
 ==4709==    by 0x1687F5: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1116)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
@@ -7902,7 +7902,7 @@ radius is not provided
 ==4709== 
 ==4709== 1 errors in context 2 of 22:
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12D888: csv_determineGasGiantArrangement(star_t&, rapidcsv::Document&) (placingFirstPlanets.cpp:222)
+==4709==    at 0x12D888: csv_determineGasGiantArrangement(star_t, rapidcsv::Document&) (placingFirstPlanets.cpp:222)
 ==4709==    by 0x1687F5: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1116)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
@@ -7912,7 +7912,7 @@ radius is not provided
 ==4709== 
 ==4709== 1 errors in context 3 of 22:
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12D744: csv_determineGasGiantArrangement(star_t&, rapidcsv::Document&) (placingFirstPlanets.cpp:213)
+==4709==    at 0x12D744: csv_determineGasGiantArrangement(star_t, rapidcsv::Document&) (placingFirstPlanets.cpp:213)
 ==4709==    by 0x1687F5: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1116)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
@@ -8029,12 +8029,12 @@ radius is not provided
 ==4709== 
 ==4709== 12 errors in context 16 of 22:
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x12367A: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:302)
+==4709==    at 0x12367A: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:302)
 ==4709==    by 0x168AF7: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1157)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
 ==4709==  Uninitialised value was created by a stack allocation
-==4709==    at 0x1232E0: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
+==4709==    at 0x1232E0: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
 ==4709== 
 ==4709== 
 ==4709== 14 errors in context 17 of 22:
@@ -8049,22 +8049,22 @@ radius is not provided
 ==4709== 
 ==4709== 29 errors in context 18 of 22:
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x1238BC: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:379)
+==4709==    at 0x1238BC: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:379)
 ==4709==    by 0x168AF7: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1157)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
 ==4709==  Uninitialised value was created by a stack allocation
-==4709==    at 0x1232E0: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
+==4709==    at 0x1232E0: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
 ==4709== 
 ==4709== 
 ==4709== 32 errors in context 19 of 22:
 ==4709== Conditional jump or move depends on uninitialised value(s)
-==4709==    at 0x1234DC: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:238)
+==4709==    at 0x1234DC: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:238)
 ==4709==    by 0x168AF7: starBuilder(star_t, starSystem_t&, int, float, float, float, float, float, float, rapidcsv::Document&, int, bool, rapidcsv::Document&) (worldBuilder.cpp:1157)
 ==4709==    by 0x16B829: starSystemBuilder(bool, rapidcsv::Document&, int, rapidcsv::Document&) (worldBuilder.cpp:1408)
 ==4709==    by 0x16BF8D: main (worldBuilder.cpp:1441)
 ==4709==  Uninitialised value was created by a stack allocation
-==4709==    at 0x1232E0: fillOrbits(star_t&, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
+==4709==    at 0x1232E0: fillOrbits(star_t, rapidcsv::Document&, bool const&) (placeWorlds.cpp:168)
 ==4709== 
 ==4709== 
 ==4709== 492 errors in context 20 of 22:

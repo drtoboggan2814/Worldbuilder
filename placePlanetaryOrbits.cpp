@@ -42,7 +42,7 @@ float getOrbitalRadius(float outermostLegalDistance)
 }
 
 //	This function returns the orbital radii of the primary in ascending order
-star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, bool randomStar, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
+star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool randomStar, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
 {
 //	Keep track of the distance between each orbit
 	float distanceBetweenOrbits = 0;

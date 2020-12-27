@@ -60,7 +60,7 @@ float placeFirstGasGiant(float snowLineRadius, char gasGiantType)
 
 
 //	Check worldDoc and starDoc for a match
-bool csv_starWorldMatch(star_t& star, rapidcsv::Document& worldDoc)
+bool csv_starWorldMatch(star_t star, rapidcsv::Document& worldDoc)
 {
 //	Initialize return value
 	bool matchFound = false;
@@ -185,7 +185,7 @@ int csv_determineNumberOfCSVPlanets(rapidcsv::Document& worldDoc, int firstWorld
 }
 
 //	Determine the gas giant arrangement of a star generated from a .csv
-std::tuple<int, bool, char, float, int> csv_determineGasGiantArrangement(star_t& star, rapidcsv::Document& worldDoc)
+std::tuple<int, bool, char, float, int> csv_determineGasGiantArrangement(star_t star, rapidcsv::Document& worldDoc)
 {
 //	Since 0 is a valid index, 12345 is the default value
 //	The first index for the star in worldDoc

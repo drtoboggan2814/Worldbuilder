@@ -41,7 +41,7 @@ char orbitContentsTable(int orbitContentsRoll)
 
 //	This function checks which modifiers should be applied to orbitContentsRoll
 //	currentIndex is the current index of the for loop iterating through the orbits
-int getOrbitContentsRollModifier(star_t& primary, int currentIndex)
+int getOrbitContentsRollModifier(star_t primary, int currentIndex)
 {
 //	orbitContentsRoll modifier should the orbit be adjacent to a forbidden zone
 	const int ADJACENT_TO_FORBIDDEN_ZONE = -6;
@@ -79,7 +79,7 @@ int getOrbitContentsRollModifier(star_t& primary, int currentIndex)
 //	NOTE: The distinguishing values for terrestrial worlds were pulled out of my ass
 //	They do somewhat agree with GURPS Space 4e's assignment of worlds in the Solar System
 //	This setup allows for Mercury to be tiny, Mars to be small, Earth and Venus to standard, and any world twice as massive as Earth to be large
-char csv_determineWorldSizeClass(star_t& primary, rapidcsv::Document& worldDoc, int currentIndex)
+char csv_determineWorldSizeClass(star_t primary, rapidcsv::Document& worldDoc, int currentIndex)
 {
 //	Initialize return value
 	char worldSizeClass;
@@ -164,7 +164,7 @@ char csv_determineWorldSizeClass(star_t& primary, rapidcsv::Document& worldDoc, 
 	return worldSizeClass;
 }
 
-star_t fillOrbits(star_t& primary, rapidcsv::Document& worldDoc, bool randomSystem)
+star_t fillOrbits(star_t primary, rapidcsv::Document& worldDoc, bool randomSystem)
 {
 //	gasGiantPlacementRoll modifier should the gas giant fall inside the snow line radius
 	const int SNOWLINE_RADIUS_MODIFIER = 4;
