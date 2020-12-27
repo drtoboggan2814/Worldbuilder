@@ -98,7 +98,7 @@ char getTectonicActivity(const char& worldType, const char& volcanicActivityLeve
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
 std::tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier);
-double getEscapeVelocity(const double& escapeMass, const double& distanceToCenterOfMass);
+double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass);
 float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, const char& worldType);
 float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody);
 float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface);

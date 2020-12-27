@@ -23,12 +23,12 @@ std::string getHarvardLetter(std::string& starType);
 std::string checkYerkesIndexTable(int index);
 
 //	Get Yerkes classification
-std::string getYerkesClassification(std::string& harvardLetter, const double& originalLuminosity);
+std::string getYerkesClassification(std::string& harvardLetter, double originalLuminosity);
 
 //	Get numeric value
-uint8_t getNumericValue(std::string& yerkesClassification, const double& originalLuminosity);
+uint8_t getNumericValue(std::string& yerkesClassification, double originalLuminosity);
 
 //	This function completes stellar classification and determines physical parameters
-std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, const double& originalLuminosity, bool massPreset, bool radiusPreset, bool tempPreset);
+std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, double originalLuminosity, bool massPreset, bool radiusPreset, bool tempPreset);
 
 #endif

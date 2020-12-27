@@ -683,7 +683,7 @@ tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLeve
 //	Calculate the body's escape velocity
 //	NOTE: This is not included in GURPS 4e Space
 //	Parameters must be passed in terms of m and kg
-double getEscapeVelocity(const double& escapeMass, const double& distanceToCenterOfMass)
+double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass)
 {
 //	v_e = sqrt((2*G*M) / r)
 	double escapeVelocity = sqrt((2 * UNIVERSAL_GRAVITATIONAL_CONSTANT * escapeMass) / distanceToCenterOfMass);
