@@ -189,7 +189,7 @@ void printWorld(const world_t& world, char sizeClass)
 }
 
 //	Print the characteristics of a star
-void printStar(const star_t& star, char numberOfStars)
+void printStar(star_t star, char numberOfStars)
 {
 	std::cout << setw(48) << left << "\nStar:" << left << setw(16) << (int)star.starNumber << std::endl;
 	std::cout << setw(48) << left << "Stellar mass:" << left << setw(16) << star.stellarMass << " solar masses" << std::endl;

@@ -11,7 +11,7 @@ void printMoon(const moon_t& moon);
 void printWorld(const world_t& world, char sizeClass);
 
 //	Print the characteristics of a star
-void printStar(const star_t& star);
+void printStar(star_t star);
 
 //	Print the characteristics of a star system
 void printStarSystem(const starSystem_t& starSystem);

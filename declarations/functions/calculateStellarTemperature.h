@@ -1,1 +1,1 @@
-float calculateStellarTemperature(const char &luminosityClass, const float &stellarMass, const float &stellarAge, const float &sSpan, const float &tableTemperature);
+float calculateStellarTemperature(char luminosityClass, float stellarMass, float stellarAge, float sSpan, float tableTemperature);
