@@ -2,7 +2,7 @@
 
 uint8_t getHexesPerSide(float worldDiameter);
 
-uint16_t getTotalHexCount(const uint8_t& hexesPerSide);
+uint16_t getTotalHexCount(uint8_t hexesPerSide);
 
 uint8_t getUWPHydrographic(float hydrographicCoverage);
 

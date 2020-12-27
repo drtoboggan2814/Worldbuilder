@@ -21,7 +21,7 @@ uint8_t getHexesPerSide(float worldDiameter)
 }
 
 //	Return the total number of hexes on the map
-uint16_t getTotalHexCount(const uint8_t& hexesPerSide)
+uint16_t getTotalHexCount(uint8_t hexesPerSide)
 {
 	uint16_t totalHexCount = WORLD_MAP_TOTAL_HEXES[hexesPerSide];
 	return totalHexCount;
