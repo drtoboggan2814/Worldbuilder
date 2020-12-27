@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int climateMinLookup(const char& worldType)
+int climateMinLookup(char worldType)
 {
 	int min;
 

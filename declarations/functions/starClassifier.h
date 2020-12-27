@@ -9,9 +9,9 @@
 #include "../structures/star_t.h"
 
 //	Lookup physical parameters
-float lookupStellarMass(std::string& harvardLetter, const char& yerkesIndex);
-float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex);
-float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesIndex);
+float lookupStellarMass(std::string& harvardLetter, char yerkesIndex);
+float lookupStellarRadius(std::string& harvardLetter, char yerkesIndex);
+float lookupStellarTemperature(std::string& harvardLetter, char yerkesIndex);
 
 //	Determine stellar parameters
 std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, bool floatOrIntNumericValue, bool massPreset, bool radiusPreset, bool tempPreset, float floatNumericValue, int intNumericValue);

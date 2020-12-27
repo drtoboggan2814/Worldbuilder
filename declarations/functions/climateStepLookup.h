@@ -1,1 +1,1 @@
-int climateStepLookup(const char& worldType);
+int climateStepLookup(char worldType);

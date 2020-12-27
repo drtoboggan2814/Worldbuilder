@@ -1,1 +1,1 @@
-int climateMinLookup(const char& worldType);
+int climateMinLookup(char worldType);

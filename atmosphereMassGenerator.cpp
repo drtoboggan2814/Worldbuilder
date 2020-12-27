@@ -8,7 +8,7 @@
 #include "declarations/functions/diceRoller.h"
 #include "declarations/functions/floatRNG.h"
 
-float atmosphereMassGenerator(const char& worldType)
+float atmosphereMassGenerator(char worldType)
 {
 	float atmosphereMass;
 

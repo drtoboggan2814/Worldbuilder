@@ -67,7 +67,7 @@ star_t extrapolateStellarClassification(double originalLuminosity)
 */
 
 //	Lookup physical parameters
-float lookupStellarMass(std::string& harvardLetter, const char& yerkesIndex, int intNumericValue)
+float lookupStellarMass(std::string& harvardLetter, char yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
 	float stellarMass;
@@ -83,7 +83,7 @@ float lookupStellarMass(std::string& harvardLetter, const char& yerkesIndex, int
 	return stellarMass;
 }
 
-float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex, int intNumericValue)
+float lookupStellarRadius(std::string& harvardLetter, char yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
 	float stellarRadius;
@@ -99,7 +99,7 @@ float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex, i
 	return stellarRadius;
 }
 
-float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesIndex, int intNumericValue)
+float lookupStellarTemperature(std::string& harvardLetter, char yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
 	float stellarTemperature;

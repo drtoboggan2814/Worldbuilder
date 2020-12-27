@@ -24,4 +24,4 @@ int csv_determineNumberOfCSVPlanets(rapidcsv::Document& worldDoc, int firstWorld
 std::tuple<int, bool, char, float, int> csv_determineGasGiantArrangement(star_t& star, rapidcsv::Document& worldDoc);
 
 //	This function returns the orbital radius of the first gas giant in the system
-float placeFirstGasGiant(float snowLineRadius, const char& gasGiantType);
+float placeFirstGasGiant(float snowLineRadius, char gasGiantType);

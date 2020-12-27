@@ -2,7 +2,7 @@
 #include "declarations/constants/climateStepConstants.h"
 #include "declarations/constants/worldTypeConstants.h"
 
-int climateStepLookup(const char& worldType)
+int climateStepLookup(char worldType)
 {
 	int step;
 

@@ -32,7 +32,7 @@ char gasGiantArrangementTable()
 }
 
 //	This function returns the orbital radius of the first gas giant in the system
-float placeFirstGasGiant(float snowLineRadius, const char& gasGiantType)
+float placeFirstGasGiant(float snowLineRadius, char gasGiantType)
 {
 //	Initialize return value
 	float gasGiantOrbitalRadius;

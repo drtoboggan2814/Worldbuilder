@@ -4,7 +4,7 @@
 
 using namespace std;
 
-float absorptionFactorLookup(const char& worldType, float hydrographicCoverage)
+float absorptionFactorLookup(char worldType, float hydrographicCoverage)
 {
 	float af;
 

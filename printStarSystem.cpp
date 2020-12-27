@@ -129,7 +129,7 @@ void printMoon(const moon_t& moon)
 }
 
 //	This function prints information about the world in question to the console
-void printWorld(const world_t& world, const char& sizeClass)
+void printWorld(const world_t& world, char sizeClass)
 {
 	bool isGasGiant = (world.worldType == WT_SMALL_GAS_GIANT || world.worldType == WT_MEDIUM_GAS_GIANT || world.worldType == WT_LARGE_GAS_GIANT) ? 1 : 0;
 	bool worldTypeCanHaveAtmosphere = world.worldType != WT_ASTEROID_BELT && world.worldType != WT_TINY_ICE && world.worldType != WT_TINY_SULFUR && world.worldType != WT_TINY_SULFUR && world.worldType != WT_SMALL_HADEAN && world.worldType != WT_SMALL_ROCK && world.worldType != WT_STANDARD_HADEAN && world.worldType != WT_STANDARD_CHTHONIAN && world.worldType != WT_LARGE_CHTHONIAN;
@@ -189,7 +189,7 @@ void printWorld(const world_t& world, const char& sizeClass)
 }
 
 //	Print the characteristics of a star
-void printStar(const star_t& star, const char& numberOfStars)
+void printStar(const star_t& star, char numberOfStars)
 {
 	std::cout << setw(48) << left << "\nStar:" << left << setw(16) << (int)star.starNumber << std::endl;
 	std::cout << setw(48) << left << "Stellar mass:" << left << setw(16) << star.stellarMass << " solar masses" << std::endl;

@@ -9,7 +9,7 @@
 #include "declarations/functions/floatRNG.h"
 #include "declarations/functions/diceRoller.h"
 
-float calculateStellarTemperature(const char& luminosityClass, float stellarMass, float stellarAge, float sSpan, float tableTemperature)
+float calculateStellarTemperature(char luminosityClass, float stellarMass, float stellarAge, float sSpan, float tableTemperature)
 {
 //	Initialize return value
 	float stellarTemperature;

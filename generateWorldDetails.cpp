@@ -45,7 +45,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
+char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, char moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
 {
 	char worldType = 0;
 //	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int )sizeClass] << endl;
@@ -162,7 +162,7 @@ float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float black
 	This function applies only to gas giants, as the original functions still apply
 	to terrestrial worlds
 */
-float getGasGiantMass(const char& gasGiantSize)
+float getGasGiantMass(char gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
 	float gasGiantMass = 0;
@@ -191,7 +191,7 @@ float getGasGiantMass(const char& gasGiantSize)
 	return gasGiantMass;
 }
 
-float getGasGiantDensity(const char& gasGiantSize)
+float getGasGiantDensity(char gasGiantSize)
 {
 	int diceRoll = diceRoller(6, 3);
 	float gasGiantDensity = 0;
@@ -271,7 +271,7 @@ float planetaryOrbitalEccentricityTable(int diceRoll)
 	return planetaryOrbitalEccentricity;
 }
 
-float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius)
+float calculatePlanetaryOrbitalEccentricity(char worldType, char gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius)
 {
 	int eccentricityRoll = diceRoller(6, 3);
 	if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT)
@@ -300,7 +300,7 @@ float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float p
 	return maximumSeparation;
 }
 
-float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize)
+float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, char moonSize)
 {
 	float satelliteOrbitalRadius = 0;
 
@@ -385,7 +385,7 @@ float calculateTotalTidalEffect(float satelliteTidalForce, float primaryTidalFor
 }
 
 //	Returns the modifier for the world's rotation period
-int rotationPeriodTable(const char& worldType)
+int rotationPeriodTable(char worldType)
 {
 	int modifier = 0;
 	if 		(worldType == WT_LARGE_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT) 																																										{modifier = 0;}
@@ -411,7 +411,7 @@ int specialRotationTable(int specialRotationTableRoll)
 }
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, bool tidalLockedOrNot)
+float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, char worldType, bool tidalLockedOrNot)
 {
 	float rotationPeriod = 0;
 
@@ -533,7 +533,7 @@ int8_t calculateAxialTilt()
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType)
+char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, char parentWorldType)
 {
 	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
@@ -580,7 +580,7 @@ char volcanicActivityTable(const char& worldType, float surfaceGravity, float wo
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
-atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcanicActivityLevel, const char& worldType, const atmosphericComposition_t& worldAtmosphereComposition)
+atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, const atmosphericComposition_t& worldAtmosphereComposition)
 {
 	int checkForEffects = diceRoller(6, 3);
 	int sulfurOrPollutants = diceRoller(6, 1);
@@ -614,7 +614,7 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons)
+char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons)
 {
 	char tectonicActivityLevel = TAL_NONE;
 
@@ -654,7 +654,7 @@ char getTectonicActivity(const char& worldType, const char& volcanicActivityLeve
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier)
+tuple<int8_t, int8_t> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier)
 {
 	char volcanicActivityLevelTemp = volcanicActivityLevel;
 	char tectonicActivityLevelTemp = tectonicActivityLevel;
@@ -696,7 +696,7 @@ double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass)
 //	Since Earth's magnetic field strength is variable across the surface, so too is it on another world
 //	If a detailed analysis is required, then a surface map of the world is needed
 //	As a result, this only gives a rough estimate that is of minimal utility
-float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, const char& worldType)
+float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, char worldType)
 {
 	float magFactor = 10 * (1 / sqrt(rotationPeriod / 24)) * (worldDensity * worldDensity) * (sqrt(worldMass) / stellarAge);
 	magFactor = (worldType == WT_TINY_ICE || worldType == WT_SMALL_ICE || worldType == WT_STANDARD_ICE || worldType == WT_LARGE_ICE) ? magFactor * 0.5 : magFactor;
@@ -718,7 +718,7 @@ float getMagneticField(float worldMass, float worldDensity, float rotationPeriod
 }
 /*
 //	NOTE: This is from Alternity Cosmos
-float getMagneticField(float worldMass, float rotationPeriod, const char& worldType)
+float getMagneticField(float worldMass, float rotationPeriod, char worldType)
 {
 	float magneticFieldStrength = 0;
 	if (worldMass < 0.03)

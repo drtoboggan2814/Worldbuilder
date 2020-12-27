@@ -8,7 +8,7 @@ void printAtmosphereComposition(const atmosphericComposition_t& atmosphereCompos
 
 void printMoon(const moon_t& moon);
 
-void printWorld(const world_t& world, const char& sizeClass);
+void printWorld(const world_t& world, char sizeClass);
 
 //	Print the characteristics of a star
 void printStar(const star_t& star);

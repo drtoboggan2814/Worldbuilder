@@ -14,9 +14,9 @@ int8_t getSecondFamily(float distanceToPrimary);
 
 int8_t getThirdFamily(float distanceToPrimary);
 
-int8_t getTerrestrialMajorMoons(float distanceToPrimary, const char& worldType);
+int8_t getTerrestrialMajorMoons(float distanceToPrimary, char worldType);
 
-int8_t getTerrestrialMoonlets(float distanceToPrimary, const char& worldType);
+int8_t getTerrestrialMoonlets(float distanceToPrimary, char worldType);
 
 //	Determine the size of the major moon
 

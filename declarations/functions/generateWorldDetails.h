@@ -12,7 +12,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent);
+char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, char moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent);
 
 //	CLIMATE
 //	This function calculates the world's average surface temperature
@@ -23,8 +23,8 @@ float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float black
 	This function applies only to gas giants, as the original functions still apply
 	to terrestrial worlds
 */
-float getGasGiantMass(const char& gasGiantSize);
-float getGasGiantDensity(const char& gasGiantSize);
+float getGasGiantMass(char gasGiantSize);
+float getGasGiantDensity(char gasGiantSize);
 float getGasGiantDiameter(float gasGiantMass, float gasGiantDensity);
 
 //	DYNAMIC PARAMETERS
@@ -42,13 +42,13 @@ float calculatePlanetaryOrbitalPeriod(float planetOrbitalRadius, float stellarMa
 //	This function returns the world's orbital eccentricity, with a variance added on
 float planetaryOrbitalEccentricityTable();
 
-float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius);
+float calculatePlanetaryOrbitalEccentricity(char worldType, char gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius);
 
 //	The following two functions return the minimum and maximum separations
 //	between a planet and its primary, respectively
 float calculatePlanetPrimaryMinimumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity);
 float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity);
-float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize);
+float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, char moonSize);
 float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass);
 float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass);
 float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius);
@@ -59,13 +59,13 @@ float calculateTidalForceOnPlanetByPrimary(float solarMass, float planetDiameter
 float calculateTotalTidalEffect(float satelliteTidalForce, float primaryTidalForcee, float planetTidalForce, float starSystemAge, float worldMass);
 
 //	Returns the modifier for the world's rotation period
-int rotationPeriodTable(const char& worldType);
+int rotationPeriodTable(char worldType);
 
 //	If the world's rotation period is especially slow, this table returns an appropriate rotation period
 int specialRotationTable(int specialRotationTableRoll);
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, bool tidalLockedOrNot);
+float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, char worldType, bool tidalLockedOrNot);
 
 //	This function determines if a world's rotation is retrograde
 bool checkForRetrogradeRotation(bool satelliteOrPlanet);
@@ -83,23 +83,23 @@ int8_t extendedAxialTiltTable(int diceRoll);
 int8_t calculateAxialTilt();
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType);
+char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, char parentWorldType);
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
-atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcanicActivityLevel, const char& worldType, const atmosphericComposition_t& worldAtmosphereComposition);
+atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, const atmosphericComposition_t& worldAtmosphereComposition);
 
 //	This function serves as a lookup table for the world's tectonic activity
 char tectonicActivtyTable(int diceRoll);
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons);
+char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons);
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-std::tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier);
+std::tuple<int8_t, int8_t> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier);
 double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass);
-float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, const char& worldType);
+float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, char worldType);
 float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody);
 float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface);
 float getEquatorialRotationVelocity(float diameter, float rotationPeriod);

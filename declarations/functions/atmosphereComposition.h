@@ -2,4 +2,4 @@
 
 //#include "../structures/atmosphericComposition_t.h"
 
-atmosphericComposition_t atmosphereComposition(const char& worldType);
+atmosphericComposition_t atmosphereComposition(char worldType);

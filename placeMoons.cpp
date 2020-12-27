@@ -81,7 +81,7 @@ int8_t getThirdFamily(float distanceToPrimary)
 	}
 }
 
-int8_t getTerrestrialMajorMoons(float distanceToPrimary, const char& worldType)
+int8_t getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
 {
 //	Roll for number of major moons
 	int majorMoonRoll = 0;
@@ -110,7 +110,7 @@ int8_t getTerrestrialMajorMoons(float distanceToPrimary, const char& worldType)
 	}
 }
 
-int8_t getTerrestrialMoonlets(float distanceToPrimary, const char& worldType)
+int8_t getTerrestrialMoonlets(float distanceToPrimary, char worldType)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;

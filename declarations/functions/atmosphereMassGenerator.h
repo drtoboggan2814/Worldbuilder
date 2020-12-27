@@ -1,1 +1,1 @@
-float atmosphereMassGenerator(const char& worldType);
+float atmosphereMassGenerator(char worldType);

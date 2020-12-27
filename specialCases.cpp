@@ -16,7 +16,7 @@
 
 
 //	This function returns the day face modifier
-float tideLockedDayFaceModifierTable(const char& pressureCategory)
+float tideLockedDayFaceModifierTable(char pressureCategory)
 {
 	if 		(pressureCategory == APC_NONE || pressureCategory == APC_NONE) {return 1.20;}
 	else if (pressureCategory == APC_VERY_THIN						  ) {return 1.20;}
@@ -28,7 +28,7 @@ float tideLockedDayFaceModifierTable(const char& pressureCategory)
 }
 
 //	This function returns the night face modifier
-float tideLockedNightFaceModifierTable(const char& pressureCategory)
+float tideLockedNightFaceModifierTable(char pressureCategory)
 {
 	if 		(pressureCategory == APC_NONE || pressureCategory == APC_NONE) {return 0.10;}
 	else if (pressureCategory == APC_VERY_THIN						  ) {return 0.10;}
@@ -40,7 +40,7 @@ float tideLockedNightFaceModifierTable(const char& pressureCategory)
 }
 
 //	The effect of tidal forces on the pressure category of the atmosphere
-char tideLockedFinalAtmosphereTable(const char& pressureCategory)
+char tideLockedFinalAtmosphereTable(char pressureCategory)
 {
 //	Initialize return value
 	char pressureCategoryTemp;
@@ -52,7 +52,7 @@ char tideLockedFinalAtmosphereTable(const char& pressureCategory)
 }
 
 //	This function acts as a lookup table for the hydrographic coverage modifier
-float tideLockedHydrographicCoverageModifier(const char& pressureCategory)
+float tideLockedHydrographicCoverageModifier(char pressureCategory)
 {
 	if 		(pressureCategory == APC_NONE || pressureCategory == APC_NONE) {return -1.00;}
 	else if (pressureCategory == APC_VERY_THIN						  ) {return -1.00;}
@@ -65,7 +65,7 @@ float tideLockedHydrographicCoverageModifier(const char& pressureCategory)
 
 //	This function takes the effects of a tidally locked world on a world's
 //	atmosphere and hydrographic coverage into account
-tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, const char& atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, const char& worldType, float hydrographicCoverage)
+tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, char atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, char worldType, float hydrographicCoverage)
 {
 //	Initialize return values
 	float atmosphericPressureTemp = atmosphericPressure;

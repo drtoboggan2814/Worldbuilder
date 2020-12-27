@@ -42,7 +42,7 @@ float getEccentricity(int diceRoll)
 }
 
 //	Determine the star's orbital eccentricity and its minimum, maximum, and average orbital separations from its primary
-star_t orbitalSeparationTable(const char& numberOfStars, int companionStar, star_t& primary, bool gardenWorldPresent)
+star_t orbitalSeparationTable(char numberOfStars, int companionStar, star_t& primary, bool gardenWorldPresent)
 {
 //	The first roll gives the general idea of how widely separated the primary is from its companion
 	int firstRoll;

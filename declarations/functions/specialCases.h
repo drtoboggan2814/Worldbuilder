@@ -3,20 +3,20 @@
 
 //	This function returns the day face modifier
 
-float tideLockedDayFaceModifierTable(const char& pressureCategory);
+float tideLockedDayFaceModifierTable(char pressureCategory);
 
 //	This function returns the night face modifier
-float tideLockedNightFaceModifierTable(const char& pressureCategory);
+float tideLockedNightFaceModifierTable(char pressureCategory);
 
 //	The effect of tidal forces on the pressure category of the atmosphere
-char tideLockedFinalAtmosphereTable(const char& pressureCategory);
+char tideLockedFinalAtmosphereTable(char pressureCategory);
 
 //	This function acts as a lookup table for the hydrographic coverage modifier
-float tideLockedHydrographicCoverageModifier(const char& pressureCategory);
+float tideLockedHydrographicCoverageModifier(char pressureCategory);
 
 //	This function takes the effects of a tidally locked world on a world's
 //	atmosphere and hydrographic coverage into account
-std::tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, const char& atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, const char& worldType, float hydrographicCoverage);
+std::tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, char atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, char worldType, float hydrographicCoverage);
 
 //	This function checks to see if the world is in a stable resonant pattern,
 //	rather than being tide-locked
