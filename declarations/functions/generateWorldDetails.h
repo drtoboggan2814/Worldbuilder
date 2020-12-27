@@ -83,7 +83,7 @@ int8_t extendedAxialTiltTable(int diceRoll);
 int8_t calculateAxialTilt();
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons, const char& parentWorldType);
+char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType);
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
@@ -93,11 +93,11 @@ atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcani
 char tectonicActivtyTable(int diceRoll);
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons);
+char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons);
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-std::tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, const int8_t& resourceValueModifier, const int8_t& habitabilityModifier);
+std::tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier);
 double getEscapeVelocity(const double& escapeMass, const double& distanceToCenterOfMass);
 float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, const char& worldType);
 float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody);

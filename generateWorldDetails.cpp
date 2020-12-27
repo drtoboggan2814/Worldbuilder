@@ -533,7 +533,7 @@ int8_t calculateAxialTilt()
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons, const char& parentWorldType)
+char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType)
 {
 	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
@@ -614,7 +614,7 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons)
+char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons)
 {
 	char tectonicActivityLevel = TAL_NONE;
 
@@ -654,7 +654,7 @@ char getTectonicActivity(const char& worldType, const char& volcanicActivityLeve
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, const int8_t& resourceValueModifier, const int8_t& habitabilityModifier)
+tuple<int8_t, int8_t> effectsOfGeologicActivity(const char& volcanicActivityLevel, const char& tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier)
 {
 	char volcanicActivityLevelTemp = volcanicActivityLevel;
 	char tectonicActivityLevelTemp = tectonicActivityLevel;
