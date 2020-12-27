@@ -14,7 +14,7 @@ float lookupStellarRadius(std::string& harvardLetter, const char& yerkesIndex);
 float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesIndex);
 
 //	Determine stellar parameters
-std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, float floatNumericValue, int intNumericValue);
+std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, bool floatOrIntNumericValue, bool massPreset, bool radiusPreset, bool tempPreset, float floatNumericValue, int intNumericValue);
 
 //	Determine Harvard classification
 std::string getHarvardLetter(std::string& starType);
@@ -29,6 +29,6 @@ std::string getYerkesClassification(std::string& harvardLetter, const double& or
 uint8_t getNumericValue(std::string& yerkesClassification, const double& originalLuminosity);
 
 //	This function completes stellar classification and determines physical parameters
-std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, const double& originalLuminosity, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset);
+std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, const double& originalLuminosity, bool massPreset, bool radiusPreset, bool tempPreset);
 
 #endif

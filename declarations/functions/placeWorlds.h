@@ -10,4 +10,4 @@ char orbitContentsTable(int orbitContentsRoll);
 char csv_determineWorldSizeClass(star_t& primary, rapidcsv::Document& worldDoc, int currentIndex);
 int getOrbitContentsRollModifier(star_t& primary, int currentIndex);
 
-star_t fillOrbits(star_t& primary, rapidcsv::Document& worldDoc, const bool& randomSystem);
+star_t fillOrbits(star_t& primary, rapidcsv::Document& worldDoc, bool randomSystem);

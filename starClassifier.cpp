@@ -117,7 +117,7 @@ float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesInd
 
 
 //	Determine stellar parameters
-std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, float floatNumericValue, int intNumericValue)
+std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, bool floatOrIntNumericValue, bool massPreset, bool radiusPreset, bool tempPreset, float floatNumericValue, int intNumericValue)
 {
 //	Check parameters
 //	std::cout << "harvardLetter = " << harvardLetter << std::endl;
@@ -198,7 +198,7 @@ std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex
 }
 
 //	Determine Harvard classification
-std::string getHarvardLetter(std::string& starType, const bool& harvardPresent)
+std::string getHarvardLetter(std::string& starType, bool harvardPresent)
 {
 //	Check starType
 //	std::cout << "starType = " << starType << std::endl;
@@ -266,7 +266,7 @@ std::string checkYerkesIndexTable(int index)
 }
 
 //	Get Yerkes classification
-std::string getYerkesClassification(std::string& harvardLetter, const double& originalLuminosity, const bool& yerkesPresent)
+std::string getYerkesClassification(std::string& harvardLetter, const double& originalLuminosity, bool yerkesPresent)
 {
 //	Check parameters
 //	std::cout << "harvardLetter = " << harvardLetter << std::endl;
@@ -378,7 +378,7 @@ std::string getYerkesClassification(std::string& harvardLetter, const double& or
 }
 
 //	Get numeric value
-int getNumericValue(std::string& yerkesClassification, std::string& harvardLetter, const double& originalLuminosity, const bool& numberPresent)
+int getNumericValue(std::string& yerkesClassification, std::string& harvardLetter, const double& originalLuminosity, bool numberPresent)
 {
 /*
 //	Check for parameter errors
@@ -441,7 +441,7 @@ int getNumericValue(std::string& yerkesClassification, std::string& harvardLette
 }
 
 //	This function completes stellar classification and determines physical parameters
-std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, const double& originalLuminosity, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset)
+std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, const double& originalLuminosity, bool massPreset, bool radiusPreset, bool tempPreset)
 {
 //	Check parameters
 	std::cout << "starType = " << starType << std::endl;

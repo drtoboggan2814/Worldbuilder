@@ -45,7 +45,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, const bool& gasGiantTinySulfurPresent)
+char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent)
 {
 	char worldType = 0;
 //	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int )sizeClass] << endl;
@@ -300,7 +300,7 @@ float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float p
 	return maximumSeparation;
 }
 
-float calculateSatelliteOrbitalRadius(float planetDiameter, const bool& moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize)
+float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize)
 {
 	float satelliteOrbitalRadius = 0;
 
@@ -411,7 +411,7 @@ int specialRotationTable(int specialRotationTableRoll)
 }
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, const bool& tidalLockedOrNot)
+float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, bool tidalLockedOrNot)
 {
 	float rotationPeriod = 0;
 
@@ -450,7 +450,7 @@ float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, 
 }
 
 //	This function determines if a world's rotation is retrograde
-bool checkForRetrogradeRotation(const bool& satelliteOrPlanet)
+bool checkForRetrogradeRotation(bool satelliteOrPlanet)
 {
 	bool retrogradeOrNot = false;
 	int diceRoll = diceRoller(6, 3);
@@ -463,7 +463,7 @@ bool checkForRetrogradeRotation(const bool& satelliteOrPlanet)
 
 //	This function can return the length of a day on a planet or satellite or the
 //	satellite's apprent orbital cycle as seen from the planet it orbits
-float determineLocalCalendar(float rotationPeriod, const bool& retrogradeOrNot, const bool& satelliteOrPlanet, float worldOrbitalPeriod, const bool& satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
+float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool satelliteOrPlanet, float worldOrbitalPeriod, bool satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
 {
 	float siderealPeriod = 0;
 	float apparentLength = 0;
@@ -533,7 +533,7 @@ int8_t calculateAxialTilt()
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType)
+char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType)
 {
 	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
@@ -614,7 +614,7 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons)
+char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons)
 {
 	char tectonicActivityLevel = TAL_NONE;
 

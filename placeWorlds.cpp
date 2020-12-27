@@ -164,7 +164,7 @@ char csv_determineWorldSizeClass(star_t& primary, rapidcsv::Document& worldDoc, 
 	return worldSizeClass;
 }
 
-star_t fillOrbits(star_t& primary, rapidcsv::Document& worldDoc, const bool& randomSystem)
+star_t fillOrbits(star_t& primary, rapidcsv::Document& worldDoc, bool randomSystem)
 {
 //	gasGiantPlacementRoll modifier should the gas giant fall inside the snow line radius
 	const int SNOWLINE_RADIUS_MODIFIER = 4;

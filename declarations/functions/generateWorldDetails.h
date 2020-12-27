@@ -12,7 +12,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, const bool& gasGiantTinySulfurPresent);
+char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, bool gasGiantTinySulfurPresent);
 
 //	CLIMATE
 //	This function calculates the world's average surface temperature
@@ -48,7 +48,7 @@ float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& g
 //	between a planet and its primary, respectively
 float calculatePlanetPrimaryMinimumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity);
 float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity);
-float calculateSatelliteOrbitalRadius(float planetDiameter, const bool& moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize);
+float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize);
 float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass);
 float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass);
 float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius);
@@ -65,14 +65,14 @@ int rotationPeriodTable(const char& worldType);
 int specialRotationTable(int specialRotationTableRoll);
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, const bool& tidalLockedOrNot);
+float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, bool tidalLockedOrNot);
 
 //	This function determines if a world's rotation is retrograde
-bool checkForRetrogradeRotation(const bool& satelliteOrPlanet);
+bool checkForRetrogradeRotation(bool satelliteOrPlanet);
 
 //	This function can return the length of a day on a planet or satellite or the
 //	satellite's apprent orbital cycle as seen from the planet it orbits
-float determineLocalCalendar(float rotationPeriod, const bool& retrogradeOrNot, const bool& satelliteOrPlanet, float worldOrbitalPeriod, const bool& satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod);
+float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool satelliteOrPlanet, float worldOrbitalPeriod, bool satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod);
 //	This table returns the world's axial tilt in degrees
 int8_t axialTiltTable(int diceRoll);
 
@@ -83,7 +83,7 @@ int8_t extendedAxialTiltTable(int diceRoll);
 int8_t calculateAxialTilt();
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType);
+char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, const char& parentWorldType);
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
@@ -93,7 +93,7 @@ atmosphericComposition_t volcanicActivityEffectOnGardenWorld(const char& volcani
 char tectonicActivtyTable(int diceRoll);
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, int8_t numberOfMajorMoons);
+char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons);
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers

@@ -4,6 +4,6 @@ float getRadiusMultiplier(int diceRoll);
 
 float getEccentricity(int diceRoll);
 
-star_t orbitalSeparationTable(const char& numberOfStars, int companionStar, star_t& primary, const bool& gardenWorldPresent);
+star_t orbitalSeparationTable(const char& numberOfStars, int companionStar, star_t& primary, bool gardenWorldPresent);
 
 starSystem_t companionStarOrbits(starSystem_t& starSystem);
