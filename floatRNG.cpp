@@ -5,7 +5,7 @@
 
 using namespace std;
 
-float floatRNG(const float& lower, const float& upper)
+float floatRNG(float lower, float upper)
 {
 //	Create distribution from lower to upper
 /*

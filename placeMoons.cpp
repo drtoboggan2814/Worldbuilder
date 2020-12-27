@@ -9,7 +9,7 @@
 //	Gas giants
 
 //	Generate the number of moonlets in the gas giant's first family
-int8_t getFirstFamily(const float& distanceToPrimary)
+int8_t getFirstFamily(float distanceToPrimary)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = diceRoller(6, 2);
@@ -35,7 +35,7 @@ int8_t getRingSystemVisibility(int moonlets)
 	else 									 {return 2;}
 }
 
-int8_t getSecondFamily(const float& distanceToPrimary)
+int8_t getSecondFamily(float distanceToPrimary)
 {
 //	Initialize return value
 	int8_t numberOfSecondFamilyMoons = 0;
@@ -59,7 +59,7 @@ int8_t getSecondFamily(const float& distanceToPrimary)
 	return numberOfSecondFamilyMoons;
 }
 
-int8_t getThirdFamily(const float& distanceToPrimary)
+int8_t getThirdFamily(float distanceToPrimary)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;
@@ -81,7 +81,7 @@ int8_t getThirdFamily(const float& distanceToPrimary)
 	}
 }
 
-int8_t getTerrestrialMajorMoons(const float& distanceToPrimary, const char& worldType)
+int8_t getTerrestrialMajorMoons(float distanceToPrimary, const char& worldType)
 {
 //	Roll for number of major moons
 	int majorMoonRoll = 0;
@@ -110,7 +110,7 @@ int8_t getTerrestrialMajorMoons(const float& distanceToPrimary, const char& worl
 	}
 }
 
-int8_t getTerrestrialMoonlets(const float& distanceToPrimary, const char& worldType)
+int8_t getTerrestrialMoonlets(float distanceToPrimary, const char& worldType)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;

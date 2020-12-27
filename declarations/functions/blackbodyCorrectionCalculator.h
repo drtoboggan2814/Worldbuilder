@@ -1,1 +1,1 @@
-float blackbodyCorrectionCalculator(const float& af, const float& gf, const float& atmosphereMass);
+float blackbodyCorrectionCalculator(float af, float gf, float atmosphereMass);

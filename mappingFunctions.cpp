@@ -13,7 +13,7 @@
 #include "declarations/functions/diceRoller.h"
 
 //	Return the number of hexes per triangle side
-uint8_t getHexesPerSide(const float& worldDiameter)
+uint8_t getHexesPerSide(float worldDiameter)
 {
 	uint8_t worldSize = uint8_t(round((worldDiameter * EARTH_RADIUS_IN_KM) / 1000));
 	uint8_t hexesPerSide = WORLDSIZE_TRIANGLESIZE_LOOKUP_TABLE[worldSize];
@@ -29,7 +29,7 @@ uint16_t getTotalHexCount(const uint8_t& hexesPerSide)
 
 //	Return the Traveller UWP size code for the world
 //	This function is used by getTectonicPlateCount, and applies only to terrestrial worlds
-uint8_t getUWPSize(const float& worldDiameter)
+uint8_t getUWPSize(float worldDiameter)
 {
 //	Initialize return value
 	uint8_t uwpSize = 0;
@@ -55,7 +55,7 @@ uint8_t getUWPSize(const float& worldDiameter)
 
 //	Return the Traveller UWP hydrographic code for the world
 //	This function is used by getTectonicPlateCount, and applies only to terrestrial worlds
-uint8_t getUWPHydrographic(const float& hydrographicCoverage)
+uint8_t getUWPHydrographic(float hydrographicCoverage)
 {
 //	Initialize return value
 	uint8_t uwpHydrographic = 0;
@@ -77,7 +77,7 @@ uint8_t getUWPHydrographic(const float& hydrographicCoverage)
 
 
 //	Return the number of tectonic plates on the world
-uint8_t getTectonicPlateCount(const float& worldDiameter, const float& hydrographicCoverage)
+uint8_t getTectonicPlateCount(float worldDiameter, float hydrographicCoverage)
 {
 	int diceRoll = diceRoller(6, 2);
 	uint8_t tectonicPlateCount = (getUWPHydrographic(hydrographicCoverage) + getUWPSize(worldDiameter)) - diceRoll;
@@ -87,7 +87,7 @@ uint8_t getTectonicPlateCount(const float& worldDiameter, const float& hydrograp
 }
 
 //	Return the size (in hexes) of the tectonic plate
-uint8_t getTectonicPlateSize(const float& worldDiameter)
+uint8_t getTectonicPlateSize(float worldDiameter)
 {
 	const int TECTONIC_PLATE_SIZE_COEFFICIENT[6] = {5, 10, 15, 20, 25, 30};
 	int diceRoll = diceRoller(6, 1);
@@ -109,7 +109,7 @@ uint8_t getTectonicPlateMovementType()
 }
 
 //	Return the total number of water hexes
-uint16_t getWaterHexCount(const uint16_t& totalHexCount, const float& hydrographicCoverage)
+uint16_t getWaterHexCount(const uint16_t& totalHexCount, float hydrographicCoverage)
 {
 	uint16_t waterHexCount = uint16_t(round(totalHexCount * hydrographicCoverage));
 	return waterHexCount;

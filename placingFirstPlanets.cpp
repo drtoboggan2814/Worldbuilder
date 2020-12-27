@@ -32,7 +32,7 @@ char gasGiantArrangementTable()
 }
 
 //	This function returns the orbital radius of the first gas giant in the system
-float placeFirstGasGiant(const float& snowLineRadius, const char& gasGiantType)
+float placeFirstGasGiant(float snowLineRadius, const char& gasGiantType)
 {
 //	Initialize return value
 	float gasGiantOrbitalRadius;
@@ -78,7 +78,7 @@ bool csv_starWorldMatch(star_t& star, rapidcsv::Document& worldDoc)
 }
 
 //	Check for conventional gas giant
-bool csv_checkForConventionalGasGiant(const float& snowLineRadius, rapidcsv::Document& worldDoc, int firstWorldIndex, int numberOfPlanets)
+bool csv_checkForConventionalGasGiant(float snowLineRadius, rapidcsv::Document& worldDoc, int firstWorldIndex, int numberOfPlanets)
 {
 //	Initialize return value
 	bool arrangementIsConventional;

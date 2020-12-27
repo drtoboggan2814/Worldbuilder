@@ -1,1 +1,1 @@
-float atmosphericPressureCalculator(const float& atmosphereMass, const float& surfaceGravity, const char& worldType);
+float atmosphericPressureCalculator(float atmosphereMass, float surfaceGravity, const char& worldType);

@@ -35,14 +35,14 @@ float orbitalSpacingTable()
 }
 
 //	Get the orbital radius of the first world
-float getOrbitalRadius(const float& outermostLegalDistance)
+float getOrbitalRadius(float outermostLegalDistance)
 {
 	int diceRoll = diceRoller(6, 1);
 	return outermostLegalDistance / ((diceRoll * 0.05) + 1);
 }
 
 //	This function returns the orbital radii of the primary in ascending order
-star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, const bool& randomStar, const char& numberOfStars, const float& companionAInnerForbiddenZone, const float& companionAOuterForbiddenZone, const float& companionBInnerForbiddenZone, const float& companionBOuterForbiddenZone, const float& companionAOrbitalRadius, const float& companionBOrbitalRadius)
+star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, const bool& randomStar, const char& numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
 {
 //	Keep track of the distance between each orbit
 	float distanceBetweenOrbits = 0;

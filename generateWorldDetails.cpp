@@ -45,7 +45,7 @@ float calculateBlackbodyTemperature_ADVANCED(float stellarLuminosity, float aver
 	orbits a terrestrial world (moonStatus = 1), or it orbits a gas giant
 	(moonStatus = 2)
 */
-char determineWorldType_ADVANCED(const char& sizeClass, const float& blackbodyTemperature, const char& moonStatus, const float& stellarMass, const float& stellarAge, const bool& gasGiantTinySulfurPresent)
+char determineWorldType_ADVANCED(const char& sizeClass, float blackbodyTemperature, const char& moonStatus, float stellarMass, float stellarAge, const bool& gasGiantTinySulfurPresent)
 {
 	char worldType = 0;
 //	cout << "Size class = " << SC_S_LOOKUP_TABLE[(int )sizeClass] << endl;
@@ -151,7 +151,7 @@ char determineWorldType_ADVANCED(const char& sizeClass, const float& blackbodyTe
 
 //	CLIMATE
 //	This function calculates the world's average surface temperature
-float averageSurfaceTemperature_ADVANCED(const float& blackbodyTemperature, const float& blackbodyCorrection)
+float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float blackbodyCorrection)
 {
 	float averageSurfaceTemperature = blackbodyCorrection * blackbodyTemperature;
 	return averageSurfaceTemperature;
@@ -218,7 +218,7 @@ float getGasGiantDensity(const char& gasGiantSize)
 	return gasGiantDensity;
 }
 
-float getGasGiantDiameter(const float& gasGiantMass, const float& gasGiantDensity)
+float getGasGiantDiameter(float gasGiantMass, float gasGiantDensity)
 {
 	float gasGiantDiameter = cbrt(gasGiantMass / gasGiantDensity);
 	return gasGiantDiameter;
@@ -231,14 +231,14 @@ float getGasGiantDiameter(const float& gasGiantMass, const float& gasGiantDensit
 	orbital periods calculated are treated as one star that the next star outwards
 	orbits
 */
-float calculateStellarOrbitalPeriod(const float& averageOrbitalRadius, const float& solarMassSum)
+float calculateStellarOrbitalPeriod(float averageOrbitalRadius, float solarMassSum)
 {
 	float stellarOrbitalPeriod = sqrt(pow(averageOrbitalRadius, 3) / solarMassSum);
 	return stellarOrbitalPeriod;
 }
 
 //	This function returns a planet's orbital period around its primary
-float calculatePlanetaryOrbitalPeriod(const float& planetOrbitalRadius, const float& stellarMass, const float& planetMass)
+float calculatePlanetaryOrbitalPeriod(float planetOrbitalRadius, float stellarMass, float planetMass)
 {
 	const float EARTHTOSOLARMASS = 0.000003;
 	float planetaryOrbitalPeriod = sqrt(pow(planetOrbitalRadius, 3) / (stellarMass + planetMass * EARTHTOSOLARMASS));
@@ -271,7 +271,7 @@ float planetaryOrbitalEccentricityTable(int diceRoll)
 	return planetaryOrbitalEccentricity;
 }
 
-float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& gasGiantArrangement, const float& snowLineRadius, const float& planetOrbitalRadius, const float& innerLimitRadius)
+float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius)
 {
 	int eccentricityRoll = diceRoller(6, 3);
 	if (worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT)
@@ -288,19 +288,19 @@ float calculatePlanetaryOrbitalEccentricity(const char& worldType, const char& g
 
 //	The following two functions return the minimum and maximum separations
 //	between a planet and its primary, respectively
-float calculatePlanetPrimaryMinimumSeparation(const float& planetOrbitalRadius, const float& planetaryOrbitalEccentricity)
+float calculatePlanetPrimaryMinimumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity)
 {
 	float minimumSeparation = (1 - planetaryOrbitalEccentricity) * planetOrbitalRadius;
 	return minimumSeparation;
 }
 
-float calculatePlanetPrimaryMaximumSeparation(const float& planetOrbitalRadius, const float& planetaryOrbitalEccentricity)
+float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float planetaryOrbitalEccentricity)
 {
 	float maximumSeparation = (1 + planetaryOrbitalEccentricity) * planetOrbitalRadius;
 	return maximumSeparation;
 }
 
-float calculateSatelliteOrbitalRadius(const float& planetDiameter, const bool& moonType, const char& gasGiantMoonType, const float& distanceToClosestMoon, const char& moonSize)
+float calculateSatelliteOrbitalRadius(float planetDiameter, const bool& moonType, const char& gasGiantMoonType, float distanceToClosestMoon, const char& moonSize)
 {
 	float satelliteOrbitalRadius = 0;
 
@@ -351,34 +351,34 @@ float calculateSatelliteOrbitalRadius(const float& planetDiameter, const bool& m
 	return satelliteOrbitalRadius;
 }
 
-float calculateSatelliteOrbitalPeriod(const float& satelliteOrbitalRadius, const float& planetMass, const float& satteliteMass)
+float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass)
 {
 //	0.166 is given by the errata, while the book gives 0.0588
 	float satteliteOrbitalPeriod = 0.166 * sqrt(pow(satelliteOrbitalRadius, 3) / (planetMass + satteliteMass));
 	return satteliteOrbitalPeriod;
 }
 
-float calculateTidalForceOnPlanetBySatellite(const float& satteliteMass, const float& planetDiameter, const float& satelliteOrbitalRadius)
+float calculateTidalForceOnPlanetBySatellite(float satteliteMass, float planetDiameter, float satelliteOrbitalRadius)
 {
 //	22.3 * 10^6 is given by the errata, while the book gives 17.8 * 10^6
 	float tidalForceExerted = ((22.3 * pow(10, 6)) * satteliteMass * planetDiameter) / pow(satelliteOrbitalRadius, 3);
 	return tidalForceExerted;
 }
 
-float calculateTidalForceOnSatelliteByPlanet(const float& planetMass, const float& satelliteDiameter, const float& satelliteOrbitalRadius)
+float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius)
 {
 	float tidalForceExerted = ((17.8 * pow(10, 6)) * planetMass * satelliteDiameter) / pow(satelliteOrbitalRadius, 3);
 	return tidalForceExerted;
 }
 
-float calculateTidalForceOnPlanetByPrimary(const float& solarMass, const float& planetDiameter, const float& planetOrbitalRadius)
+float calculateTidalForceOnPlanetByPrimary(float solarMass, float planetDiameter, float planetOrbitalRadius)
 {
 	float tidalForceExerted = (0.46 * solarMass * planetDiameter) / pow(planetOrbitalRadius, 3);
 	return tidalForceExerted;
 }
 
 //	This function can apply to both planets and satellites
-float calculateTotalTidalEffect(const float& satelliteTidalForce, const float& primaryTidalForcee, const float& planetTidalForce, const float& starSystemAge, const float& worldMass)
+float calculateTotalTidalEffect(float satelliteTidalForce, float primaryTidalForcee, float planetTidalForce, float starSystemAge, float worldMass)
 {
 	float totalTidalEffect = ((primaryTidalForcee + satelliteTidalForce + planetTidalForce) * starSystemAge) / worldMass;
 	return totalTidalEffect;
@@ -411,7 +411,7 @@ int specialRotationTable(int specialRotationTableRoll)
 }
 
 //	This function returns the planet's sidereal rotation in standard hours
-float calculateRotationPeriod(const float& totalTidalEffect, const float& worldOrbitalPeriod, const char& worldType, const bool& tidalLockedOrNot)
+float calculateRotationPeriod(float totalTidalEffect, float worldOrbitalPeriod, const char& worldType, const bool& tidalLockedOrNot)
 {
 	float rotationPeriod = 0;
 
@@ -463,7 +463,7 @@ bool checkForRetrogradeRotation(const bool& satelliteOrPlanet)
 
 //	This function can return the length of a day on a planet or satellite or the
 //	satellite's apprent orbital cycle as seen from the planet it orbits
-float determineLocalCalendar(const float& rotationPeriod, const bool& retrogradeOrNot, const bool& satelliteOrPlanet, const float& worldOrbitalPeriod, const bool& satelliteDayLengthOrOrbitalCycle, const float& parentPlanetOrbitalPeriod)
+float determineLocalCalendar(float rotationPeriod, const bool& retrogradeOrNot, const bool& satelliteOrPlanet, float worldOrbitalPeriod, const bool& satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod)
 {
 	float siderealPeriod = 0;
 	float apparentLength = 0;
@@ -533,7 +533,7 @@ int8_t calculateAxialTilt()
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(const char& worldType, const float& surfaceGravity, const float& worldAge, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons, const char& parentWorldType)
+char volcanicActivityTable(const char& worldType, float surfaceGravity, float worldAge, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons, const char& parentWorldType)
 {
 	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
@@ -614,7 +614,7 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, const float& hydrographicCoverage, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons)
+char getTectonicActivity(const char& worldType, const char& volcanicActivityLevel, float hydrographicCoverage, const bool& satelliteOrPlanet, const int8_t& numberOfMajorMoons)
 {
 	char tectonicActivityLevel = TAL_NONE;
 
@@ -696,7 +696,7 @@ double getEscapeVelocity(const double& escapeMass, const double& distanceToCente
 //	Since Earth's magnetic field strength is variable across the surface, so too is it on another world
 //	If a detailed analysis is required, then a surface map of the world is needed
 //	As a result, this only gives a rough estimate that is of minimal utility
-float getMagneticField(const float& worldMass, const float& worldDensity, const float& rotationPeriod, const float& stellarAge, const char& worldType)
+float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, const char& worldType)
 {
 	float magFactor = 10 * (1 / sqrt(rotationPeriod / 24)) * (worldDensity * worldDensity) * (sqrt(worldMass) / stellarAge);
 	magFactor = (worldType == WT_TINY_ICE || worldType == WT_SMALL_ICE || worldType == WT_STANDARD_ICE || worldType == WT_LARGE_ICE) ? magFactor * 0.5 : magFactor;
@@ -747,7 +747,7 @@ float getMagneticField(float worldMass, float rotationPeriod, const char& worldT
 //	Determine the apparent size of a body as seen from another
 //	The return value is the angular diameter of the body in the sky
 //	NOTE: This is from Atomic Rockets
-float apparentOrbitingBodySize(const float& bodyDiameter, const float& distanceFromBody)
+float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody)
 {
 //	This value is in arcseconds
 	float angularDiameter = RAD_IN_ASEC * (bodyDiameter / distanceFromBody);
@@ -757,7 +757,7 @@ float apparentOrbitingBodySize(const float& bodyDiameter, const float& distanceF
 //	Determine the distance to the horizon
 //	The return value is in meters
 //	NOTE: This is not included in GURPS Space 4e
-float calculateDistanceToHorizon(const float& worldDiameter, const float& distanceFromSurface)
+float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface)
 {
 	float distanceToHorizon = sqrt(worldDiameter * EARTH_RADIUS_IN_KM * 2 * KM_TO_M * distanceFromSurface);
 	return distanceToHorizon;
@@ -766,7 +766,7 @@ float calculateDistanceToHorizon(const float& worldDiameter, const float& distan
 //	Determine angular velocity
 //	The return value is in m/s
 //	NOTE: This is not included in GURPS Space 4e
-float getEquatorialRotationVelocity(const float& diameter, const float& rotationPeriod)
+float getEquatorialRotationVelocity(float diameter, float rotationPeriod)
 {
 	float radius = (diameter / 2) * EARTH_RADIUS_IN_KM * KM_TO_M;
 	float angularVelocity = (2 * M_PI) / (rotationPeriod * HOUR_TO_SEC);
@@ -775,7 +775,7 @@ float getEquatorialRotationVelocity(const float& diameter, const float& rotation
 }
 
 //	Determine total surface area
-tuple<float, float, float> getSurfaceArea(const float& worldDiameter, const float& hydrographicCoverage)
+tuple<float, float, float> getSurfaceArea(float worldDiameter, float hydrographicCoverage)
 {
 	float totalSurfaceArea = 4 * M_PI * pow((worldDiameter / 2) * EARTH_RADIUS_IN_KM, 2);
 	float liquidSurfaceArea = totalSurfaceArea * hydrographicCoverage;

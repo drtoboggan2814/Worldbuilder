@@ -117,7 +117,7 @@ float lookupStellarTemperature(std::string& harvardLetter, const char& yerkesInd
 
 
 //	Determine stellar parameters
-std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, const float& floatNumericValue, int intNumericValue)
+std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, const bool& floatOrIntNumericValue, const bool& massPreset, const bool& radiusPreset, const bool& tempPreset, float floatNumericValue, int intNumericValue)
 {
 //	Check parameters
 //	std::cout << "harvardLetter = " << harvardLetter << std::endl;
