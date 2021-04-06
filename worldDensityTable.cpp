@@ -17,15 +17,11 @@ using namespace std;
 
 float worldDensityTable(char worldType)
 {
-	float worldDensity;
-	float variance;
-	int diceResult;
+	float worldDensity = 0;
+	float variance = floatRNG(-0.05, 0.05);
+	int diceResult = diceRoller(6, 3);
 
-	diceResult = diceRoller(6, 3);
-
-	variance = floatRNG(-0.05, 0.05);
-
-//	Icy core worlds
+	//	Icy core worlds
 	if (worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR || worldType == WT_SMALL_HADEAN || worldType == WT_SMALL_ICE || worldType == WT_STANDARD_HADEAN || worldType == WT_STANDARD_AMMONIA || worldType == WT_LARGE_AMMONIA)
 	{
 		if 		(diceResult >= 3  	&& diceResult <= 6) 	{worldDensity = 0.3 + variance;}
@@ -36,7 +32,7 @@ float worldDensityTable(char worldType)
 	}
 
 //	Small iron core worlds
-	else if (worldType == WT_TINY_SULFUR || worldType == WT_SMALL_ROCK)
+	else if (worldType == WT_TINY_ROCK || worldType == WT_SMALL_ROCK)
 	{
 		if 		(diceResult >= 3  	&& diceResult <= 6) 	{worldDensity = 0.6 + variance;}
 		else if (diceResult >= 7  	&& diceResult <= 10) 	{worldDensity = 0.7 + variance;}
@@ -53,7 +49,7 @@ float worldDensityTable(char worldType)
 //	Large iron core worlds
 	else
 	{
-		if 		(diceResult >= 3  	&& diceResult <= 6) 	{worldDensity = 0.8 + variance;}
+		if 		(diceResult <= 6) 							{worldDensity = 0.8 + variance;}
 		else if (diceResult >= 7  	&& diceResult <= 10) 	{worldDensity = 0.9 + variance;}
 		else if (diceResult >= 11 	&& diceResult <= 14) 	{worldDensity = 1.0 + variance;}
 		else if (diceResult >= 15	&& diceResult <= 17) 	{worldDensity = 1.1 + variance;}

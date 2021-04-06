@@ -1,1 +1,6 @@
-float calculateStellarLuminosity(const char &luminosityClass, const float &stellarAge, const float &mSpan, const float &lMax, const float &lMin);
+#ifndef CALCULATESTELLARLUMINOSITY
+#define CALCULATESTELLARLUMINOSITY
+
+float calculateStellarLuminosity(char luminosityClass, float stellarAge, float mSpan, float lMax, float lMin);
+
+#endif

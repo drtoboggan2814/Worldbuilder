@@ -7,7 +7,7 @@
 //	Function declarations
 #include "declarations/functions/floatRNG.h"
 
-float determineStarRadius(const char &luminosityClass, const float &stellarLuminosity, const float &stellarTemperature)
+float determineStarRadius(char luminosityClass, float stellarLuminosity, float stellarTemperature)
 {
 //	Initialize return value
 	float stellarRadius;

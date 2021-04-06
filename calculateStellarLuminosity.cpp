@@ -9,7 +9,7 @@
 
 //	Struct declarations
 
-float calculateStellarLuminosity(const char &luminosityClass, const float &stellarAge, const float &mSpan, const float &lMax, const float &lMin)
+float calculateStellarLuminosity(char luminosityClass, float stellarAge, float mSpan, float lMax, float lMin)
 {
 //	Initialize return value
 	float stellarLuminosity;

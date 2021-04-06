@@ -9,7 +9,7 @@
 //	Gas giants
 
 //	Generate the number of moonlets in the gas giant's first family
-int8_t getFirstFamily(float distanceToPrimary)
+int getFirstFamily(float distanceToPrimary)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = diceRoller(6, 2);
@@ -28,17 +28,17 @@ int8_t getFirstFamily(float distanceToPrimary)
 
 //	See how visible the ring system is
 //	0 is not visible, 1 can be seen through a telescope, 2 is comparable to Saturn
-int8_t getRingSystemVisibility(int moonlets)
+int getRingSystemVisibility(int moonlets)
 {
 	if 		(moonlets <  6				   ) {return 0;}
 	else if (moonlets >= 6 && moonlets < 10) {return 1;}
 	else 									 {return 2;}
 }
 
-int8_t getSecondFamily(float distanceToPrimary)
+int getSecondFamily(float distanceToPrimary)
 {
 //	Initialize return value
-	int8_t numberOfSecondFamilyMoons = 0;
+	int numberOfSecondFamilyMoons = 0;
 
 //	If the gas giant is within 0.1 AU of the primary, there are no moons in the second family
 	if (distanceToPrimary <= 0.1) {numberOfSecondFamilyMoons = 0;}
@@ -59,7 +59,7 @@ int8_t getSecondFamily(float distanceToPrimary)
 	return numberOfSecondFamilyMoons;
 }
 
-int8_t getThirdFamily(float distanceToPrimary)
+int getThirdFamily(float distanceToPrimary)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;
@@ -81,7 +81,7 @@ int8_t getThirdFamily(float distanceToPrimary)
 	}
 }
 
-int8_t getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
+int getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
 {
 //	Roll for number of major moons
 	int majorMoonRoll = 0;
@@ -110,7 +110,7 @@ int8_t getTerrestrialMajorMoons(float distanceToPrimary, char worldType)
 	}
 }
 
-int8_t getTerrestrialMoonlets(float distanceToPrimary, char worldType)
+int getTerrestrialMoonlets(float distanceToPrimary, char worldType)
 {
 //	Roll for number of moonlets
 	int moonletsRoll = 0;
@@ -140,7 +140,7 @@ int8_t getTerrestrialMoonlets(float distanceToPrimary, char worldType)
 }
 
 //	Determine the size of the major moon
-int8_t moonSizeTable()
+int moonSizeTable()
 {
 //	Roll for size
 	int diceRoll = diceRoller(6, 3);

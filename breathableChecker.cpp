@@ -1,6 +1,6 @@
 #include "declarations/structures/atmosphericComposition_t.h"
 
-bool breathableChecker(const atmosphericComposition_t& atmosphereComposition)
+bool breathableChecker(atmosphericComposition_t atmosphereComposition)
 {
 	bool breathable;
 

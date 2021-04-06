@@ -1,7 +1,11 @@
 #ifndef MOON_T
 #define MOON_T
 
+//	C++ libraries
 #include <cstdint>
+#include <string>
+
+//	Structures
 #include "atmosphericComposition_t.h"
 #include "tectonicPlate_t.h"
 
@@ -14,7 +18,7 @@ struct moon_t
 //	-3 corresponds to "Three size classes smaller"
 //	-2 corresponds to "Two size classes smaller"
 //	-1 corresponds to "One size class smaller"
-	int8_t moonSizeClass;
+	int moonSizeClass;
 	char sizeClass;
 	char worldType;
 	float orbitalRadius;
@@ -27,13 +31,15 @@ struct moon_t
 	float apparentDayLength;
 	float blackbodyCorrection;
 	float apparentSatelliteOrbitalCycle;
-	int8_t axialTilt;
+	int axialTilt;
 	bool resonantOrNot;
 	float atmosphericMass;
 	bool tidalLockedOrNot;
 	float atmosphereMass;
 	float hydrographicCoverage;
 	float surfaceTemperature;
+	float dayFaceAverageTemperature;
+	float nightFaceAverageTemperature;
 	float greenhouseFactor;
 	float absorptionFactor;
 	float blackbodyTemperature;
@@ -48,8 +54,10 @@ struct moon_t
 	float atmosphericPressure;
 	atmosphericComposition_t worldAtmosphereComposition;
 	float minimumMolecularWeightRetained;
-	int8_t resourceValueModifier;
-	int8_t habitabilityModifier;
+	int resourceValueModifier;
+	int habitabilityModifier;
+	char climateType;
+	bool breathable;
 	float tidalForceOnSatelliteByPlanet;
 	float totalTidalEffect;
 	char atmosphericPressureCategory;
@@ -64,21 +72,32 @@ struct moon_t
 	float liquidSurfaceArea;
 
 //	Mapping information
-	uint8_t hexesPerSide;
-	uint16_t totalHexes;
-	uint16_t waterHexCount;
-	uint16_t landHexCount;
-	uint8_t numberOfMajorOceans;
-	uint8_t numberOfMinorOceans;
-	uint8_t numberOfSmallSeas;
-	uint8_t numberOfScatteredLakes;
-	uint8_t numberOfMajorContinents;
-	uint8_t numberOfMinorContinents;
-	uint8_t numberOfMajorIslands;
-	uint8_t numberOfArchipelagoes;
+	char hexesPerSide;
+	int totalHexes;
+	int waterHexCount;
+	int landHexCount;
+	char numberOfMajorOceans;
+	char numberOfMinorOceans;
+	char numberOfSmallSeas;
+	char numberOfScatteredLakes;
+	char numberOfMajorContinents;
+	char numberOfMinorContinents;
+	char numberOfMajorIslands;
+	char numberOfArchipelagoes;
 //	Tectonic plates
-	uint8_t tectonicPlateCount;
+	int tectonicPlateCount;
 	tectonicPlate_t tectonicPlateArray[16];
+
+//	Identification
+//	Unique identifier for the moon
+	std::string moonName;
+	int uniqueMoonID;
+	int parentWorldID;
+	int primaryStarID;
+	int starSystemID;
+
+//	Life
+	char nativeEcosphere;
 
 };
 

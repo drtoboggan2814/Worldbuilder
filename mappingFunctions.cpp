@@ -4,40 +4,43 @@
 //	C++ libraries
 #include <cstdint>
 #include <cmath>
+#include <iostream>
 
 //	Constant declarations
 #include "declarations/constants/mappingConstants.h"
 #include "declarations/constants/unitConversions.h"
+#include "declarations/constants/worldTypeConstants.h"
 
 //	Function declarations
 #include "declarations/functions/diceRoller.h"
 
 //	Return the number of hexes per triangle side
-uint8_t getHexesPerSide(float worldDiameter)
+//	2300AD
+char getHexesPerSide(float worldDiameter)
 {
-	uint8_t worldSize = uint8_t(round((worldDiameter * EARTH_RADIUS_IN_KM) / 1000));
-	uint8_t hexesPerSide = WORLDSIZE_TRIANGLESIZE_LOOKUP_TABLE[worldSize];
+	int worldSize = round((worldDiameter * EARTH_RADIUS_IN_KM * 2) / 1000);
+	char hexesPerSide = worldSize > 19 ? 19 : WORLDSIZE_TRIANGLESIZE_LOOKUP_TABLE[worldSize];
 	return hexesPerSide;
 }
 
 //	Return the total number of hexes on the map
-uint16_t getTotalHexCount(uint8_t hexesPerSide)
+int getTotalHexCount(char hexesPerSide)
 {
-	uint16_t totalHexCount = WORLD_MAP_TOTAL_HEXES[hexesPerSide];
+	int totalHexCount = WORLD_MAP_TOTAL_HEXES[hexesPerSide];
 	return totalHexCount;
 }
 
 //	Return the Traveller UWP size code for the world
 //	This function is used by getTectonicPlateCount, and applies only to terrestrial worlds
-uint8_t getUWPSize(float worldDiameter)
+int getUWPSize(float worldDiameter, char worldType)
 {
 //	Initialize return value
-	uint8_t uwpSize = 0;
+	int uwpSize = 0;
 //	Convert worldDiameter to km
-	float worldDiameterKM = worldDiameter * EARTH_RADIUS_IN_KM;
+	float worldDiameterKM = worldDiameter * EARTH_RADIUS_IN_KM * 2;
 
-	if 		(worldDiameter < 800)								{uwpSize = 0;}
-	else if (worldDiameter >= 800 	&& worldDiameter < 2400)	{uwpSize = 1;}
+	if 		(worldType == WT_ASTEROID_BELT || worldType == WT_SMALL_GAS_GIANT || worldType == WT_MEDIUM_GAS_GIANT || worldType == WT_LARGE_GAS_GIANT) {uwpSize = 0;}
+	else if (worldDiameter < 2400)	{uwpSize = 1;}
 	else if (worldDiameter >= 2400 	&& worldDiameter < 4000)	{uwpSize = 2;}
 	else if (worldDiameter >= 4000 	&& worldDiameter < 5600)	{uwpSize = 3;}
 	else if (worldDiameter >= 5600 	&& worldDiameter < 7200)	{uwpSize = 4;}
@@ -55,10 +58,10 @@ uint8_t getUWPSize(float worldDiameter)
 
 //	Return the Traveller UWP hydrographic code for the world
 //	This function is used by getTectonicPlateCount, and applies only to terrestrial worlds
-uint8_t getUWPHydrographic(float hydrographicCoverage)
+int getUWPHydrographic(float hydrographicCoverage)
 {
 //	Initialize return value
-	uint8_t uwpHydrographic = 0;
+	int uwpHydrographic = 0;
 
 	if 		(hydrographicCoverage < 0.06)									{uwpHydrographic = 0;}
 	else if (hydrographicCoverage >= 0.06 && hydrographicCoverage < 0.15)	{uwpHydrographic = 1;}
@@ -77,30 +80,49 @@ uint8_t getUWPHydrographic(float hydrographicCoverage)
 
 
 //	Return the number of tectonic plates on the world
-uint8_t getTectonicPlateCount(float worldDiameter, float hydrographicCoverage)
+int getTectonicPlateCount(float worldDiameter, float hydrographicCoverage, char worldType)
 {
 	int diceRoll = diceRoller(6, 2);
-	uint8_t tectonicPlateCount = (getUWPHydrographic(hydrographicCoverage) + getUWPSize(worldDiameter)) - diceRoll;
+//	std::cout << "diceRoll == " << diceRoll << std::endl;
+	int uwpHydrographic = getUWPHydrographic(hydrographicCoverage);
+//	std::cout << "uwpHydrographic == " << uwpHydrographic << std::endl;
+	int uwpSize = getUWPSize(worldDiameter, worldType);
+//	std::cout << "uwpSize == " << uwpSize << std::endl;
+	int tectonicPlateCount = (uwpHydrographic - uwpSize) + diceRoll;
+//	std::cout << "tectonicPlateCount == " << int(tectonicPlateCount) << std::endl;
 //	A planet needs at least one tectonic plate
 	tectonicPlateCount = tectonicPlateCount <= 0 ? 1 : tectonicPlateCount;
 	return tectonicPlateCount;
 }
 
-//	Return the size (in hexes) of the tectonic plate
-uint8_t getTectonicPlateSize(float worldDiameter)
+//	This is not taken from any sources
+int getTectonicPlateSize (int averagePlateSize, int variance, int remainingHexes, bool lastPlate)
 {
-	const int TECTONIC_PLATE_SIZE_COEFFICIENT[6] = {5, 10, 15, 20, 25, 30};
-	int diceRoll = diceRoller(6, 1);
-	uint8_t roundedDiameter = round(worldDiameter * 100);
-	uint8_t tectonicPlateSize = 2 * roundedDiameter * TECTONIC_PLATE_SIZE_COEFFICIENT[diceRoll];
+//	Determine variance sign
+	bool coinflip = diceRoller(2, 1);
+	int newVariance = coinflip ? diceRoller(6, 1) : -1 * diceRoller(6, 1);
+//	If this is the last plate and the number of remaining hexes is less than the sum of the average plate size and the variance,
+//	the size of the plate is equal to the number of remaining hexes.
+	int tectonicPlateSize = (remainingHexes <= (averagePlateSize + variance)) && lastPlate ? remainingHexes : averagePlateSize + variance;
 	return tectonicPlateSize;
 }
 
+/*
+//	Return the size (in hexes) of the tectonic plate
+int getTectonicPlateSize(float worldDiameter, int remainingHexes, bool lastPlate, char worldType)
+{
+	const int TECTONIC_PLATE_SIZE_COEFFICIENT[6] = {5, 10, 15, 20, 25, 30};
+	int diceRoll = diceRoller(6, 1);
+	int tectonicPlateSize = lastPlate ? remainingHexes : 2 * getUWPSize(worldDiameter, worldType) * TECTONIC_PLATE_SIZE_COEFFICIENT[diceRoll - 1];
+	return tectonicPlateSize;
+}
+*/
+
 //	Return the tectonic plate movement
-uint8_t getTectonicPlateMovementType()
+char getTectonicPlateMovementType()
 {
 	int diceRoll = diceRoller(6, 2);
-	uint8_t tectonicPlateMovementType = 0;
+	char tectonicPlateMovementType = 0;
 	if (diceRoll <= 5)						{tectonicPlateMovementType = TPMT_CONVERGING;}
 	else if (diceRoll > 5 && diceRoll <= 8)	{tectonicPlateMovementType = TPMT_TRAVERSING;}
 	else									{tectonicPlateMovementType = TPMT_DIVERGING;}
@@ -109,57 +131,63 @@ uint8_t getTectonicPlateMovementType()
 }
 
 //	Return the total number of water hexes
-uint16_t getWaterHexCount(const uint16_t& totalHexCount, float hydrographicCoverage)
+int getWaterHexCount(int totalHexCount, float hydrographicCoverage)
 {
-	uint16_t waterHexCount = uint16_t(round(totalHexCount * hydrographicCoverage));
+	int waterHexCount = int(round(totalHexCount * hydrographicCoverage));
 	return waterHexCount;
 }
 
 //	Return the total number of land hexes
-uint16_t getLandHexCount(const uint16_t& totalHexCount, const uint16_t& waterHexCount)
+int getLandHexCount(int totalHexCount, int waterHexCount)
 {
-	uint16_t landHexCount = totalHexCount - waterHexCount;
+	int landHexCount = totalHexCount - waterHexCount;
 	return landHexCount;
 }
 
 //	Mapping water hexes
 //	Return the number of major oceans
-uint8_t getMajorOceans(int diceRoll)
+char getMajorOceans(int diceRoll)
 {
-	uint8_t numberOfMajorOceans = 0;
+	char numberOfMajorOceans = 0;
 	if 		(diceRoll <= 6)		{numberOfMajorOceans = 0;}
 	else if (diceRoll >= 19)	{numberOfMajorOceans = 1;}
-	else						{numberOfMajorOceans = diceRoller(6, 1) - MAJOR_OCEAN_ADDITION_COEFFICIENT[diceRoll];}
+	else						{numberOfMajorOceans = diceRoller(6, 1) - MAJOR_OCEAN_ADDITION_COEFFICIENT[diceRoll - 1 - 16];}
+
+	numberOfMajorOceans = (numberOfMajorOceans < 0) || (numberOfMajorOceans > 6) ? 0 : numberOfMajorOceans;
 
 	return numberOfMajorOceans;
 }
 
 //	Return the number of minor oceans
-uint8_t getMinorOceans(int diceRoll)
+char getMinorOceans(int diceRoll)
 {
-	uint8_t numberOfMinorOceans = 0;
+	char numberOfMinorOceans = 0;
 	if 		(diceRoll <= 6)		{numberOfMinorOceans = 0;}
-	else						{numberOfMinorOceans = diceRoller(6, MINOR_OCEAN_MULTIPLIER_COEFFICIENT[diceRoll]) - MINOR_OCEAN_ADDITION_COEFFICIENT[diceRoll];}
+	else						{numberOfMinorOceans = diceRoller(6, MINOR_OCEAN_MULTIPLIER_COEFFICIENT[diceRoll - 1 - 16]) - MINOR_OCEAN_ADDITION_COEFFICIENT[diceRoll - 1 - 16];}
+
+	numberOfMinorOceans = (numberOfMinorOceans < 0) || (numberOfMinorOceans > 15) ? 0 : numberOfMinorOceans;
 
 	return numberOfMinorOceans;
 }
 
 //	Return the number of small seas
-uint8_t getSmallSeas(int diceRoll)
+char getSmallSeas(int diceRoll)
 {
-	uint8_t numberOfSmallSeas = 0;
+	char numberOfSmallSeas = 0;
 	if 		(diceRoll < 5)	{numberOfSmallSeas = 0;}
 	else if (diceRoll == 5)	{numberOfSmallSeas = diceRoller(6, 1) - 3;}
 	else if (diceRoll == 6)	{numberOfSmallSeas = diceRoller(6, 2) - 3;}
 	else					{numberOfSmallSeas = diceRoller(6, 3) - 3;}
 
+	numberOfSmallSeas = (numberOfSmallSeas < 0) || (numberOfSmallSeas > 15) ? 0 : numberOfSmallSeas;
+
 	return numberOfSmallSeas;
 }
 
 //	Return the number of scattered lakes
-uint8_t getScatteredLakes(int diceRoll)
+char getScatteredLakes(int diceRoll)
 {
-	uint8_t numberOfScatteredLakes = 0;
+	char numberOfScatteredLakes = 0;
 	if 		(diceRoll < 3)						{numberOfScatteredLakes = 0;}
 	else if (diceRoll == 3 || diceRoll == 4)	{numberOfScatteredLakes = 1;}
 	else										{numberOfScatteredLakes = diceRoller(6, 2);}
@@ -171,44 +199,52 @@ uint8_t getScatteredLakes(int diceRoll)
 //	NOTE: "Mapping Land Hexes" in Traveller: The New Era - World Tamer's Handbook starts at 16 and ends at 36
 //	Ensure that this is factored into the diceRoll
 //	Return the number of major continents
-uint8_t getMajorContinents(int diceRoll)
+char getMajorContinents(int diceRoll)
 {
-	uint8_t numberOfMajorContinents = 0;
-	if (diceRoll < (31 - 16))	{numberOfMajorContinents = diceRoller(6, MAJOR_CONTINENT_MULTIPLIER_COEFFICIENT[diceRoll]) + MAJOR_CONTINENT_ADDITION_COEFFICIENT[diceRoll];}
+	char numberOfMajorContinents = 0;
+	if (diceRoll < 31)	{numberOfMajorContinents = diceRoller(6, MAJOR_CONTINENT_MULTIPLIER_COEFFICIENT[diceRoll - 1 - 16]) + MAJOR_CONTINENT_ADDITION_COEFFICIENT[diceRoll - 1 - 16];}
 	else						{numberOfMajorContinents = 0;}
+
+	numberOfMajorContinents = (numberOfMajorContinents < 0) || (numberOfMajorContinents > 13) ? 0 : numberOfMajorContinents;
 
 	return numberOfMajorContinents;
 }
 
 //	Return the number of minor continents
-uint8_t getMinorContinents(int diceRoll)
+char getMinorContinents(int diceRoll)
 {
-	uint8_t numberOfMinorContinents = 0;
-	if (diceRoll < (31 - 16))	{numberOfMinorContinents = diceRoller(6, MINOR_CONTINENT_MULTIPLIER_COEFFICIENT[diceRoll]) + MINOR_CONTINENT_ADDITION_COEFFICIENT[diceRoll];}
+	char numberOfMinorContinents = 0;
+	if (diceRoll < 31)	{numberOfMinorContinents = diceRoller(6, MINOR_CONTINENT_MULTIPLIER_COEFFICIENT[diceRoll - 1 - 16 - 16]) + MINOR_CONTINENT_ADDITION_COEFFICIENT[diceRoll - 1 - 16];}
 	else						{numberOfMinorContinents = 0;}
+
+	numberOfMinorContinents = (numberOfMinorContinents < 0) || (numberOfMinorContinents > 18) ? 0 : numberOfMinorContinents;
 
 	return numberOfMinorContinents;
 }
 
 //	Return the number of major islands
-uint8_t getMajorIslands(int diceRoll)
+char getMajorIslands(int diceRoll)
 {
-	uint8_t numberOfMajorIslands = 0;
-	if 		(diceRoll < (30 - 16))	{numberOfMajorIslands = diceRoller(6, 3) - 3;}
-	else if (diceRoll == (30 - 16))	{numberOfMajorIslands = diceRoller(6, 2);}
-	else if (diceRoll == (31 - 16))	{numberOfMajorIslands = diceRoller(6, 1) - 3;}
+	char numberOfMajorIslands = 0;
+	if 		(diceRoll < 30)	{numberOfMajorIslands = diceRoller(6, 3) - 3;}
+	else if (diceRoll == 30)	{numberOfMajorIslands = diceRoller(6, 2);}
+	else if (diceRoll == 31)	{numberOfMajorIslands = diceRoller(6, 1) - 3;}
 	else							{numberOfMajorIslands = 0;}
+
+	numberOfMajorIslands = (numberOfMajorIslands < 0) || (numberOfMajorIslands > 15) ? 0 : numberOfMajorIslands;
 
 	return numberOfMajorIslands;
 }
 
 //	Return the number of archipelagoes
-uint8_t getArchipelagoes(int diceRoll)
+char getArchipelagoes(int diceRoll)
 {
-	uint8_t numberOfArchipelagoes = 0;
-	if 		(diceRoll < (32 - 16))							{numberOfArchipelagoes = diceRoller(6, 2);}
-	else if (diceRoll < (35 - 16) && diceRoll > (31 - 16))	{numberOfArchipelagoes = 1;}
+	char numberOfArchipelagoes = 0;
+	if 		(diceRoll < 32)							{numberOfArchipelagoes = diceRoller(6, 2);}
+	else if (diceRoll < 35 && diceRoll > 31)	{numberOfArchipelagoes = 1;}
 	else													{numberOfArchipelagoes = 0;}
+
+	numberOfArchipelagoes = (numberOfArchipelagoes < 0) || (numberOfArchipelagoes > 12) ? 0 : numberOfArchipelagoes;
 
 	return numberOfArchipelagoes;
 }

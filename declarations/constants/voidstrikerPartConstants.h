@@ -1,14 +1,14 @@
 //	This file defines constants representing components of a Voidstriker ship
 
 //	Hardpoints
-const int8_t HP_LIGHT = 0;
-const int8_t HP_MEDIUM = 1;
-const int8_t HP_HEAVY = 2;
-const int8_t HP_MAIN = 3;
+const int HP_LIGHT = 0;
+const int HP_MEDIUM = 1;
+const int HP_HEAVY = 2;
+const int HP_MAIN = 3;
 
 //	Weapons
 //	Slugthrowers
-const int8_t ST_CHAINGUNS[4][3] =
+const int ST_CHAINGUNS[4][3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT, 	7,		0,
@@ -17,7 +17,7 @@ const int8_t ST_CHAINGUNS[4][3] =
 	HP_LIGHT,	5,		0
 };
 
-const int8_t ST_RAILGUNS[3, 3] =
+const int ST_RAILGUNS[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	13,		0,
@@ -25,7 +25,7 @@ const int8_t ST_RAILGUNS[3, 3] =
 	HP_MAIN,	39,		10
 };
 
-const int8_t ST_COILGUNS[3, 3] =
+const int ST_COILGUNS[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	16,		0,
@@ -34,7 +34,7 @@ const int8_t ST_COILGUNS[3, 3] =
 };
 
 //	Lasers
-const int8_t L_LASERS[3, 3] =
+const int L_LASERS[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	4,		0,
@@ -42,7 +42,7 @@ const int8_t L_LASERS[3, 3] =
 	HP_HEAVY,	16,		0
 };
 
-const int8_t L_TURBOLASERS[3, 3] =
+const int L_TURBOLASERS[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	8,		0,
@@ -50,7 +50,7 @@ const int8_t L_TURBOLASERS[3, 3] =
 	HP_HEAVY,	41,		0
 };
 
-const int8_t L_PULSELASERS[4, 3] =
+const int L_PULSELASERS[4, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_MEDIUM,	27,		0,
@@ -59,7 +59,7 @@ const int8_t L_PULSELASERS[4, 3] =
 	HP_LIGHT,	6,		0
 };
 
-const int8_t L_BEAMLASERS[6, 3] =
+const int L_BEAMLASERS[6, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_MEDIUM,	32,		0,
@@ -71,7 +71,7 @@ const int8_t L_BEAMLASERS[6, 3] =
 };
 
 //	Energy weapons
-const int8_t EW_PARTICLEBEAMS[4, 3] =
+const int EW_PARTICLEBEAMS[4, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_MEDIUM,	22,		0,
@@ -80,7 +80,7 @@ const int8_t EW_PARTICLEBEAMS[4, 3] =
 	HP_LIGHT,	9,		0
 };
 
-const int8_t EW_PLASMAGUNS[4, 3] =
+const int EW_PLASMAGUNS[4, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	10,		0,
@@ -89,7 +89,7 @@ const int8_t EW_PLASMAGUNS[4, 3] =
 	HP_HEAVY,	49,		0
 };
 
-const int8_t EW_FUSIONCANNON[3, 3] =
+const int EW_FUSIONCANNON[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_MEDIUM,	33,		0,
@@ -98,7 +98,7 @@ const int8_t EW_FUSIONCANNON[3, 3] =
 };
 
 //	Ordnance
-const int8_t O_SWARMERS[12, 3] =
+const int O_SWARMERS[12, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	3,		0,
@@ -115,7 +115,7 @@ const int8_t O_SWARMERS[12, 3] =
 	HP_HEAVY,	190,	0
 }
 
-const int8_t O_ROCKETS[4, 3] =
+const int O_ROCKETS[4, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	4,		0,
@@ -124,7 +124,7 @@ const int8_t O_ROCKETS[4, 3] =
 	HP_MEDIUM,	18,		0
 };
 
-const int8_t O_MISSILES[12, 3] =
+const int O_MISSILES[12, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	6,		0,
@@ -132,7 +132,7 @@ const int8_t O_MISSILES[12, 3] =
 	HP_HEAVY,	40,		0
 };
 
-const int8_t O_TORPEDOES[12, 3] =
+const int O_TORPEDOES[12, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_LIGHT,	23,		0,
@@ -147,7 +147,7 @@ const int8_t O_TORPEDOES[12, 3] =
 	HP_HEAVY,	24,		0
 };
 
-const int8_t O_BOMBS[5, 3] =
+const int O_BOMBS[5, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_HEAVY,	12,		0,
@@ -158,7 +158,7 @@ const int8_t O_BOMBS[5, 3] =
 };
 
 //	Exotic weapons
-const int8_t X_FUSIONTORPEDOES[3, 3] =
+const int X_FUSIONTORPEDOES[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_MEDIUM,	22,		0,
@@ -166,13 +166,13 @@ const int8_t X_FUSIONTORPEDOES[3, 3] =
 	HP_MAIN,	112,	28
 };
 
-const int8_t X_VORTEXMINE[1, 3] =
+const int X_VORTEXMINE[1, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 		HP_LIGHT,	42,		0
 };
 
-const int8_t X_FUSIONTORPEDOES[3, 3] =
+const int X_FUSIONTORPEDOES[3, 3] =
 {
 //	Hardpoint,	cost,	additional hardpoint cost
 	HP_MAIN,	27,		0,
@@ -181,7 +181,7 @@ const int8_t X_FUSIONTORPEDOES[3, 3] =
 };
 
 //	Thruster table
-const int8_t THRUSTER_TABLE[18, 2] =
+const int THRUSTER_TABLE[18, 2] =
 {
 //	Cost,	hardpoint cost
 	2,		0,

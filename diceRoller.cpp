@@ -13,9 +13,9 @@
 #include <iostream>
 #include <chrono>
 using namespace std;
-
+/*
 int diceRNG(int dieNum)
-{/*
+{
 	int diceArray[dieCount];
 	int i;
 
@@ -31,14 +31,14 @@ int diceRNG(int dieNum)
 		diceArray[i] = 1 + (int  ) (dieNum * (rand() / (RAND_MAX + 1.0)));
 		sum = sum + diceArray[i];
 	}
-*/
+
 /*
 	random_device rd;
 	mt19937 gen(rd());
 //	Create distribution from 1 to the number of sides the die has
 	uniform_int_distribution<int> diceRoll(1, dieNum);
 	int result = diceRoll(rd) * dieCount;
-*/
+
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	default_random_engine generator (seed);
 	uniform_int_distribution<int> diceRoll(1, dieNum);
@@ -46,7 +46,8 @@ int diceRNG(int dieNum)
 //	cout << "diceRNG = " << result << endl;
 	return result;
 }
-
+*/
+/*
 int diceRoller(int dieNum, int dieCount)
 {
 	if (dieNum == 0 || dieCount == 0) {return 0;}
@@ -60,4 +61,19 @@ int diceRoller(int dieNum, int dieCount)
 		}
 		return result;
 	}
+}
+*/
+
+//	From Random Number Generation in C++11
+int diceRoller(int dieNum, int dieCount)
+{
+	using engine_t	= std::default_random_engine;
+	using dist_t	= std::uniform_int_distribution<>;
+	using param_t	= dist_t::param_type;
+
+	static engine_t e{};
+	static dist_t	d{1, dieNum};
+
+	param_t p{dieCount, (dieCount * dieNum)};
+	return d(e, p);
 }

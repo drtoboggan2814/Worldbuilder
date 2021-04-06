@@ -6,4 +6,4 @@ float orbitalSpacingTable();
 float getOrbitalRadius(float outermostLegalDistance);
 
 //	This function returns the orbital
-star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool randomStar, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius);
+star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, bool randomStar, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius);

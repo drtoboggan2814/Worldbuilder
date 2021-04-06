@@ -1,1 +1,5 @@
-float determineStarRadius(const char &luminosityClass, const float &stellarLuminosity, const float &stellarTemperature);
+#ifndef DETERMINESTARRADIUS
+#define DETERMINESTARRADIUS
+float determineStarRadius(char luminosityClass, float stellarLuminosity, float stellarTemperature);
+
+#endif

@@ -27,7 +27,7 @@
 
 //	This function prints information regarding the composition of the world's
 //	atmosphere to the console
-void printAtmosphereComposition(const atmosphericComposition_t& atmosphereComposition)
+void printAtmosphereComposition(atmosphericComposition_t atmosphereComposition)
 {
 //	std::string representation of the atmosphere's toxicity
 	std::string toxicity_s;
@@ -87,7 +87,7 @@ void printAtmosphereComposition(const atmosphericComposition_t& atmosphereCompos
 	std::cout << left << setw(48) << "Corrosive:" 			<< corrosive_s 			<< std::endl;
 }
 
-void printMoon(const moon_t& moon)
+void printMoon(moon_t moon)
 {
 	bool worldTypeCanHaveAtmosphere = moon.worldType != WT_ASTEROID_BELT && moon.worldType != WT_TINY_ICE && moon.worldType != WT_TINY_SULFUR && moon.worldType != WT_TINY_SULFUR && moon.worldType != WT_SMALL_HADEAN && moon.worldType != WT_SMALL_ROCK && moon.worldType != WT_STANDARD_HADEAN && moon.worldType != WT_STANDARD_CHTHONIAN && moon.worldType != WT_LARGE_CHTHONIAN;
 	std::cout << left << setw(48) << "World type:" 									<< WT_S_LOOKUP_TABLE[moon.worldType] 					  					  << std::endl;
@@ -243,7 +243,7 @@ void printStar(star_t star, char numberOfStars)
 }
 
 //	Print the characteristics of a star system
-void printStarSystem(const starSystem_t& starSystem)
+void printStarSystem(starSystem_t starSystem)
 {
 	std::cout << "Debug information" << std::endl;
 	std::cout << "struct starSystem_t = " << sizeof(starSystem_t) << std::endl;
@@ -253,10 +253,28 @@ void printStarSystem(const starSystem_t& starSystem)
 	std::cout << "Star system" << std::endl;
 	std::cout << "Number of stars:" << (int)starSystem.numberOfStars << std::endl;
 
-	for (int i = 0; i < starSystem.numberOfStars; i++)
+	if (starSystem.numberOfStars == 3)
+	{
+		printStar(starSystem.stars[0], starSystem.numberOfStars);
+		printStar(starSystem.stars[1], starSystem.numberOfStars);
+		printStar(starSystem.stars[2], starSystem.numberOfStars);
+	}
+
+	else if (starSystem.numberOfStars == 2)
+	{
+		printStar(starSystem.stars[0], starSystem.numberOfStars);
+		printStar(starSystem.stars[1], starSystem.numberOfStars);
+	}
+
+	else
+	{
+		printStar(starSystem.stars[0], starSystem.numberOfStars);
+	}
+
+/*	for (int i = 0; i < starSystem.numberOfStars; i++)
 	{
 		printStar(starSystem.stars[i], starSystem.numberOfStars);
 	}
-
+*/
 	std::cout << "\nFinished printing starSystem" << std::endl;
 }

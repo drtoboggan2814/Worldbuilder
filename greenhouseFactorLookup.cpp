@@ -11,22 +11,22 @@ float greenhouseFactorLookup(char worldType, float hydrographicCoverage)
 {
 	float gf;
 
-	if 		(worldType == WT_ASTEROID_BELT) 																																														{gf = gf_AsteroidBelt;}
-	else if (worldType == WT_TINY_ICE) 																																														{gf = gf_Tiny_Ice;}
-	else if (worldType == WT_TINY_SULFUR) 																																														{gf = gf_Tiny_Sulfur;}
-	else if (worldType == WT_TINY_SULFUR) 																																														{gf = gf_Tiny_Rock;}
-	else if (worldType == WT_SMALL_HADEAN) 																																													{gf = gf_Small_Hadean;}
-	else if (worldType == WT_SMALL_ICE) 																																														{gf = gf_Small_Ice;}
-	else if (worldType == WT_SMALL_ROCK) 																																														{gf = gf_Small_Rock;}
-	else if (worldType == WT_STANDARD_HADEAN) 																																													{gf = gf_Standard_Hadean;}
-	else if (worldType == WT_STANDARD_AMMONIA 		|| worldType == WT_LARGE_AMMONIA)																																			{gf = gf_StandardLarge_Ammonia;}
-	else if (worldType == WT_STANDARD_ICE 			|| worldType == WT_LARGE_ICE) 																																				{gf = gf_StandardLarge_Ice;}
-	else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage <= 0.2) 									{gf = gf_StandardLarge_OceanGarden_00;}
-	else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage > 0.2 && hydrographicCoverage <= 0.5) 		{gf = gf_StandardLarge_OceanGarden_01;}
-	else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage > 0.5 && hydrographicCoverage <= 0.9) 		{gf = gf_StandardLarge_OceanGarden_02;}
-	else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage > 0.9) 									{gf = gf_StandardLarge_OceanGarden_03;}
-	else if (worldType == WT_STANDARD_CHTHONIAN 	|| worldType == WT_LARGE_CHTHONIAN)																																		{gf = gf_StandardLarge_Chthonian;}
-	else if (worldType == WT_STANDARD_GREENHOUSE 	|| worldType == WT_LARGE_GREENHOUSE)																																		{gf = gf_StandardLarge_Greenhouse;}
+if 		(worldType == WT_ASTEROID_BELT) 																																											{gf = GF_ASTEROIDBELT;}
+else if (worldType == WT_TINY_ICE) 																																													{gf = GF_TINY_ICE;}
+else if (worldType == WT_TINY_SULFUR) 																																												{gf = GF_TINY_SULFUR;}
+else if (worldType == WT_TINY_ROCK) 																																												{gf = GF_TINY_ROCK;}
+else if (worldType == WT_SMALL_HADEAN) 																																												{gf = GF_SMALL_HADEAN;}
+else if (worldType == WT_SMALL_ICE) 																																												{gf = GF_SMALL_ICE;}
+else if (worldType == WT_SMALL_ROCK) 																																												{gf = GF_SMALL_ROCK;}
+else if (worldType == WT_STANDARD_HADEAN) 																																											{gf = GF_STANDARD_HADEAN;}
+else if (worldType == WT_STANDARD_AMMONIA 		|| worldType == WT_LARGE_AMMONIA)																																	{gf = GF_STANDARDLARGE_AMMONIA;}
+else if (worldType == WT_STANDARD_ICE 			|| worldType == WT_LARGE_ICE) 																																		{gf = GF_STANDARDLARGE_ICE;}
+else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage <= 0.2) 									{gf = GF_STANDARDLARGE_OCEANGARDEN_00;}
+else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage > 0.2 && hydrographicCoverage <= 0.5) 	{gf = GF_STANDARDLARGE_OCEANGARDEN_01;}
+else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage > 0.5 && hydrographicCoverage <= 0.9) 	{gf = GF_STANDARDLARGE_OCEANGARDEN_02;}
+else if (worldType == WT_STANDARD_OCEAN 		|| worldType == WT_LARGE_OCEAN 	|| worldType == WT_STANDARD_GARDEN || worldType == WT_LARGE_GARDEN && hydrographicCoverage > 0.9) 									{gf = GF_STANDARDLARGE_OCEANGARDEN_03;}
+else if (worldType == WT_STANDARD_CHTHONIAN 	|| worldType == WT_LARGE_CHTHONIAN)																																	{gf = GF_STANDARDLARGE_CHTHONIAN;}
+else if (worldType == WT_STANDARD_GREENHOUSE 	|| worldType == WT_LARGE_GREENHOUSE)																																{gf = GF_STANDARDLARGE_GREENHOUSE;}
 
 	return gf;
 }

@@ -13,7 +13,7 @@ float atmosphericPressureCalculator(float atmosphereMass, float surfaceGravity, 
 	int pressureFactor;
 	float atmosphericPressure;
 
-	if (worldType == WT_ASTEROID_BELT)
+	if (worldType == WT_ASTEROID_BELT || atmosphereMass == 0)
 	{
 		atmosphericPressure = 0;
 	}

@@ -14,7 +14,7 @@
 //	using namespace std;
 
 //	This function creates orbital slots for a planet's major moons
-float placeMoonOrbits(float planetDiameter, int8_t moonSizeClass, int8_t family)
+float placeMoonOrbits(float planetDiameter, int moonSizeClass, int family)
 {
 	float orbitalRadius = 0;
 	int moonOrbitModifier = 0;

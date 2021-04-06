@@ -7,11 +7,13 @@
 #include <regex>
 #include <string>
 #include <tuple>
+//	#include <vector>
 
 //	Structure declarations
 #include "declarations/structures/star_t.h"
 
 //	Function declarations
+#include "declarations/functions/findClosestElement.h"
 #include "declarations/functions/floatRNG.h"
 
 //	Constant declarations
@@ -66,11 +68,28 @@ star_t extrapolateStellarClassification(double originalLuminosity)
 }
 */
 
+std::tuple<int, int, int> getStarColor(std::string harvardLetter, char yerkesIndex, int intNumericValue)
+{
+//	Initialize return values
+	int colorR = 0, colorG = 0, colorB = 0;
+	if 		(harvardLetter == HARVARDLETTER_O) {colorR = STELLARCLASSIFICATIONTABLE_O_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_O_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_O_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_B) {colorR = STELLARCLASSIFICATIONTABLE_B_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_B_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_B_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_A) {colorR = STELLARCLASSIFICATIONTABLE_A_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_A_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_A_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_F) {colorR = STELLARCLASSIFICATIONTABLE_F_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_F_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_F_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_G) {colorR = STELLARCLASSIFICATIONTABLE_G_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_G_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_G_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_K) {colorR = STELLARCLASSIFICATIONTABLE_K_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_K_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_K_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_M) {colorR = STELLARCLASSIFICATIONTABLE_M_R[yerkesIndex]; 		colorG = STELLARCLASSIFICATIONTABLE_M_G[yerkesIndex]; 		colorB = STELLARCLASSIFICATIONTABLE_M_B[yerkesIndex];}
+	else if (harvardLetter == HARVARDLETTER_D) {colorR = STELLARCLASSIFICATIONTABLE_D_R[intNumericValue]; 	colorG = STELLARCLASSIFICATIONTABLE_D_G[intNumericValue]; 	colorB = STELLARCLASSIFICATIONTABLE_D_B[intNumericValue];}
+
+	return std::make_tuple(colorR, colorG, colorB);
+
+}
+
 //	Lookup physical parameters
-float lookupStellarMass(std::string& harvardLetter, char yerkesIndex, int intNumericValue)
+float lookupStellarMass(std::string harvardLetter, char yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
-	float stellarMass;
+	float stellarMass = 0;
 	if 		(harvardLetter == HARVARDLETTER_O) {stellarMass = STELLARCLASSIFICATIONTABLE_O_MASS[yerkesIndex];}
 	else if (harvardLetter == HARVARDLETTER_B) {stellarMass = STELLARCLASSIFICATIONTABLE_B_MASS[yerkesIndex];}
 	else if (harvardLetter == HARVARDLETTER_A) {stellarMass = STELLARCLASSIFICATIONTABLE_A_MASS[yerkesIndex];}
@@ -83,10 +102,10 @@ float lookupStellarMass(std::string& harvardLetter, char yerkesIndex, int intNum
 	return stellarMass;
 }
 
-float lookupStellarRadius(std::string& harvardLetter, char yerkesIndex, int intNumericValue)
+float lookupStellarRadius(std::string harvardLetter, char yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
-	float stellarRadius;
+	float stellarRadius = 0;
 	if 		(harvardLetter == HARVARDLETTER_O) {stellarRadius = STELLARCLASSIFICATIONTABLE_O_RADIUS[yerkesIndex];}
 	else if (harvardLetter == HARVARDLETTER_B) {stellarRadius = STELLARCLASSIFICATIONTABLE_B_RADIUS[yerkesIndex];}
 	else if (harvardLetter == HARVARDLETTER_A) {stellarRadius = STELLARCLASSIFICATIONTABLE_A_RADIUS[yerkesIndex];}
@@ -99,10 +118,10 @@ float lookupStellarRadius(std::string& harvardLetter, char yerkesIndex, int intN
 	return stellarRadius;
 }
 
-float lookupStellarTemperature(std::string& harvardLetter, char yerkesIndex, int intNumericValue)
+float lookupStellarTemperature(std::string harvardLetter, char yerkesIndex, int intNumericValue)
 {
 //	Initialize return value
-	float stellarTemperature;
+	float stellarTemperature = 0;
 	if 		(harvardLetter == HARVARDLETTER_O) {stellarTemperature = STELLARCLASSIFICATIONTABLE_O_TEMP[yerkesIndex];}
 	else if (harvardLetter == HARVARDLETTER_B) {stellarTemperature = STELLARCLASSIFICATIONTABLE_B_TEMP[yerkesIndex];}
 	else if (harvardLetter == HARVARDLETTER_A) {stellarTemperature = STELLARCLASSIFICATIONTABLE_A_TEMP[yerkesIndex];}
@@ -117,20 +136,22 @@ float lookupStellarTemperature(std::string& harvardLetter, char yerkesIndex, int
 
 
 //	Determine stellar parameters
-std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, bool floatOrIntNumericValue, bool massPreset, bool radiusPreset, bool tempPreset, float floatNumericValue, int intNumericValue)
+std::tuple<float, float, float, int, int, int> extrapolateStellarParameters(int currentCSVIndex, rapidcsv::Document& starDoc, std::string harvardLetter, std::string yerkesClassification, bool floatOrIntNumericValue, bool massPreset, bool radiusPreset, bool tempPreset, float floatNumericValue, int intNumericValue)
 {
 //	Check parameters
-//	std::cout << "harvardLetter = " << harvardLetter << std::endl;
-//	std::cout << "numericValue = " << numericValue << std::endl;
-//	std::cout << "yerkesClassification = " << yerkesClassification << std::endl;
+////	std::cout << "harvardLetter = " << harvardLetter << std::endl;
+////	std::cout << "numericValue = " << numericValue << std::endl;
+////	std::cout << "yerkesClassification = " << yerkesClassification << std::endl;
 
 //	Initialize return values
-	float stellarMass, stellarRadius, stellarTemperature;
+	float stellarMass = 0;
+	float stellarRadius = 0;
+	float stellarTemperature = 0;
 	int intNumericValueTemp = intNumericValue;
 //	Initialize Yerkes index
-	int yerkesIndex;
+	int yerkesIndex = 0;
 //	Initialize multiplier
-	float floatMultiplier;
+	float floatMultiplier = 0;
 
 //	If numericValue is a float
 	if (floatOrIntNumericValue == false)
@@ -142,7 +163,9 @@ std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex
 
 //	Otherwise
 //	The constant tables are in descending order, so that the true index is (YERKESCLASSIFCATIONINDEX_LENGTH - (intNumericValue + 1))
-	int ascendantIndex = YERKESCLASSIFCATIONINDEX_LENGTH - (intNumericValueTemp + 1);
+//	Check for out of bounds
+	int ascendantIndex = (intNumericValueTemp + 1) > YERKESCLASSIFCATIONINDEX_LENGTH ? YERKESCLASSIFCATIONINDEX_LENGTH : YERKESCLASSIFCATIONINDEX_LENGTH - (intNumericValueTemp + 1);
+	ascendantIndex = YERKESCLASSIFCATIONINDEX_LENGTH - (intNumericValueTemp + 1);
 	if 		(yerkesClassification == YERKESCLASSIFICATION_IA)		{yerkesIndex = YERKESCLASSIFICATIONINDEX_IA[ascendantIndex];}
 	else if (yerkesClassification == YERKESCLASSIFICATION_IB)		{yerkesIndex = YERKESCLASSIFICATIONINDEX_IB[ascendantIndex];}
 	else if (yerkesClassification == YERKESCLASSIFICATION_II)		{yerkesIndex = YERKESCLASSIFICATIONINDEX_II[ascendantIndex];}
@@ -194,16 +217,19 @@ std::tuple<float, float, float> extrapolateStellarParameters(int currentCSVIndex
 		stellarTemperature = starDoc.GetCell<float>("temperature", currentCSVIndex);
 	}
 
-	return std::make_tuple(stellarMass, stellarRadius, stellarTemperature);
+	int colorR = 0, colorG = 0, colorB = 0;
+	std::tie (colorR, colorG, colorB) = getStarColor(harvardLetter, yerkesIndex, ascendantIndex);
+
+	return std::make_tuple(stellarMass, stellarRadius, stellarTemperature, colorR, colorG, colorB);
 }
 
 //	Determine Harvard classification
-std::string getHarvardLetter(std::string& starType, bool harvardPresent)
+std::string getHarvardLetter(std::string starType, bool harvardPresent)
 {
 //	Check starType
-//	std::cout << "starType = " << starType << std::endl;
+////	std::cout << "starType = " << starType << std::endl;
 
-//	std::cout << "result when checking for K: " << std::regex_search(starType, std::regex("\\bK")) << std::endl;
+////	std::cout << "result when checking for K: " << std::regex_search(starType, std::regex("\\bK")) << std::endl;
 
 //	Harvard classification letter
 	std::string harvardLetter;
@@ -235,7 +261,7 @@ std::string getHarvardLetter(std::string& starType, bool harvardPresent)
 // Check for error
 	else
 	{
-		std::cout << "ERROR: starType == |" << starType << "|" << std::endl;
+	//	std::cout << "ERROR: starType == |" << starType << "|" << std::endl;
 	}
 
 	return harvardLetter;
@@ -245,11 +271,11 @@ std::string getHarvardLetter(std::string& starType, bool harvardPresent)
 std::string checkYerkesIndexTable(int index)
 {
 //	Check index value
-//	std::cout << "Yerkes index value = " << index << std::endl;
+////	std::cout << "Yerkes index value = " << index << std::endl;
 //	Initialize return value
 	std::string yerkesClassification;
 //	Flag to break out of for loop
-	bool matchFound;
+	bool matchFound = false;
 //	Loop through index tables
 	for (int i = 0; i < 10; i++)
 	{
@@ -264,20 +290,23 @@ std::string checkYerkesIndexTable(int index)
 
 	return yerkesClassification;
 }
-
+/*
 //	Get Yerkes classification
-std::string getYerkesClassification(std::string& harvardLetter, double originalLuminosity, bool yerkesPresent)
+std::string getYerkesClassification(std::string harvardLetter, double originalLuminosity, bool yerkesPresent)
 {
 //	Check parameters
-//	std::cout << "harvardLetter = " << harvardLetter << std::endl;
-//	std::cout << "originalLuminosity = " << originalLuminosity << std::endl;
+////	std::cout << "harvardLetter = " << harvardLetter << std::endl;
+////	std::cout << "originalLuminosity = " << originalLuminosity << std::endl;
 
 //	Initialize return value
 	std::string yerkesClassification;
-
-	std::cout << "\nEntered getYerkesClassification" << std::endl;
-	std::cout << "harvardLetter == " << harvardLetter << std::endl;
-	std::cout << "originalLuminosity == " << originalLuminosity << std::endl;
+	float calcLum = 0;
+	const int ROUNDEDVALUESVECTORSIZE = 8;
+	std::vector <double> roundedValues(8);
+	int roundedValuesIndex = 0;
+//	std::cout << "\nEntered getYerkesClassification" << std::endl;
+//	std::cout << "harvardLetter == " << harvardLetter << std::endl;
+//	std::cout << "originalLuminosity == " << originalLuminosity << std::endl;
 //	Loop through the Harvard classification's table
 	for (int i = 0; i < STELLARCLASSIFICATIONTABLE_X_OBAFGKM; i++)
 	{
@@ -285,10 +314,12 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		if (harvardLetter == HARVARDLETTER_O)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_O_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_O_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
@@ -296,10 +327,12 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		else if (harvardLetter == HARVARDLETTER_B)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_B_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_B_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
@@ -307,10 +340,12 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		else if (harvardLetter == HARVARDLETTER_A)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_A_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_A_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
@@ -318,10 +353,12 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		else if (harvardLetter == HARVARDLETTER_F)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_F_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_F_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
@@ -329,10 +366,12 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		else if (harvardLetter == HARVARDLETTER_G)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_G_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_G_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
@@ -340,10 +379,12 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		else if (harvardLetter == HARVARDLETTER_K)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_K_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_K_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
@@ -351,56 +392,69 @@ std::string getYerkesClassification(std::string& harvardLetter, double originalL
 		else if (harvardLetter == HARVARDLETTER_M)
 		{
 //			If the luminosity is close enough
-			if (rint (originalLuminosity / STELLARCLASSIFICATIONTABLE_M_LUMINOSITY[i]) == 1)
+			calcLum = originalLuminosity / STELLARCLASSIFICATIONTABLE_M_LUMINOSITY[i];
+			if (ceil(calcLum) == 1 || floor(calcLum) == 1)
 			{
+				roundedValues.push_back(calcLum);
 				yerkesClassification = checkYerkesIndexTable(i);
-				break;
+//				break;
 			}
 		}
 
 //		Check for D
 		else if (harvardLetter == HARVARDLETTER_D)
 		{
-			std::cout << "White dwarves have no Yerkes classification" << std::endl;
+		//	std::cout << "White dwarves have no Yerkes classification" << std::endl;
 			yerkesClassification = YERKESCLASSIFICATION_BLANK;
-			break;
+			return yerkesClassification;
 		}
 
-//		No Harvard letter found
-		/*else
+//		If this is the last iteration
+		if (i == STELLARCLASSIFICATIONTABLE_X_OBAFGKM - 1)
 		{
-			std::cout << "No Harvard match found" << std::endl;
-			break;
-		}*/
+			double tempValue = 0;
+			for (int i = 0; i < roundedValues.size(); i++)
+			{
+	//		Check for out of bounds
+				for (int j = i + 1; j < roundedValues.size(); j++)
+				{
+					tempValue = roundedValues[i];
+					roundedValues[i] = roundedValues[j];
+					roundedValues[j] = tempValue;
+				}
+			}
+		}
 	}
+	int yerkesClassificationArrayIndex = findClosestElementDouble(roundedValues, ROUNDEDVALUESVECTORSIZE, 1);
+	yerkesClassification = YERKESCLASSIFICATION_TABLE[yerkesClassificationArrayIndex];
 
 	return yerkesClassification;
 }
-
+*/
 //	Get numeric value
-int getNumericValue(std::string& yerkesClassification, std::string& harvardLetter, double originalLuminosity, bool numberPresent)
+int getNumericValue(std::string yerkesClassification, std::string harvardLetter, double originalLuminosity, bool numberPresent)
 {
 /*
 //	Check for parameter errors
 	if (std::regex_search(yerkesClassification, YERKESREGEX) != true)
 	{
-		std::cout << "No Yerkes classification passed" << std::endl;
+	//	std::cout << "No Yerkes classification passed" << std::endl;
 		return 0;
 	}
 
 	if (originalLuminosity == 0)
 	{
-		std::cout << "originalLuminosity == 0" << std::endl;
+	//	std::cout << "originalLuminosity == 0" << std::endl;
 		return 0;
 	}
 */
-	std::cout << "originalLuminosity == " << originalLuminosity << std::endl;
+//	std::cout << "originalLuminosity == " << originalLuminosity << std::endl;
 
 //	Initialize return value
-	int numericValue;
+	int numericValue = 0;
 //	Initialize tables to use
-	int luminosity_YTable[10];
-	float luminosity_HYTable[10];
+	int luminosity_YTable[10] = {0};
+	float luminosity_HYTable[10] = {0};
 
 //	Determine Harvard and Yerkes index table
 	for (int i = YERKESCLASSIFCATIONINDEX_LENGTH - 1; i > 0; i--)
@@ -422,7 +476,7 @@ int getNumericValue(std::string& yerkesClassification, std::string& harvardLette
 		else if (harvardLetter == HARVARDLETTER_M)	{luminosity_HYTable[i] = STELLARCLASSIFICATIONTABLE_M_LUMINOSITY[luminosity_YTable[i]];}
 		else if (harvardLetter == HARVARDLETTER_D)	{luminosity_HYTable[i] = STELLARCLASSIFICATIONTABLE_D_LUMINOSITY[i];}
 	}
-	std::cout << "luminosity_HYTable[0] == " << luminosity_HYTable[YERKESCLASSIFCATIONINDEX_LENGTH - 1] << std::endl;
+//	std::cout << "luminosity_HYTable[0] == " << luminosity_HYTable[YERKESCLASSIFCATIONINDEX_LENGTH - 1] << std::endl;
 //	If originalLuminosity is less than or equal to the smallest value for the Harvard letter, set numericValue to 0
 	if 		(originalLuminosity <= luminosity_HYTable[YERKESCLASSIFCATIONINDEX_LENGTH - 1])	{numericValue = 0;}
 //	If originalLuminosity is greater than or equal to the largest possible value for the Harvard letter, set numericValue to 9.99
@@ -444,32 +498,32 @@ int getNumericValue(std::string& yerkesClassification, std::string& harvardLette
 std::tuple<std::string, std::string, float, bool> completeStellarClassification(std::string starType, double originalLuminosity, bool massPreset, bool radiusPreset, bool tempPreset)
 {
 //	Check parameters
-	std::cout << "starType = " << starType << std::endl;
-//	std::cout << "originalLuminosity = " << originalLuminosity << std::endl;
+//	std::cout << "starType = " << starType << std::endl;
+////	std::cout << "originalLuminosity = " << originalLuminosity << std::endl;
 //	Initialize return values
 	std::string harvardLetter;
 	std::string yerkesClassification;
-	float numericValue;
+	float numericValue = 0;
 
 //	Check for Harvard letter
 	std::smatch harvardMatch;
 	bool harvardPresent = std::regex_search(starType, harvardMatch, HARVARDREGEX);
-	if 		(harvardPresent == true)	{harvardLetter = harvardMatch.str(0);}
+	if 		(harvardPresent)	{harvardLetter = harvardMatch.str(0);}
 //	If there is no Harvard classification, then the star will need to be generated randomly
 	else								{harvardLetter = getHarvardLetter(starType, harvardPresent);}
 //	Check for Yerkes classification
 	std::smatch yerkesMatch;
 	bool yerkesPresent = std::regex_search(starType, yerkesMatch, YERKESREGEX);
-	if 		(yerkesPresent == true)	{yerkesClassification = yerkesMatch.str(0);}
-	else							{yerkesClassification = getYerkesClassification(harvardLetter, originalLuminosity, yerkesPresent);}
+	if 		(yerkesPresent)	{yerkesClassification = yerkesMatch.str(0);}
+//	else							{yerkesClassification = getYerkesClassification(harvardLetter, originalLuminosity, yerkesPresent);}
 //	Check for numeric value
 	std::smatch numberMatch;
 	bool numberPresent = std::regex_search(starType, numberMatch, NUMERICREGEX);
-	if 		(numberPresent == true)	{numericValue = std::stof(numberMatch.str(0));}
+	if 		(numberPresent)	{numericValue = std::stof(numberMatch.str(0));}
 	else							{numericValue = getNumericValue(yerkesClassification, harvardLetter, originalLuminosity, numberPresent);}
-	bool floatOrIntNumericValue;
+	bool floatOrIntNumericValue = false;
 
-//	std::cout << "newStar was set" << std::endl;
+////	std::cout << "newStar was set" << std::endl;
 //	Assign classification
 	harvardLetter 			= harvardLetter;
 	yerkesClassification 	= yerkesClassification;

@@ -1,3 +1,6 @@
+#ifndef STELLAREVOLUTIONTABLECONSTANTS
+#define STELLAREVOLUTIONTABLECONSTANTS
+
 /*  Stellar evolution
 	This is an array with each row corresponding to a star's mass, and holds a main sequence star'
 		Mass (in solar masses
@@ -10,7 +13,10 @@
 		G-Span (giant span in billions of years)
 */
 
-const float stellarEvolutionTable[34][8] =
+const int STELLEREVOLUTIONTABLE_MAXROWS = 34;
+const int STELLEREVOLUTIONTABLE_MAXCOLS = 8;
+
+const float stellarEvolutionTable[STELLEREVOLUTIONTABLE_MAXROWS][STELLEREVOLUTIONTABLE_MAXCOLS] =
 {
 //	Mass	|	Type	|	Temp	|	L-Min	|	L-Max	|	M-Span	|	S-Span	|	G-Span
 	0.10	,	0		,	3100	,	0.0012	,	0		,	0		,	0		,	0		,
@@ -48,3 +54,5 @@ const float stellarEvolutionTable[34][8] =
 	1.90	,	32		,	8000	,	13.0	,	16.0	,	1.5		,	0.2		,	0.1		,
 	2.00	,	33		,	8200	,	16.0	,	20.0	,	1.3		,	0.2		,	0.1
 };
+
+#endif

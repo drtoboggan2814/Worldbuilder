@@ -13,7 +13,7 @@ float atmosphereMassGenerator(char worldType)
 	float atmosphereMass;
 
 //	Worlds that have no significant atmosphere
-	if ((worldType == WT_ASTEROID_BELT) || (worldType == WT_TINY_ICE) || (worldType == WT_TINY_SULFUR) || (worldType == WT_TINY_SULFUR) || (worldType == WT_SMALL_HADEAN) || (worldType == WT_SMALL_ROCK) || (worldType == WT_STANDARD_HADEAN) || (worldType == WT_STANDARD_CHTHONIAN) || (worldType == WT_LARGE_CHTHONIAN))
+	if ((worldType == WT_ASTEROID_BELT) || (worldType == WT_TINY_ICE) || (worldType == WT_TINY_SULFUR) || (worldType == WT_TINY_ROCK) || (worldType == WT_SMALL_HADEAN) || (worldType == WT_SMALL_ROCK) || (worldType == WT_STANDARD_HADEAN) || (worldType == WT_STANDARD_CHTHONIAN) || (worldType == WT_LARGE_CHTHONIAN))
 	{
 		atmosphereMass = 0;
 	}

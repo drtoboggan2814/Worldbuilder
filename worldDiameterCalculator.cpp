@@ -28,7 +28,7 @@ float worldDiameterCalculator(int blackbodyTemperature, float worldDensity, char
 	variance = floatRNG(-0.05, 0.05);
 
 //	If the world is "Tiny"
-	if (worldType == WT_TINY_SULFUR || worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR)
+	if (worldType == WT_TINY_SULFUR || worldType == WT_TINY_ICE || worldType == WT_TINY_SULFUR || worldType == WT_TINY_ROCK)
 	{
 //		Calculate the minimum and maximum diamaters
 		minDiameter = sqrt(blackbodyTemperature / worldDensity) * TINYMIN;

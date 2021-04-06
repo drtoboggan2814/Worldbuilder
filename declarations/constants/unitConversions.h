@@ -1,3 +1,6 @@
+#ifndef UNITCONVERSIONS
+#define UNITCONVERSIONS
+
 //	Unit conversions
 #include <math.h>
 
@@ -59,3 +62,6 @@ const float KM_TO_M = 1000;
 const float HOUR_TO_DAY = 1 / 24;
 const float DAY_TO_HOUR = 24;
 const float HOUR_TO_SEC = 3600;
+const float DAY_TO_SEC = DAY_TO_HOUR * HOUR_TO_SEC;
+
+#endif

@@ -11,8 +11,14 @@
 
 struct tectonicPlate_t
 {
-	uint8_t tectonicPlateSize;
-	uint8_t tectonicPlateMovementType;
+	int tectonicPlateSize;
+	char tectonicPlateMovementType;
+
+//	This applies to both moons and worlds
+	int parentMoonID;
+	int parentWorldID;
+	int primaryStarID;
+	int starSystemID;
 };
 
 #endif

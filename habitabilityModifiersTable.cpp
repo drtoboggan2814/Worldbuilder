@@ -1,6 +1,8 @@
 //	This function corresponds to "Determining Habitability and Affinity" in "Step 7: Resources and Habitability".
 
 #include <cstdint>
+#include <iostream>
+#include <tuple>
 //	Constant declarations
 #include "declarations/constants/atmosphericPressureCategoryConstants.h"
 #include "declarations/constants/worldTypeConstants.h"
@@ -18,21 +20,30 @@
 #include "declarations/functions/breathableChecker.h"
 #include "declarations/functions/atmosphericPressureCategoriesTable.h"
 
-int8_t habitabilityModifiersTable(char worldType, float atmosphereMass, float hydrographicCoverage, float atmosphericPressure, int surfaceTemperature, atmosphericComposition_t atmosphereCompositionArray)
+std::tuple<int, char, bool> habitabilityModifiersTable(char worldType, float atmosphereMass, float hydrographicCoverage, float atmosphericPressure, int surfaceTemperature, atmosphericComposition_t atmosphereCompositionArray)
 {
+	std::cout << "Entered habitabilityModifiersTable" << std::endl;
 	//bool liquidWater = waterOceanChecker(worldType, hydrographicCoverage);
 	char climateType = climateTypeLookup(surfaceTemperature);
+	std::cout << "climateType == " << int(climateType) << std::endl;
 	bool breathable = breathableChecker(atmosphereCompositionArray);
+	std::cout << "breathable == " << breathable << std::endl;
 	char pressureCategory = atmosphericPressureCategoriesTable(atmosphericPressure);
+	std::cout << "pressureCategory == " << int(pressureCategory) << std::endl;
 
-	int8_t habitabilityModifier = 0;
-	int8_t breathableClimate = habitabilityModifiersBreathableClimate(climateType, breathable);
-	int8_t breathableAtmosphere = habitabilityModifiersBreathable(pressureCategory, breathable);
-	int8_t nonBreathableAtmosphere = habitabilityModifiersNonBreathable(pressureCategory, atmosphereCompositionArray);
-	int8_t liquidWaterOceans = habitabilityModfiersLiquidWaterOceans(hydrographicCoverage);
+	int habitabilityModifier = 0;
+	int breathableClimate = habitabilityModifiersBreathableClimate(climateType, breathable);
+	std::cout << "breathableClimate == " << breathableClimate << std::endl;
+	int breathableAtmosphere = breathable ? habitabilityModifiersBreathable(pressureCategory, breathable) : 0;
+	std::cout << "breathableAtmosphere == " << breathableAtmosphere << std::endl;
+	int nonBreathableAtmosphere = breathable ? 0 : habitabilityModifiersNonBreathable(pressureCategory, atmosphereCompositionArray);
+	std::cout << "nonBreathableAtmosphere == " << nonBreathableAtmosphere << std::endl;
+	int liquidWaterOceans = habitabilityModfiersLiquidWaterOceans(hydrographicCoverage);
+	std::cout << "liquidWaterOceans == " << liquidWaterOceans << std::endl;
 
 	habitabilityModifier = breathableClimate + breathableAtmosphere + nonBreathableAtmosphere + liquidWaterOceans;
+	std::cout << "habitabilityModifier == " << habitabilityModifier << std::endl;
 
-	return habitabilityModifier;
+	return std::make_tuple(habitabilityModifier, climateType, (breathable && atmosphereMass != 0));
 
 }

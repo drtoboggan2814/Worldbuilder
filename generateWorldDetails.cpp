@@ -63,7 +63,7 @@ char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, cha
 			else {worldType = WT_TINY_ICE;}
 		}
 
-		else 																{worldType = WT_TINY_SULFUR;}
+		else 																{worldType = WT_TINY_ROCK;}
 	}
 
 	else if (sizeClass == SC_TERRESTRIAL_PLANET_SMALL)
@@ -86,14 +86,14 @@ char determineWorldType_ADVANCED(char sizeClass, float blackbodyTemperature, cha
 		{
 			int diceRoll = diceRoller(6, 3);
 //			Add 1 to the dice roll for every 500 million years of the star's age
-			int variance = floor(stellarAge / 500000000);
+			int variance = floor(stellarAge / 0.5);
 //			Up to a maximum of +10
 			variance = (variance > 10) ? 10 : variance;
 			diceRoll += variance;
 //			Standard (Garden) on a roll of 18 or higher; Standard (Ocean) otherwise
 			worldType = (diceRoll >= 18) ? WT_STANDARD_GARDEN : WT_STANDARD_OCEAN;
 		}
-		else if (blackbodyTemperature >= 81 && blackbodyTemperature <= 150) {worldType = WT_STANDARD_GREENHOUSE	;}
+		else if (blackbodyTemperature >= 321 && blackbodyTemperature <= 500) {worldType = WT_STANDARD_GREENHOUSE	;}
 		else																{worldType = WT_STANDARD_CHTHONIAN;}
 	}
 
@@ -164,29 +164,66 @@ float averageSurfaceTemperature_ADVANCED(float blackbodyTemperature, float black
 */
 float getGasGiantMass(char gasGiantSize)
 {
+	std::cout << "Entered getGasGiantMass" << std::endl;
 	int diceRoll = diceRoller(6, 3);
+	std::cout << "diceRoll == " << diceRoll << std::endl;
 	float gasGiantMass = 0;
-	float massVariance = floatRNG(-0.5, 0.5);
+	float massVariance = floatRNG(-0.1, 0.1);
+	std::cout << "massVariance == " << massVariance << std::endl;
 //	int tableIndex, tableIndexPlusMinus;
-
+/*
 	float tableInUse[9];
 
 	if 		(gasGiantSize == WT_SMALL_GAS_GIANT ) {for (int  i = 0; i < 9; i++) {tableInUse[i] = SMALLMASSTABLE[i] ;}}
 	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT) {for (int  i = 0; i < 9; i++) {tableInUse[i] = MEDIUMMASSTABLE[i];}}
-	else 										 {for (int  i = 0; i < 9; i++) {tableInUse[i] = LARGEMASSTABLE[i] ;}}
+	else 										  {for (int  i = 0; i < 9; i++) {tableInUse[i] = LARGEMASSTABLE[i] ;}}
+*/
 
-	if 		(diceRoll <= 8					) {gasGiantMass = tableInUse[0];}
-	else if (diceRoll >= 9 && diceRoll <= 10) {gasGiantMass = tableInUse[1];}
-	else if (diceRoll == 11					) {gasGiantMass = tableInUse[2];}
-	else if (diceRoll == 11					) {gasGiantMass = tableInUse[3];}
-	else if (diceRoll == 11					) {gasGiantMass = tableInUse[4];}
-	else if (diceRoll == 11					) {gasGiantMass = tableInUse[5];}
-	else if (diceRoll == 11					) {gasGiantMass = tableInUse[6];}
-	else if (diceRoll == 11					) {gasGiantMass = tableInUse[7];}
-	else									  {gasGiantMass = tableInUse[8];}
 
+	if (gasGiantSize == WT_SMALL_GAS_GIANT)
+	{
+		if 		(diceRoll <= 8					) {gasGiantMass = SMALLMASSTABLE[0];}
+		else if (diceRoll == 9 || diceRoll == 10) {gasGiantMass = SMALLMASSTABLE[1];}
+		else if (diceRoll == 11					) {gasGiantMass = SMALLMASSTABLE[2];}
+		else if (diceRoll == 12					) {gasGiantMass = SMALLMASSTABLE[3];}
+		else if (diceRoll == 13					) {gasGiantMass = SMALLMASSTABLE[4];}
+		else if (diceRoll == 14					) {gasGiantMass = SMALLMASSTABLE[5];}
+		else if (diceRoll == 15					) {gasGiantMass = SMALLMASSTABLE[6];}
+		else if (diceRoll == 16					) {gasGiantMass = SMALLMASSTABLE[7];}
+		else									  {gasGiantMass = SMALLMASSTABLE[8];}
+	}
+
+	else if (gasGiantSize == WT_MEDIUM_GAS_GIANT)
+	{
+		if 		(diceRoll <= 8					) {gasGiantMass = MEDIUMMASSTABLE[0];}
+		else if (diceRoll == 9 || diceRoll == 10) {gasGiantMass = MEDIUMMASSTABLE[1];}
+		else if (diceRoll == 11					) {gasGiantMass = MEDIUMMASSTABLE[2];}
+		else if (diceRoll == 12					) {gasGiantMass = MEDIUMMASSTABLE[3];}
+		else if (diceRoll == 13					) {gasGiantMass = MEDIUMMASSTABLE[4];}
+		else if (diceRoll == 14					) {gasGiantMass = MEDIUMMASSTABLE[5];}
+		else if (diceRoll == 15					) {gasGiantMass = MEDIUMMASSTABLE[6];}
+		else if (diceRoll == 16					) {gasGiantMass = MEDIUMMASSTABLE[7];}
+		else									  {gasGiantMass = MEDIUMMASSTABLE[8];}
+	}
+
+	else
+	{
+		if 		(diceRoll <= 8					) {gasGiantMass = LARGEMASSTABLE[0];}
+		else if (diceRoll == 9 || diceRoll == 10) {gasGiantMass = LARGEMASSTABLE[1];}
+		else if (diceRoll == 11					) {gasGiantMass = LARGEMASSTABLE[2];}
+		else if (diceRoll == 12					) {gasGiantMass = LARGEMASSTABLE[3];}
+		else if (diceRoll == 13					) {gasGiantMass = LARGEMASSTABLE[4];}
+		else if (diceRoll == 14					) {gasGiantMass = LARGEMASSTABLE[5];}
+		else if (diceRoll == 15					) {gasGiantMass = LARGEMASSTABLE[6];}
+		else if (diceRoll == 16					) {gasGiantMass = LARGEMASSTABLE[7];}
+		else									  {gasGiantMass = LARGEMASSTABLE[8];}
+	}
+
+	std::cout << "gasGiantMass == " << gasGiantMass << std::endl;
 //	tableIndexPlusMinus = massVariance < 0 ? -1 : 1;
-	gasGiantMass += massVariance * gasGiantMass;
+	std::cout << "massVariance * gasGiantMass == " << massVariance * gasGiantMass << std::endl;
+	gasGiantMass += (massVariance * gasGiantMass);
+	std::cout << "gasGiantMass + (massVariance * gasGiantMass)" << gasGiantMass << std::endl;
 
 	return gasGiantMass;
 }
@@ -204,13 +241,13 @@ float getGasGiantDensity(char gasGiantSize)
 	else 										 {for (int  i = 0; i < 9; i++) {tableInUse[i] = LARGEDENSITYTABLE[i] ;}}
 
 	if 		(diceRoll <= 8					) {gasGiantDensity = tableInUse[0];}
-	else if (diceRoll >= 9 && diceRoll <= 10) {gasGiantDensity = tableInUse[1];}
+	else if (diceRoll == 9 || diceRoll == 10) {gasGiantDensity = tableInUse[1];}
 	else if (diceRoll == 11					) {gasGiantDensity = tableInUse[2];}
-	else if (diceRoll == 11					) {gasGiantDensity = tableInUse[3];}
-	else if (diceRoll == 11					) {gasGiantDensity = tableInUse[4];}
-	else if (diceRoll == 11					) {gasGiantDensity = tableInUse[5];}
-	else if (diceRoll == 11					) {gasGiantDensity = tableInUse[6];}
-	else if (diceRoll == 11					) {gasGiantDensity = tableInUse[7];}
+	else if (diceRoll == 12					) {gasGiantDensity = tableInUse[3];}
+	else if (diceRoll == 13					) {gasGiantDensity = tableInUse[4];}
+	else if (diceRoll == 14					) {gasGiantDensity = tableInUse[5];}
+	else if (diceRoll == 15					) {gasGiantDensity = tableInUse[6];}
+	else if (diceRoll == 16					) {gasGiantDensity = tableInUse[7];}
 	else									  {gasGiantDensity = tableInUse[8];}
 
 	gasGiantDensity += gasGiantDensity * densityVariance;
@@ -252,21 +289,41 @@ float planetaryOrbitalEccentricityTable(int diceRoll)
 	float variance = floatRNG(-0.05, 0.05);
 	int constantTableIndex = 0;
 
-	if 		(diceRoll <= 3					 ) {planetaryOrbitalEccentricity = eccentricityConstants[0 ]; constantTableIndex = 0 ;}
-	else if (diceRoll >= 4 	&& diceRoll <= 6 ) {planetaryOrbitalEccentricity = eccentricityConstants[1 ]; constantTableIndex = 1 ;}
-	else if (diceRoll >= 7 	&& diceRoll <= 9 ) {planetaryOrbitalEccentricity = eccentricityConstants[2 ]; constantTableIndex = 2 ;}
-	else if (diceRoll == 10 || diceRoll == 11) {planetaryOrbitalEccentricity = eccentricityConstants[3 ]; constantTableIndex = 3 ;}
-	else if (diceRoll == 12					 ) {planetaryOrbitalEccentricity = eccentricityConstants[4 ]; constantTableIndex = 4 ;}
-	else if (diceRoll == 13					 ) {planetaryOrbitalEccentricity = eccentricityConstants[5 ]; constantTableIndex = 5 ;}
-	else if (diceRoll == 14					 ) {planetaryOrbitalEccentricity = eccentricityConstants[6 ]; constantTableIndex = 6 ;}
-	else if (diceRoll == 15					 ) {planetaryOrbitalEccentricity = eccentricityConstants[7 ]; constantTableIndex = 7 ;}
-	else if (diceRoll == 16					 ) {planetaryOrbitalEccentricity = eccentricityConstants[8 ]; constantTableIndex = 8 ;}
-	else if (diceRoll == 17					 ) {planetaryOrbitalEccentricity = eccentricityConstants[9 ]; constantTableIndex = 9 ;}
-	else									   {planetaryOrbitalEccentricity = eccentricityConstants[10]; constantTableIndex = 10;}
+	if 		(diceRoll <= 3					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[0 ]; constantTableIndex = 0 ;}
+	else if (diceRoll >= 4 	&& diceRoll <= 6 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[1 ]; constantTableIndex = 1 ;}
+	else if (diceRoll >= 7 	&& diceRoll <= 9 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[2 ]; constantTableIndex = 2 ;}
+	else if (diceRoll == 10 || diceRoll == 11) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[3 ]; constantTableIndex = 3 ;}
+	else if (diceRoll == 12					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[4 ]; constantTableIndex = 4 ;}
+	else if (diceRoll == 13					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[5 ]; constantTableIndex = 5 ;}
+	else if (diceRoll == 14					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[6 ]; constantTableIndex = 6 ;}
+	else if (diceRoll == 15					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[7 ]; constantTableIndex = 7 ;}
+	else if (diceRoll == 16					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[8 ]; constantTableIndex = 8 ;}
+	else if (diceRoll == 17					 ) {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[9 ]; constantTableIndex = 9 ;}
+	else									   {planetaryOrbitalEccentricity = ECCENTRICITYCONSTANTS[10]; constantTableIndex = 10;}
 
-	if 		(variance < 0					 ) {planetaryOrbitalEccentricity += variance * (eccentricityConstants[constantTableIndex] - eccentricityConstants[constantTableIndex - 1]);}
-	else									   {planetaryOrbitalEccentricity += variance * (eccentricityConstants[constantTableIndex + 1] - eccentricityConstants[constantTableIndex]);}
+//	If the generated variance is negative
+	if (variance < 0)
+	{
+//		Check for out of bounds
+		if ((constantTableIndex - 1) >= 0)
+		{
+			planetaryOrbitalEccentricity += variance * (ECCENTRICITYCONSTANTS[constantTableIndex] - ECCENTRICITYCONSTANTS[constantTableIndex - 1]);
+		}
+	}
 
+//	If the variance is positive
+	else if (variance > 0)
+	{
+//		Check for out of bounds
+		if ((constantTableIndex + 1) < ECCENTRICITYCONSTANTARRAYSIZE)
+		{
+			planetaryOrbitalEccentricity += variance * (ECCENTRICITYCONSTANTS[constantTableIndex + 1] - ECCENTRICITYCONSTANTS[constantTableIndex]);
+		}
+	}
+
+//	If the variance is 0, do nothing
+
+//	If the eccentricity is less than 0.00001, round down to 0
 	planetaryOrbitalEccentricity = (planetaryOrbitalEccentricity < 0.00001) ? 0 : planetaryOrbitalEccentricity;
 	return planetaryOrbitalEccentricity;
 }
@@ -344,7 +401,7 @@ float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char 
 //	For terrestrial moonlets
 	else
 	{
-		int8_t terrestrialMoonletRoll = diceRoller(6, 1) + 4;
+		int terrestrialMoonletRoll = diceRoller(6, 1) + 4;
 		satelliteOrbitalRadius = (terrestrialMoonletRoll / 4) * planetDiameter;
 	}
 
@@ -361,13 +418,14 @@ float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planet
 float calculateTidalForceOnPlanetBySatellite(float satteliteMass, float planetDiameter, float satelliteOrbitalRadius)
 {
 //	22.3 * 10^6 is given by the errata, while the book gives 17.8 * 10^6
-	float tidalForceExerted = ((22.3 * pow(10, 6)) * satteliteMass * planetDiameter) / pow(satelliteOrbitalRadius, 3);
+	float tidalForceExerted = (2230000 * satteliteMass * planetDiameter) / pow(satelliteOrbitalRadius * planetDiameter, 3);
 	return tidalForceExerted;
 }
 
-float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius)
+float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius, float planetDiameter)
 {
-	float tidalForceExerted = ((17.8 * pow(10, 6)) * planetMass * satelliteDiameter) / pow(satelliteOrbitalRadius, 3);
+//	22.3 * 10^6 is given by the errata, while the book gives 17.8 * 10^6
+	float tidalForceExerted = (2230000 * planetMass * satelliteDiameter) / pow(satelliteOrbitalRadius * planetDiameter, 3);
 	return tidalForceExerted;
 }
 
@@ -500,22 +558,22 @@ float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool sa
 }
 
 //	This table returns the world's axial tilt in degrees
-int8_t axialTiltTable(int diceRoll)
+int axialTiltTable(int diceRoll)
 {
-	int8_t axialTilt = 0;
-	if 		(diceRoll >= 3 	|| diceRoll <= 6 ) {axialTilt = 0  + (diceRoller(6, 2) - 2);}
-	else if (diceRoll >= 7 	|| diceRoll <= 9 ) {axialTilt = 10 + (diceRoller(6, 2) - 2);}
-	else if (diceRoll >= 10 || diceRoll <= 12) {axialTilt = 20 + (diceRoller(6, 2) - 2);}
-	else if (diceRoll >= 13 || diceRoll <= 14) {axialTilt = 30 + (diceRoller(6, 2) - 2);}
-	else									   {axialTilt = 40 + (diceRoller(6, 2) - 2);}
+	int axialTilt = 0;
+	if 		(diceRoll >= 3 	&& diceRoll < 7 ) {axialTilt = 0  + (diceRoller(6, 2) - 2);}
+	else if (diceRoll >= 7 	&& diceRoll < 10) {axialTilt = 10 + (diceRoller(6, 2) - 2);}
+	else if (diceRoll >= 10 && diceRoll < 13) {axialTilt = 20 + (diceRoller(6, 2) - 2);}
+	else if (diceRoll >= 13 && diceRoll < 15) {axialTilt = 30 + (diceRoller(6, 2) - 2);}
+	else									  {axialTilt = 40 + (diceRoller(6, 2) - 2);}
 
 	return axialTilt;
 }
 
 //	If the roll for the world's axial tilt is 17 or 18, use this table
-int8_t extendedAxialTiltTable(int diceRoll)
+int extendedAxialTiltTable(int diceRoll)
 {
-	int8_t axialTilt = 0;
+	int axialTilt = 0;
 	if 		(diceRoll == 1 || diceRoll == 2) {axialTilt = 50 + (diceRoller(6, 2) - 2);}
 	else if (diceRoll == 3 || diceRoll == 4) {axialTilt = 60 + (diceRoller(6, 2) - 2);}
 	else if (diceRoll == 5) 				 {axialTilt = 70 + (diceRoller(6, 2) - 2);}
@@ -525,15 +583,15 @@ int8_t extendedAxialTiltTable(int diceRoll)
 }
 
 //	This function uses the two tables above and returns the world's axial tilt
-int8_t calculateAxialTilt()
+int calculateAxialTilt()
 {
 	int diceRoll = diceRoller(6, 3);
-	int8_t axialTilt = (diceRoll >= 17) ? extendedAxialTiltTable(diceRoll) : axialTiltTable(diceRoll);
+	int axialTilt = (diceRoll >= 17) ? extendedAxialTiltTable(diceRoll) : axialTiltTable(diceRoll);
 	return axialTilt;
 }
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, char parentWorldType)
+char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int numberOfMajorMoons, char parentWorldType)
 {
 	char volcanicActivityLevel = VAL_NONE;
 //	If the world is terrestrial
@@ -580,7 +638,7 @@ char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge,
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
-atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, const atmosphericComposition_t& worldAtmosphereComposition)
+atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, atmosphericComposition_t& worldAtmosphereComposition)
 {
 	int checkForEffects = diceRoller(6, 3);
 	int sulfurOrPollutants = diceRoller(6, 1);
@@ -614,7 +672,7 @@ char tectonicActivtyTable(int diceRoll)
 }
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons)
+char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int numberOfMajorMoons)
 {
 	char tectonicActivityLevel = TAL_NONE;
 
@@ -654,30 +712,31 @@ char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydro
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-tuple<int8_t, int8_t> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier)
+tuple<int, int> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int resourceValueModifier, int habitabilityModifier)
 {
-	char volcanicActivityLevelTemp = volcanicActivityLevel;
-	char tectonicActivityLevelTemp = tectonicActivityLevel;
-	int8_t resourceValueModifierTemp = resourceValueModifier;
-	int8_t habitabilityModifierTemp = habitabilityModifier;
-	if 		(volcanicActivityLevelTemp == VAL_NONE	) {resourceValueModifierTemp += -2;}
-	else if (volcanicActivityLevelTemp == VAL_LIGHT	) {resourceValueModifierTemp += -1;}
-	else if (volcanicActivityLevelTemp == VAL_MODERATE) {resourceValueModifierTemp += 0 ;}
-	else if (volcanicActivityLevelTemp == VAL_HEAVY	)
-	{
-		resourceValueModifierTemp += 1;
-		habitabilityModifierTemp += -1;
-	}
-	else if (volcanicActivityLevelTemp == VAL_EXTREME)
-	{
-		resourceValueModifierTemp += 2;
-		habitabilityModifierTemp += -2;
-	}
+//	Initialize return values
+	int newResourceValueModifier = 0;
+	int newHabitabilityModifier = 0;
 
-	if 		(tectonicActivityLevelTemp == VAL_HEAVY  ) {habitabilityModifierTemp += -1;}
-	else if (tectonicActivityLevelTemp == VAL_EXTREME) {habitabilityModifierTemp += -2;}
+	if 		(volcanicActivityLevel == VAL_NONE	) {newResourceValueModifier += -2;}
+	else if (volcanicActivityLevel == VAL_LIGHT	) {newResourceValueModifier += -1;}
+	else if (volcanicActivityLevel == VAL_HEAVY	)
+	{
+		newResourceValueModifier += 1;
+		habitabilityModifier += -1;
+	}
+	else if (volcanicActivityLevel == VAL_EXTREME)
+	{
+		newResourceValueModifier += 2;
+		habitabilityModifier += -2;
+	}
+//	else {resourceValueModifier += 0;}
 
-	return make_tuple(habitabilityModifierTemp, resourceValueModifierTemp);
+	if 		(tectonicActivityLevel == TAL_HEAVY  ) {habitabilityModifier += -1;}
+	else if (tectonicActivityLevel == TAL_EXTREME) {habitabilityModifier += -2;}
+//	else {habitabilityModifier += 0;}
+
+	return make_tuple(newHabitabilityModifier, newResourceValueModifier);
 }
 
 //	Calculate the body's escape velocity

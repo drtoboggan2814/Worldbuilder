@@ -29,9 +29,9 @@ struct world_t
 //	Describes the specific type of world it is
 	char worldType;
 //	The world's resource value modifier
-	int8_t resourceValueModifier;
+	int resourceValueModifier;
 //	The world's habitability modifier
-	int8_t habitabilityModifier;
+	int habitabilityModifier;
 
 //	Physical attributes
 //	The world's density in terms of the Earth
@@ -50,6 +50,8 @@ struct world_t
 	float hydrographicCoverage;
 //	The world's surface temperature in K
 	float surfaceTemperature;
+	float dayFaceAverageTemperature;
+	float nightFaceAverageTemperature;
 //	The world's blackbody correction
 	float blackbodyCorrection;
 //	The world's blackbody temperature in K
@@ -82,6 +84,8 @@ struct world_t
 	char atmosphericPressureCategory;
 //	The minimum molecular weight retained by the world
 	float minimumMolecularWeightRetained;
+	char climateType;
+	bool breathable;
 
 //	Astronomical attributes
 //	The orbital radius of the planet around its primary
@@ -101,7 +105,7 @@ struct world_t
 //	The length of an apparent day in hours
 	float apparentDayLength;
 //	The world's axial tilt in degrees
-	int8_t axialTilt;
+	int axialTilt;
 //	Is the world in a stable resonant pattern
 	bool resonantOrNot;
 //	Is the world tidally locked
@@ -115,11 +119,11 @@ struct world_t
 //	The orbital radii of each major moon
 	float majorMoonOrbitalRadiusArray[8];
 //	The number of major moons
-	int8_t numberOfMajorMoons;
+	int numberOfMajorMoons;
 //	The number of moonlets orbiting a terrestrial world
-	int8_t terrestrialMoonlet;
+	int terrestrialMoonlet;
 //	The size class of the moon
-	int8_t moonSizeClass;
+	int moonSizeClass;
 
 //	For moons
 //	The orbital radius of the moon around its planet
@@ -140,36 +144,41 @@ struct world_t
 	float totalTidalEffect;
 
 //	For gas giants
-	int8_t firstFamilyMoonlets;
-	int8_t secondFamilyMajorMoons;
-	int8_t thirdFamilyMoonlets;
-	int8_t ringSystemVisibility;
+	int firstFamilyMoonlets;
+	int secondFamilyMajorMoons;
+	int thirdFamilyMoonlets;
+	int ringSystemVisibility;
 	bool gasGiantTinySulfurPresent;
 
 	moonlet_t firstFamilyMoonletArray[12];
 	moonlet_t thirdFamilyMoonletArray[6];
 
 //	Mapping information
-	uint8_t hexesPerSide;
-	uint16_t totalHexes;
-	uint16_t waterHexCount;
-	uint16_t landHexCount;
-	uint8_t numberOfMajorOceans;
-	uint8_t numberOfMinorOceans;
-	uint8_t numberOfSmallSeas;
-	uint8_t numberOfScatteredLakes;
-	uint8_t numberOfMajorContinents;
-	uint8_t numberOfMinorContinents;
-	uint8_t numberOfMajorIslands;
-	uint8_t numberOfArchipelagoes;
+	char hexesPerSide;
+	int totalHexes;
+	int waterHexCount;
+	int landHexCount;
+	char numberOfMajorOceans;
+	char numberOfMinorOceans;
+	char numberOfSmallSeas;
+	char numberOfScatteredLakes;
+	char numberOfMajorContinents;
+	char numberOfMinorContinents;
+	char numberOfMajorIslands;
+	char numberOfArchipelagoes;
 //	Tectonic plates
-	uint8_t tectonicPlateCount;
+	int tectonicPlateCount;
 	tectonicPlate_t tectonicPlateArray[16];
 
 //	Identification
-	int planetDBIndex;
 	std::string planetName;
+	int uniqueWorldID;
+	int primaryStarID;
+	int starSystemID;
+	int planetDBIndex;
 
+//	Life
+	char nativeEcosphere;
 };
 
 #endif

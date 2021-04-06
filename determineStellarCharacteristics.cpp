@@ -12,10 +12,10 @@ using namespace std;
 #include "declarations/structures/world_t.h"
 #include "declarations/structures/star_t.h"
 
-star_t determineStellarCharacteristics(star_t star)
+star_t determineStellarCharacteristics(star_t& star)
 {
 //	Iterate through stellarEvolutionTableConstants for the star's type
-	for (int i = 0; i < 34; i++)
+	for (int i = 0; i < STELLEREVOLUTIONTABLE_MAXROWS; i++)
 	{
 /*		cout << "Spectral type integer = " << i << endl;
 //		Calculate the differences between the entry and its neighboring values
@@ -87,7 +87,7 @@ star_t determineStellarCharacteristics(star_t star)
 			break;
 		}
 
-		else if (i == 33)
+		else if (i == (STELLEREVOLUTIONTABLE_MAXROWS - 1))
 		{
 			if (star.stellarMass >= stellarEvolutionTable[i][0])
 			{
@@ -124,37 +124,46 @@ star_t determineStellarCharacteristics(star_t star)
 			}
 		}
 
-		else if (star.stellarMass >= stellarEvolutionTable[i][0] && (star.stellarMass < stellarEvolutionTable[i + 1][0]))
+		else
 		{
-//			cout << "i = " << i << endl;
-//			cout << "interpolationRatio = " << interpolationRatio << endl;
-//			Assign the star type
-			star.starType = stellarEvolutionTable[i][1];
+			if (star.stellarMass >= stellarEvolutionTable[i][0])
+			{
+				if ((i + 1) < STELLEREVOLUTIONTABLE_MAXROWS)
+				{
+					if (star.stellarMass < stellarEvolutionTable[i + 1][0])
+					{
+//						cout << "i = " << i << endl;
+//						cout << "interpolationRatio = " << interpolationRatio << endl;
+//						Assign the star type
+						star.starType = stellarEvolutionTable[i][1];
 
-//			Modify table entries with the interpolation ratio
-			star.tableTemperature = stellarEvolutionTable[i][2] * interpolationRatio;
-//			cout << "star.tableTemperature = " << star.tableTemperature << endl;
-			star.lMin = stellarEvolutionTable[i][3] * interpolationRatio;
-//			cout << "star.lMin = " << star.lMin << endl;
-			star.lMax = stellarEvolutionTable[i][4] * interpolationRatio;
-//			cout << "star.lMax = " << star.lMax << endl;
-			star.mSpan = stellarEvolutionTable[i][5] * interpolationRatio;
-//			cout << "star.mSpan = " << star.mSpan << endl;
-			star.sSpan = stellarEvolutionTable[i][6] * interpolationRatio;
-//			cout << "star.sSpan = " << star.sSpan << endl;
-			star.gSpan = stellarEvolutionTable[i][7] * interpolationRatio;
-//			cout << "star.gSpan = " << star.gSpan << endl;
+//						Modify table entries with the interpolation ratio
+						star.tableTemperature = stellarEvolutionTable[i][2] * interpolationRatio;
+//						cout << "star.tableTemperature = " << star.tableTemperature << endl;
+						star.lMin = stellarEvolutionTable[i][3] * interpolationRatio;
+//						cout << "star.lMin = " << star.lMin << endl;
+						star.lMax = stellarEvolutionTable[i][4] * interpolationRatio;
+//						cout << "star.lMax = " << star.lMax << endl;
+						star.mSpan = stellarEvolutionTable[i][5] * interpolationRatio;
+//						cout << "star.mSpan = " << star.mSpan << endl;
+						star.sSpan = stellarEvolutionTable[i][6] * interpolationRatio;
+//						cout << "star.sSpan = " << star.sSpan << endl;
+						star.gSpan = stellarEvolutionTable[i][7] * interpolationRatio;
+//						cout << "star.gSpan = " << star.gSpan << endl;
 
-//				Determine luminosity class
-			if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = LC_V;}
-			else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = LC_IV;}
-			else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = LC_III;}
-			else																			 									{star.luminosityClass = LC_D;}
+//						Determine luminosity class
+						if 		(star.stellarAge <= star.mSpan) 																			{star.luminosityClass = LC_V;}
+						else if (star.stellarAge > star.mSpan && star.stellarAge <= (star.sSpan + star.mSpan)) 								{star.luminosityClass = LC_IV;}
+						else if (star.stellarAge > (star.sSpan + star.mSpan) && star.stellarAge <= (star.mSpan + star.sSpan + star.gSpan)) 	{star.luminosityClass = LC_III;}
+						else																			 									{star.luminosityClass = LC_D;}
 
-//			Break
-			break;
+//						Break
+						break;
+
+					}
+				}
+			}
 		}
 	}
-
 	return star;
 }

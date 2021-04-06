@@ -1,5 +1,6 @@
 //	C+= libraries
 #include <iostream>
+#include <string>
 
 //	Constant declarations
 #include "declarations/constants/csvLengthConstants.h"
@@ -42,7 +43,7 @@ float getOrbitalRadius(float outermostLegalDistance)
 }
 
 //	This function returns the orbital radii of the primary in ascending order
-star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool randomStar, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
+star_t placePlanetaryOrbits(star_t& primary, rapidcsv::Document& worldDoc, bool randomStar, char numberOfStars, float companionAInnerForbiddenZone, float companionAOuterForbiddenZone, float companionBInnerForbiddenZone, float companionBOuterForbiddenZone, float companionAOrbitalRadius, float companionBOrbitalRadius)
 {
 //	Keep track of the distance between each orbit
 	float distanceBetweenOrbits = 0;
@@ -55,7 +56,7 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 	std::cout << "primary.innerForbiddenZone == " << primary.innerForbiddenZone << std::endl;
 	std::cout << "primary.outerLimitRadius == " << primary.outerLimitRadius << std::endl;
 //	If the star is generated randomly
-	int orbitalRadiusIndex;
+	int orbitalRadiusIndex = 0;
 	bool matchWasFound = false;
 	if (randomStar == true)
 	{
@@ -69,7 +70,7 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 //		Otherwise, generate the firt planetary orbit
 		else
 		{
-			float divisor;
+			float divisor = 0;
 			if (primary.outerLimitRadius > primary.innerForbiddenZone || primary.innerForbiddenZone == 0) {divisor = primary.outerLimitRadius;}
 			else {divisor = primary.innerForbiddenZone;}
 
@@ -94,7 +95,7 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 		else
 		{
 			std::cout << "primary.firstGasGiantPresent == false" << std::endl;
-			float divisor;
+			float divisor = 0;
 			std::cout << "primary.innerForbiddenZone == " << primary.innerForbiddenZone << std::endl;
 			std::cout << "primary.outerLimitRadius == " << primary.outerLimitRadius << std::endl;
 			if (primary.outerLimitRadius > primary.innerForbiddenZone || primary.innerForbiddenZone == 0) {divisor = primary.outerLimitRadius;}
@@ -105,12 +106,13 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 		}
 
 
-
+/*
 //		Go through worldDoc and check if a terrestrial world is in the system
+
 		for (int i = 0; i < WORLDDOC_LENGTH; i++)
 		{
 //			If a match is found
-			if (csv_starWorldMatch(primary, worldDoc) == true)
+			if (csv_starWorldMatch(worldDoc, std::to_string(primary.hipIndex), std::to_string(primary.hdIndex), primary.glieseIndex, primary.properName) == true)
 			{
 				matchWasFound = true;
 				std::cout << "\nA match between starDoc and worldDoc has been found" << std::endl;
@@ -121,79 +123,111 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 					primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i);
 //					Record the world's index in the worldDoc
 					primary.worldArray[orbitalRadiusIndex].planetDBIndex = i;
+//					Record the orbitalRadiusIndex as preplaced
+					primary.preplacedWorldIndex[0] = orbitalRadiusIndex;
+					primary.preplacedWorldPlanetDBIndex[0] = i;
 //					Check for other worlds in the system
-					if (worldDoc.GetCell<std::string>("pl_letter", i + 1) == "c")
+//					Check for out of bounds
+					if (i + 1 < WORLDDOC_LENGTH)
 					{
-//						Assign orbital radius
-						primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 1);
-//						Record the world's index in the worldDoc
-						primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 1;
-						orbitalRadiusIndex = 2;
-
-						if (worldDoc.GetCell<std::string>("pl_letter", i + 2) == "d")
+						if (worldDoc.GetCell<std::string>("pl_letter", i + 1) == "c")
 						{
 //							Assign orbital radius
-							primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 2);
+							primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 1);
 //							Record the world's index in the worldDoc
-							primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 2;
-							orbitalRadiusIndex = 3;
-
-							if (worldDoc.GetCell<std::string>("pl_letter", i + 3) == "e")
+							primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 1;
+							primary.preplacedWorldIndex[1] = orbitalRadiusIndex;
+							primary.preplacedWorldPlanetDBIndex[1] = i;
+							orbitalRadiusIndex = 2;
+//							Check for out of bounds
+							if (i + 2 < WORLDDOC_LENGTH)
 							{
-//								Assign orbital radius
-								primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 3);
-//								Record the world's index in the worldDoc
-								primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 3;
-								orbitalRadiusIndex = 4;
-
-								if (worldDoc.GetCell<std::string>("pl_letter", i + 4) == "f")
+								if (worldDoc.GetCell<std::string>("pl_letter", i + 2) == "d")
 								{
 //									Assign orbital radius
-									primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 4);
+									primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 2);
 //									Record the world's index in the worldDoc
-									primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 4;
-									orbitalRadiusIndex = 5;
-
-									if (worldDoc.GetCell<std::string>("pl_letter", i + 5) == "g")
+									primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 2;
+									primary.preplacedWorldIndex[2] = orbitalRadiusIndex;
+									primary.preplacedWorldPlanetDBIndex[2] = i;
+									orbitalRadiusIndex = 3;
+//									Check for out of bounds
+									if (i + 3 < WORLDDOC_LENGTH)
 									{
-//										Assign orbital radius
-										primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 5);
-//										Record the world's index in the worldDoc
-										primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 5;
-										orbitalRadiusIndex = 6;
-
-										if (worldDoc.GetCell<std::string>("pl_letter", i + 6) == "h")
+										if (worldDoc.GetCell<std::string>("pl_letter", i + 3) == "e")
 										{
 //											Assign orbital radius
-											primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 6);
+											primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 3);
 //											Record the world's index in the worldDoc
-											primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 6;
-											orbitalRadiusIndex = 7;
+											primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 3;
+											primary.preplacedWorldIndex[3] = orbitalRadiusIndex;
+											primary.preplacedWorldPlanetDBIndex[3] = i;
+											orbitalRadiusIndex = 4;
+//											Check for out of bounds
+											if (i + 4 < WORLDDOC_LENGTH)
+											{
+												if (worldDoc.GetCell<std::string>("pl_letter", i + 4) == "f")
+												{
+				//									Assign orbital radius
+													primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 4);
+				//									Record the world's index in the worldDoc
+													primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 4;
+													primary.preplacedWorldIndex[4] = orbitalRadiusIndex;
+													primary.preplacedWorldPlanetDBIndex[4] = i;
+													orbitalRadiusIndex = 5;
+//													Check for out of bounds
+													if (i + 5 < WORLDDOC_LENGTH)
+													{
+														if (worldDoc.GetCell<std::string>("pl_letter", i + 5) == "g")
+														{
+					//										Assign orbital radius
+															primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 5);
+					//										Record the world's index in the worldDoc
+															primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 5;
+															primary.preplacedWorldIndex[5] = orbitalRadiusIndex;
+															primary.preplacedWorldPlanetDBIndex[5] = i;
+															orbitalRadiusIndex = 6;
+//															Check for out of bounds
+															if (i + 6 < WORLDDOC_LENGTH)
+															{
+																if (worldDoc.GetCell<std::string>("pl_letter", i + 6) == "h")
+																{
+						//											Assign orbital radius
+																	primary.orbitalRadiusArray[orbitalRadiusIndex] = worldDoc.GetCell<float>("pl_orbsmax", i + 6);
+						//											Record the world's index in the worldDoc
+																	primary.worldArray[orbitalRadiusIndex].planetDBIndex = i + 6;
+																	primary.preplacedWorldIndex[6] = orbitalRadiusIndex;
+																	primary.preplacedWorldPlanetDBIndex[6] = i;
+																	orbitalRadiusIndex = 7;
+																}
+						//										If there are no further worlds in the system, break
+																else	{break;}
+															}
+														}
+	//									If there are no further worlds in the system, break
+														else	{break;}
+													}
+												}
+	//											If there are no further worlds in the system, break
+												else	{break;}
+											}
 										}
 //										If there are no further worlds in the system, break
 										else	{break;}
 									}
-//									If there are no further worlds in the system, break
-									else	{break;}
-								}
 //								If there are no further worlds in the system, break
 								else	{break;}
+								}
 							}
-//							If there are no further worlds in the system, break
-							else	{break;}
 						}
 //						If there are no further worlds in the system, break
 						else	{break;}
-
 					}
-
-//					If there are no further worlds in the system, break
-					else	{break;}
 				}
 			}
-		}
 
-/*
+*/
+		/*
 		if (matchWasFound == false)
 		{
 			//	std::cout << "\nNo match was found between starDoc and worldDoc\n" << std::endl;
@@ -205,10 +239,12 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 			//	std::cout << "primary.orbitalRadiusArray[0] == " << primary.orbitalRadiusArray[0] << "\n" << std::endl;
 
 		}
-*/
+		*/
+	//}
+
 	}
-//	//	std::cout << "orbitalRadiusIndex == " << orbitalRadiusIndex << std::endl;
-//	////	std::cout << "primary.orbitalRadiusArray[0] = " << primary.orbitalRadiusArray[0] << std::endl;
+	std::cout << "orbitalRadiusIndex == " << orbitalRadiusIndex << std::endl;
+	std::cout << "primary.orbitalRadiusArray[0] = " << primary.orbitalRadiusArray[0] << std::endl;
 
 //	Work inward from the first planet
 //	While the distance between orbits is greater than 0.15 AU, the orbital radius of the first world, falls between the star's inner and outer radii, and is not in the forbidden zone
@@ -221,8 +257,8 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 //	Check if the orbit falls in the forbidden zone
 //	If there are more than 1 stars and the first orbit is in the forbidden zone
 	bool inPrimaryForbiddenZone = (numberOfStars > 1) && (primary.orbitalRadiusArray[0] <= primary.outerForbiddenZone && primary.orbitalRadiusArray[0] >= primary.innerForbiddenZone);
-	bool inCompanionAForbiddenZone;
-	bool inCompanionBForbiddenZone;
+	bool inCompanionAForbiddenZone = false;
+	bool inCompanionBForbiddenZone = false;
 	if (numberOfStars > 1)
 	{
 /*
@@ -259,7 +295,7 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 	std::cout << "distanceBetweenOrbits == " << distanceBetweenOrbits << std::endl;
 	for (int index = 1; (distanceBetweenOrbits >= 0.15 && !inPrimaryForbiddenZone && inCorrectRadius && lessThanFirstOrbit); index++)
 	{
-		//	std::cout << "Entered inward orbit generation for loop successfully" << std::endl;
+			std::cout << "Entered inward orbit generation for loop successfully" << std::endl;
 //		If the index is less than or equal to orbitalRadiusIndex, then a planet has already been placed there
 		if (index <= orbitalRadiusIndex && randomStar == false && matchWasFound == true)	{continue;}
 
@@ -346,7 +382,14 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 	lessThanFirstOrbit = (distanceFromPrimary <= primary.orbitalRadiusArray[0]) || (distanceFromPrimary == primary.orbitalRadiusArray[0]);
 
 //	Set the orbital radius of the orbit after the first to distanceBetweenOrbits
-	if (distanceBetweenOrbits >= 0.15 && !inPrimaryForbiddenZone && inCorrectRadius && greaterThanFirstOrbit) {primary.orbitalRadiusArray[innerWorldIndex + 1] = distanceFromPrimary;}
+	if (distanceBetweenOrbits >= 0.15 && !inPrimaryForbiddenZone && inCorrectRadius && greaterThanFirstOrbit)
+	{
+//		Check for out of bounds
+		if ((innerWorldIndex + 1) < SIZE_ORBITALRADIUS_SIZECLASS_WORLD_ARRAY)
+		{
+			primary.orbitalRadiusArray[innerWorldIndex + 1] = distanceFromPrimary;
+		}
+	}
 	std::cout << "primary.orbitalRadiusArray[" << innerWorldIndex + 1 << "] = " << primary.orbitalRadiusArray[innerWorldIndex + 1] << std::endl;
 	std::cout << "inPrimaryForbiddenZone = " << inPrimaryForbiddenZone << std::endl;
 	std::cout << "inCorrectRadius = " << inCorrectRadius << std::endl;
@@ -405,13 +448,18 @@ star_t placePlanetaryOrbits(star_t primary, rapidcsv::Document& worldDoc, bool r
 	float tempValue = 0;
 	for (int i = 0; i < outerWorldIndex + 1; i++)
 	{
-		for (int j = i + 1; j < outerWorldIndex + 1; j++)
+//		Check for out of bounds
+		if (outerWorldIndex + 1 < SIZE_ORBITALRADIUS_SIZECLASS_WORLD_ARRAY)
 		{
-			tempValue = primary.orbitalRadiusArray[i];
-			primary.orbitalRadiusArray[i] = primary.orbitalRadiusArray[j];
-			primary.orbitalRadiusArray[j] = tempValue;
+			for (int j = i + 1; j < outerWorldIndex + 1; j++)
+			{
+				tempValue = primary.orbitalRadiusArray[i];
+				primary.orbitalRadiusArray[i] = primary.orbitalRadiusArray[j];
+				primary.orbitalRadiusArray[j] = tempValue;
+			}
 		}
 	}
 
 	return primary;
+
 }

@@ -7,7 +7,7 @@
 #include <string>
 
 //	Regex
-const std::regex HARVARDREGEX("(\\bO|\\bB|\\bA|\\bF|\\bG|\\bK|\\bM|\\bD)");
+const std::regex HARVARDREGEX("((\\bO|\\bB|\\bA|\\bF|\\bG|\\bK|\\bM|\\bD)|(((?!sd)O|(?!sd)B|(?!sd)A|(?!sd)F|(?!sd)G|(?!sd)K|(?!sd)M|(?!sd)D)))");
 const std::regex NUMERICREGEX("(\\d*\\.)?\\d+");
 const std::regex YERKESREGEX("(Ia|Iab|Ib|II|III|IV|V|sd)");
 
@@ -46,6 +46,8 @@ const std::string YERKESCLASSIFICATION_IV		= "IV";
 const std::string YERKESCLASSIFICATION_V		= "V";
 const std::string YERKESCLASSIFICATION_SD		= "sd";
 const std::string YERKESCLASSIFICATION_BLANK	= "";
+const std::string YERKESCLASSIFICATION_TABLE[STELLARCLASSIFICATIONTABLE_Y] =
+{YERKESCLASSIFICATION_IA, YERKESCLASSIFICATION_IB, YERKESCLASSIFICATION_II, YERKESCLASSIFICATION_II, YERKESCLASSIFICATION_IV, YERKESCLASSIFICATION_V, YERKESCLASSIFICATION_SD, YERKESCLASSIFICATION_BLANK};
 
 //	Index values for Yerkes classification
 constexpr int YERKESCLASSIFICATIONINDEX_IA[YERKESCLASSIFCATIONINDEX_LENGTH] =

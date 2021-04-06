@@ -29,7 +29,9 @@ float getStepB(int diceRoll)
 
 float stellarAgeTable(bool gardenWorldPresent)
 {
-	int firstRoll, secondRoll, thirdRoll;
+	int firstRoll = 0;
+	int secondRoll = 0;
+	int thirdRoll = 0;
 	float stellarMass, variance, baseAge, stepA, stepB;
 
 //	If there is a garden world present in this system, roll 2d6+2

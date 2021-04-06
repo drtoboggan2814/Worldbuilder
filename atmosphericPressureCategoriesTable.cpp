@@ -1,6 +1,19 @@
 //	Constant declarations
 #include "declarations/constants/atmosphericPressureCategoryConstants.h"
 
+//	Function declarations
+#include "declarations/functions/floatRNG.h"
+
+float getNewAtmosphericPressure(char pressureCategory)
+{
+	float newAtmosphericPressure;
+	if (pressureCategory == APC_NONE)			{newAtmosphericPressure = 0;}
+	else if (pressureCategory == APC_TRACE)		{newAtmosphericPressure = floatRNG(0.000001, 0.00999);}
+	else if (pressureCategory == APC_VERY_THIN)	{newAtmosphericPressure = floatRNG(0.01, 0.5);}
+
+	return newAtmosphericPressure;
+}
+
 char atmosphericPressureCategoriesTable(float atmosphericPressure)
 {
 	char pressureCategory;

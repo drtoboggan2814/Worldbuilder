@@ -1,0 +1,8 @@
+pointIndex_0 == 0
+prospectivePoint_1.index == Int64Index([5909, 5910], dtype='int64')
+allPointsNan == True
+conflictingStarPoints == 5909   NaN
+5910   NaN
+Name: connectingStarID, dtype: float64
+conflictingStarPoints == Series([], Name: connectingStarID, dtype: float64)
+pointIndex_0 == -1

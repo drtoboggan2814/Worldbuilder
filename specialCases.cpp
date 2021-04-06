@@ -1,4 +1,5 @@
 //	C++ libraries
+#include <iostream>
 #include <tuple>
 
 //	Constant declarations
@@ -44,8 +45,8 @@ char tideLockedFinalAtmosphereTable(char pressureCategory)
 {
 //	Initialize return value
 	char pressureCategoryTemp;
-	if 		(pressureCategory == APC_NONE || pressureCategory == APC_NONE) {pressureCategoryTemp = APC_NONE			;}
-	else if (pressureCategory == APC_VERY_THIN						  ) {pressureCategoryTemp = APC_NONE			;}
+	if 		(pressureCategory == APC_NONE || pressureCategory == APC_TRACE) {pressureCategoryTemp = APC_NONE			;}
+	else if (pressureCategory == APC_VERY_THIN						  ) {pressureCategoryTemp = APC_TRACE			;}
 	else if (pressureCategory == APC_THIN							  ) {pressureCategoryTemp = APC_VERY_THIN		;}
 	else 																{pressureCategoryTemp = pressureCategory;}
 	return pressureCategoryTemp;
@@ -54,59 +55,65 @@ char tideLockedFinalAtmosphereTable(char pressureCategory)
 //	This function acts as a lookup table for the hydrographic coverage modifier
 float tideLockedHydrographicCoverageModifier(char pressureCategory)
 {
-	if 		(pressureCategory == APC_NONE || pressureCategory == APC_NONE) {return -1.00;}
-	else if (pressureCategory == APC_VERY_THIN						  ) {return -1.00;}
+	if 		(pressureCategory == APC_NONE || pressureCategory == APC_TRACE || pressureCategory == APC_VERY_THIN) {return -1.00;}
 	else if (pressureCategory == APC_THIN							  ) {return -0.50;}
 	else if (pressureCategory == APC_STANDARD							  ) {return -0.25;}
 	else if (pressureCategory == APC_DENSE							  ) {return -0.10;}
-	else if (pressureCategory == APC_VERY_DENSE						  ) {return 0.000;}
+//	else if (pressureCategory == APC_VERY_DENSE						  ) {return 0.000;}
 	else 																{return 0.000;}
 }
 
 //	This function takes the effects of a tidally locked world on a world's
 //	atmosphere and hydrographic coverage into account
-tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, char atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, char worldType, float hydrographicCoverage)
+std::tuple<float, char, float, float, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, char atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, char worldType, float hydrographicCoverage)
 {
-//	Initialize return values
-	float atmosphericPressureTemp = atmosphericPressure;
-	float hydrographicCoverageTemp = hydrographicCoverage;
-	char atmosphericPressureCategoryTemp = atmosphericPressureCategory;
-//	For worlds that are tidally locked
-	float dayFaceAverageTemperature = surfaceTemperature * tideLockedDayFaceModifierTable(atmosphericPressureCategoryTemp);
-	float nightFaceAverageTemperature = surfaceTemperature * tideLockedNightFaceModifierTable(atmosphericPressureCategoryTemp);
-
-	char newPressureCategory = tideLockedFinalAtmosphereTable(atmosphericPressureCategoryTemp);
-//		If the pressure category is changed, update the atmospheric pressure
-	if (newPressureCategory != atmosphericPressureCategoryTemp)
+	float dayFaceAverageTemperature;
+	float nightFaceAverageTemperature;
+	if (tidalLockedOrNot)
 	{
-		if 		(newPressureCategory == APC_NONE)
+	//	For worlds that are tidally locked
+		dayFaceAverageTemperature = surfaceTemperature * tideLockedDayFaceModifierTable(atmosphericPressureCategory);
+		nightFaceAverageTemperature = surfaceTemperature * tideLockedNightFaceModifierTable(atmosphericPressureCategory);
+
+		char newPressureCategory = tideLockedFinalAtmosphereTable(atmosphericPressureCategory);
+	//		If the pressure category is changed, update the atmospheric pressure
+		if (newPressureCategory != atmosphericPressureCategory)
 		{
-			atmosphericPressureTemp = 0;
+			if 		(newPressureCategory == APC_NONE)
+			{
+				atmosphericPressure = 0;
+			}
+
+			else if (newPressureCategory == APC_NONE)
+			{
+				atmosphericPressure = floatRNG(0.0001, 0.0099);
+			}
+
+			else if (newPressureCategory == APC_VERY_THIN)
+			{
+				atmosphericPressure = floatRNG(0.01, 0.5);
+			}
+	//			Assign the new pressure category
+			atmosphericPressureCategory = newPressureCategory;
+			//		Apply the hydrographic coverage modifier
+			hydrographicCoverage += tideLockedHydrographicCoverageModifier(atmosphericPressureCategory);
+			hydrographicCoverage = (hydrographicCoverage <= 0) ? 0 : hydrographicCoverage;
 		}
 
-		else if (newPressureCategory == APC_NONE)
-		{
-			atmosphericPressureTemp = floatRNG(0.0001, 0.0099);
-		}
-
-		else if (newPressureCategory == APC_VERY_THIN)
-		{
-			atmosphericPressureTemp = floatRNG(0.01, 0.5);
-		}
-//			Assign the new pressure category
-		atmosphericPressureCategoryTemp = newPressureCategory;
 	}
 
-//		Apply the hydrographic coverage modifier
-	hydrographicCoverageTemp += tideLockedHydrographicCoverageModifier(atmosphericPressureCategoryTemp);
-	hydrographicCoverageTemp = (hydrographicCoverageTemp <= 0) ? 0 : hydrographicCoverageTemp;
+	else
+	{
+		dayFaceAverageTemperature = surfaceTemperature;
+		nightFaceAverageTemperature = surfaceTemperature;
+	}
 
-	return make_tuple(atmosphericPressureTemp, atmosphericPressureCategoryTemp, hydrographicCoverageTemp);
+	return std::make_tuple(atmosphericPressure, atmosphericPressureCategory, hydrographicCoverage, dayFaceAverageTemperature, nightFaceAverageTemperature);
 }
 
 //	This function checks to see if the world is in a stable resonant pattern,
 //	rather than being tide-locked
-tuple<bool, float> resonantWorldEffects(float orbitalEccentricity, bool tidalLockedOrNot, float orbitalPeriod, float apparentDayLength)
+std::tuple<bool, float> resonantWorldEffects(float orbitalEccentricity, bool tidalLockedOrNot, float orbitalPeriod, float apparentDayLength)
 {
 //	Initialize return value
 	float apparentDayLengthTemp = apparentDayLength;
@@ -117,7 +124,7 @@ tuple<bool, float> resonantWorldEffects(float orbitalEccentricity, bool tidalLoc
 		if (diceRoll < 12)
 		{
 			resonantOrNot = false;
-			return make_tuple(resonantOrNot, apparentDayLengthTemp);
+			return std::make_tuple(resonantOrNot, apparentDayLengthTemp);
 		}
 
 		else

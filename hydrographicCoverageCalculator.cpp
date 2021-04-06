@@ -16,7 +16,7 @@ float hydrographicCoverageCalculator(char worldType)
 	float big = 0;
 	float small = 0;
 
-	if (worldType == WT_ASTEROID_BELT || worldType == WT_TINY_SULFUR || worldType == WT_SMALL_ROCK || worldType == WT_TINY_ICE || worldType == WT_SMALL_HADEAN || worldType == WT_STANDARD_HADEAN || worldType == WT_TINY_SULFUR || worldType == WT_STANDARD_CHTHONIAN || worldType == WT_LARGE_CHTHONIAN)
+	if (worldType == WT_ASTEROID_BELT || worldType == WT_TINY_SULFUR || worldType == WT_SMALL_ROCK || worldType == WT_TINY_ICE || worldType == WT_SMALL_HADEAN || worldType == WT_STANDARD_HADEAN || worldType == WT_TINY_ROCK || worldType == WT_STANDARD_CHTHONIAN || worldType == WT_LARGE_CHTHONIAN)
 	{
 		hydrographicCoverage = 0;
 	}

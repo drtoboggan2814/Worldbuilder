@@ -1,0 +1,86 @@
+starNeighbors_Series == 0     3584
+1      832
+4     1769
+6     1328
+8     3088
+9     2321
+13    1785
+15    2235
+dtype: int32
+point == 3584
+point == 832
+point == 1769
+point == 1328
+point == 3088
+point == 2321
+point == 1785
+point == 2235
+starNeighbors_Series == 8     2930
+13    2905
+14    2906
+dtype: int32
+point == 2930
+point == 2905
+point == 2906
+starNeighbors_Series == Series([], dtype: int32)
+starNeighbors_Series == 0    2880
+4      10
+7      18
+dtype: int32
+point == 2880
+point == 10
+point == 18
+starNeighbors_Series == 0     2917
+1     4261
+3     3014
+5     4239
+6       19
+7     3032
+8     3000
+9     4281
+10      88
+11     120
+12    3005
+dtype: int32
+point == 2917
+point == 4261
+point == 3014
+point == 4239
+point == 19
+point == 3032
+point == 3000
+point == 4281
+point == 88
+point == 120
+point == 3005
+starNeighbors_Series == 6    2990
+dtype: int32
+point == 2990
+starNeighbors_Series == 1    2982
+dtype: int32
+point == 2982
+starNeighbors_Series == 1    2992
+4      21
+8    2969
+dtype: int32
+point == 2992
+point == 21
+point == 2969
+starNeighbors_Series == 3     2981
+5     2952
+10      30
+11      31
+dtype: int32
+point == 2981
+point == 2952
+point == 30
+point == 31
+starNeighbors_Series == 4     3014
+8       12
+9       13
+11    3001
+dtype: int32
+point == 3014
+point == 12
+point == 13
+point == 3001

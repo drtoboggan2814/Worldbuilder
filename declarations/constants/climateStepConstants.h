@@ -1,3 +1,5 @@
+#ifndef CLIMATESTEPCONSTANTS
+#define CLIMATESTEPCONSTANTS
 // All values are in Kelvin
 const int step_AsteroidBelt 					= 24;
 const int step_Tiny_IceorSulfur					= 4;
@@ -14,3 +16,5 @@ const int step_Large_Ammonia					= 5;
 const int step_Large_Ice						= 10;
 const int step_Large_OceanorGarden				= 6;
 const int step_Large_GreenhouseorChthonian		= 30;
+
+#endif

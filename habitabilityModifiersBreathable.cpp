@@ -2,9 +2,9 @@
 #include <cstdint>
 #include "declarations/constants/atmosphericPressureCategoryConstants.h"
 
-int8_t habitabilityModifiersBreathable(char pressureCategory, bool breathable)
+int habitabilityModifiersBreathable(char pressureCategory, bool breathable)
 {
-	int8_t habitabilityModifier;
+	int habitabilityModifier = 0;
 
 	if 		(breathable == false																				) {habitabilityModifier = 0;}
 	else if (breathable == true && pressureCategory == APC_VERY_THIN											) {habitabilityModifier = 1;}

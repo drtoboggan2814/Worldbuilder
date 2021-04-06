@@ -1,3 +1,5 @@
+#ifndef GENERATEWORLDDETAILS
+#define GENERATEWORLDDETAILS
 #include <cstdint>
 #include <tuple>
 #include "../structures/atmosphericComposition_t.h"
@@ -40,7 +42,7 @@ float calculateStellarOrbitalPeriod(float averageOrbitalRadius, float solarMassS
 float calculatePlanetaryOrbitalPeriod(float planetOrbitalRadius, float stellarMass, float planetMass);
 
 //	This function returns the world's orbital eccentricity, with a variance added on
-float planetaryOrbitalEccentricityTable();
+float planetaryOrbitalEccentricityTable(int diceRoll);
 
 float calculatePlanetaryOrbitalEccentricity(char worldType, char gasGiantArrangement, float snowLineRadius, float planetOrbitalRadius, float innerLimitRadius);
 
@@ -51,7 +53,7 @@ float calculatePlanetPrimaryMaximumSeparation(float planetOrbitalRadius, float p
 float calculateSatelliteOrbitalRadius(float planetDiameter, bool moonType, char gasGiantMoonType, float distanceToClosestMoon, char moonSize);
 float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass);
 float calculateSatelliteOrbitalPeriod(float satelliteOrbitalRadius, float planetMass, float satteliteMass);
-float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius);
+float calculateTidalForceOnSatelliteByPlanet(float planetMass, float satelliteDiameter, float satelliteOrbitalRadius, float planetDiameter);
 float calculateTidalForceOnPlanetBySatellite(float satteliteMass, float planetDiameter, float satelliteOrbitalRadius);
 float calculateTidalForceOnPlanetByPrimary(float solarMass, float planetDiameter, float planetOrbitalRadius);
 
@@ -74,33 +76,34 @@ bool checkForRetrogradeRotation(bool satelliteOrPlanet);
 //	satellite's apprent orbital cycle as seen from the planet it orbits
 float determineLocalCalendar(float rotationPeriod, bool retrogradeOrNot, bool satelliteOrPlanet, float worldOrbitalPeriod, bool satelliteDayLengthOrOrbitalCycle, float parentPlanetOrbitalPeriod);
 //	This table returns the world's axial tilt in degrees
-int8_t axialTiltTable(int diceRoll);
+int axialTiltTable(int diceRoll);
 
 //	If the roll for the world's axial tilt is 17 or 18, use this table
-int8_t extendedAxialTiltTable(int diceRoll);
+int extendedAxialTiltTable(int diceRoll);
 
 //	This function uses the two tables above and returns the world's axial tilt
-int8_t calculateAxialTilt();
+int calculateAxialTilt();
 
 //	GEOLOGIC ACTIVITY
-char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int8_t numberOfMajorMoons, char parentWorldType);
+char volcanicActivityTable(char worldType, float surfaceGravity, float worldAge, bool satelliteOrPlanet, int numberOfMajorMoons, char parentWorldType);
 
 //	This function checks for the effects of volcanic activity on the atmospheres
 //	of garden worlds
-atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, const atmosphericComposition_t& worldAtmosphereComposition);
+atmosphericComposition_t volcanicActivityEffectOnGardenWorld(char volcanicActivityLevel, char worldType, atmosphericComposition_t& worldAtmosphereComposition);
 
 //	This function serves as a lookup table for the world's tectonic activity
 char tectonicActivtyTable(int diceRoll);
 
 //	Returns the level of tectonic activity of the world
-char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int8_t numberOfMajorMoons);
+char getTectonicActivity(char worldType, char volcanicActivityLevel, float hydrographicCoverage, bool satelliteOrPlanet, int numberOfMajorMoons);
 
 //	This function applies the effects of geologic activity on the world's
 //	habitability and resource value modifiers
-std::tuple<int8_t, int8_t> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int8_t resourceValueModifier, int8_t habitabilityModifier);
+std::tuple<int, int> effectsOfGeologicActivity(char volcanicActivityLevel, char tectonicActivityLevel, int resourceValueModifier, int habitabilityModifier);
 double getEscapeVelocity(double escapeMass, double distanceToCenterOfMass);
 float getMagneticField(float worldMass, float worldDensity, float rotationPeriod, float stellarAge, char worldType);
 float apparentOrbitingBodySize(float bodyDiameter, float distanceFromBody);
 float calculateDistanceToHorizon(float worldDiameter, float distanceFromSurface);
 float getEquatorialRotationVelocity(float diameter, float rotationPeriod);
 std::tuple<float, float, float> getSurfaceArea(float worldDiameter, float hydrographicCoverage);
+#endif

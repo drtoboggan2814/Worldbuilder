@@ -16,7 +16,7 @@ float tideLockedHydrographicCoverageModifier(char pressureCategory);
 
 //	This function takes the effects of a tidally locked world on a world's
 //	atmosphere and hydrographic coverage into account
-std::tuple<float, char, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, char atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, char worldType, float hydrographicCoverage);
+std::tuple<float, char, float, float, float> tideLockedWorldEffects(bool tidalLockedOrNot, float surfaceTemperature, char atmosphericPressureCategory, float atmosphericPressure, float atmosphereMass, float surfaceGravity, char worldType, float hydrographicCoverage);
 
 //	This function checks to see if the world is in a stable resonant pattern,
 //	rather than being tide-locked

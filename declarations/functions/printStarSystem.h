@@ -4,9 +4,9 @@
 #include "../structures/starSystem_t.h"
 #include "../structures/world_t.h"
 
-void printAtmosphereComposition(const atmosphericComposition_t& atmosphereComposition);
+void printAtmosphereComposition(atmosphericComposition_t atmosphereComposition);
 
-void printMoon(const moon_t& moon);
+void printMoon(moon_t moon);
 
 void printWorld(world_t world, char sizeClass);
 
@@ -14,4 +14,4 @@ void printWorld(world_t world, char sizeClass);
 void printStar(star_t star);
 
 //	Print the characteristics of a star system
-void printStarSystem(const starSystem_t& starSystem);
+void printStarSystem(starSystem_t starSystem);

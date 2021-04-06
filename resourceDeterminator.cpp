@@ -15,9 +15,9 @@
 
 using namespace std;
 
-int8_t resourceDeterminator(char worldType)
+int resourceDeterminator(char worldType)
 {
-	int8_t resourceValueModifier;
+	int resourceValueModifier = 0;
 	int diceRoll = diceRoller(6, 3);
 
 	if (worldType == WT_ASTEROID_BELT)

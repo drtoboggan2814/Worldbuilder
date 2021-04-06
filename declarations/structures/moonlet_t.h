@@ -8,6 +8,10 @@ using namespace std;
 struct moonlet_t
 {
 	float orbitalRadius;
+	int uniqueMoonletID;
+	int parentWorldID;
+	int primaryStarID;
+	int starSystemID;
 };
 
 #endif

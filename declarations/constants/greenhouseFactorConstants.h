@@ -1,16 +1,21 @@
-const float gf_AsteroidBelt 				= 0;
-const float gf_Tiny_Ice						= 0;
-const float gf_Tiny_Rock					= 0;
-const float gf_Tiny_Sulfur					= 0;
-const float gf_Small_Hadean 				= 0;
-const float gf_Small_Ice					= 0.1;
-const float gf_Small_Rock					= 0;
-const float gf_Standard_Hadean 				= 0;
-const float gf_StandardLarge_Ammonia 		= 0.2;
-const float gf_StandardLarge_Ice 			= 0.2;
-const float gf_StandardLarge_OceanGarden_00 = 0.16;
-const float gf_StandardLarge_OceanGarden_01 = 0.16;
-const float gf_StandardLarge_OceanGarden_02 = 0.16;
-const float gf_StandardLarge_OceanGarden_03 = 0.16;
-const float gf_StandardLarge_Greenhouse		= 2;
-const float gf_StandardLarge_Chthonian		= 0;
+#ifndef GREENHOUSEFACTORCONSTANTS
+#define GREENHOUSEFACTORCONSTANTS
+
+const float GF_ASTEROIDBELT 				= 0;
+const float GF_TINY_ICE						= 0;
+const float GF_TINY_ROCK					= 0;
+const float GF_TINY_SULFUR					= 0;
+const float GF_SMALL_HADEAN 				= 0;
+const float GF_SMALL_ICE					= 0.1;
+const float GF_SMALL_ROCK					= 0;
+const float GF_STANDARD_HADEAN 				= 0;
+const float GF_STANDARDLARGE_AMMONIA 		= 0.2;
+const float GF_STANDARDLARGE_ICE 			= 0.2;
+const float GF_STANDARDLARGE_OCEANGARDEN_00 = 0.16;
+const float GF_STANDARDLARGE_OCEANGARDEN_01 = 0.16;
+const float GF_STANDARDLARGE_OCEANGARDEN_02 = 0.16;
+const float GF_STANDARDLARGE_OCEANGARDEN_03 = 0.16;
+const float GF_STANDARDLARGE_GREENHOUSE		= 2;
+const float GF_STANDARDLARGE_CHTHONIAN		= 0;
+
+#endif

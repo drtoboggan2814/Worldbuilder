@@ -8,10 +8,21 @@
 
 struct starSystem_t
 {
-	uint8_t numberOfStars;
+	char numberOfStars;
 	star_t stars[3];
 	float systemAge;
 	bool gardenWorldPresent;
+
+//	Cartesian components
+	float cartesianX;
+	float cartesianY;
+	float cartesianZ;
+	float cartesianVelocityX;
+	float cartesianVelocityY;
+	float cartesianVelocityZ;
+
+//	Identification
+	int uniqueStarSystemID;
 };
 
 #endif

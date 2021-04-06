@@ -1,1 +1,4 @@
+#ifndef BLACKBODYTEMPERATURECALCULATOR
+#define BLACKBODYTEMPERATURECALCULATOR
 float blackbodyTemperatureCalculator(float blackbodyCorrection, int surfaceTemperature);
+#endif
