@@ -36,8 +36,20 @@ int findAppropriateOrbitalSlot(star_t& primary, float semiMajorAxis)
 //		Check if the slot is available
 		if (primary.sizeClassArray[i] == SC_EMPTY_ORBIT)
 		{
+
+//			If this is the first slot
+			if (i == 0)
+			{
+//				Check if semiMajorAxis is less than or equal to primary.orbitalRadiusArray[0] but greater than primary.innerLimitRadius
+				if (semiMajorAxis <= primary.orbitalRadiusArray[i] && semiMajorAxis > primary.innerLimitRadius)
+				{
+					matchFound = true;
+					orbitalSlotIndex = i;
+					break;
+				}
+			}
 //			If this is the last orbital slot
-			if 		(i == (primary.numberOfOrbits - 1))
+			if	(i == (primary.numberOfOrbits - 1))
 			{
 			//	Check if the orbit is greater than or equal to the current slot, but less than the outerLimitRadius
 				if (semiMajorAxis >= primary.orbitalRadiusArray[i] && semiMajorAxis < primary.outerLimitRadius)
@@ -49,7 +61,7 @@ int findAppropriateOrbitalSlot(star_t& primary, float semiMajorAxis)
 				}
 			}
 
-		//	Check if the orbit is greater than or equal to the current slot, but less than the next
+//			Check if the orbit is greater than or equal to the current slot, but less than the next
 			else if (semiMajorAxis >= primary.orbitalRadiusArray[i] && semiMajorAxis < primary.orbitalRadiusArray[i + 1])
 			{
 //				Return orbitalSlotIndex
